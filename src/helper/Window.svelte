@@ -8,9 +8,10 @@
 	export let title;
 	export let slot;
 	export let pid;
+    export let defaultWindowSize = { width: '40rem', height: '20rem' };
 
-	let width = '40rem';
-	let height = '20rem';
+	let width = defaultWindowSize.width;
+	let height = defaultWindowSize.height;
 	let isDragging = false;
 	let isResizing = false;
 	let dragOffset = { x: 0, y: 0 };
@@ -153,14 +154,14 @@
 		</div>
 	</div>
 	<div class="window-content">
-		{slot}
+		<slot />
 	</div>
 </div>
 
 <style>
 	.window {
 		user-select: none;
-        background-color: #ffffffef;
+        background-color: #fffffff9;
 	}
 	.controls button {
 		padding: 0rem 0.25rem;
@@ -185,5 +186,6 @@
 	.window-content {
 		height: calc(100% - 2.5rem);
 		overflow: auto;
+        padding: 10px;
 	}
 </style>
