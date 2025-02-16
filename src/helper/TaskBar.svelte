@@ -36,6 +36,6 @@
 	</div>
 	<div class="flex gap-1">
 		<span class="bg-[#f1f1f1] p-2 rounded-lg text-sm font-[700] cursor-pointer"><Date /></span>
-		<span class="bg-[#f1f1f1] p-2 rounded-lg text-sm font-[700] cursor-pointer"><Time time={Date.now()} /></span>
+		<span class="bg-[#f1f1f1] p-2 rounded-lg text-sm font-[700] cursor-pointer"><Time /></span>
 	</div>
 </div>
