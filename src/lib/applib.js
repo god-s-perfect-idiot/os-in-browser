@@ -11,6 +11,11 @@ import Pomodoro from "../apps/Pomodoro.svelte"
 import Processes from "../apps/Processes.svelte"
 import Todo from "../apps/Todo.svelte"
 import Snake from "../apps/Snake.svelte"
+import Settings from "../apps/Settings/Settings.svelte"
+import Pong from "../apps/Pong.svelte"
+import TicTacToe from "../apps/TicTacToe.svelte"
+import Minesweeper from "../apps/Minesweeper.svelte"
+import FlappyBird from "../apps/FlappyBird.svelte"
 
 export const apps = {
     help: {
@@ -21,6 +26,7 @@ export const apps = {
         iconColor: '#ffffff',
         color: '#f1bf00',
         icon: "material-symbols:help",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -34,6 +40,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "material-symbols:feedback",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -47,6 +54,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "fluent:window-16-regular",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -60,6 +68,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "mingcute:file-fill",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -73,6 +82,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "f7:folder-fill",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -86,6 +96,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#f1bf00',
         icon: "material-symbols:files",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -93,12 +104,13 @@ export const apps = {
     },
     settings: {
         appId: 'settings',
-        component: null,
+        component: Settings,
         needsParent: false,
         name: 'Settings',
         iconColor: '#ffffff',  
         color: '#1f3abf',
         icon: "iconoir:ios-settings",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -112,6 +124,7 @@ export const apps = {
         iconColor: '#00ff00',  
         color: '#000000',
         icon: "material-symbols:terminal",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -125,6 +138,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#f1bf00',
         icon: "material-symbols:calculate",
+        props: { },
         defaultWindowSize: {
             width: "20rem",
             height: "25rem"
@@ -138,6 +152,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "mingcute:brush-fill",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "30rem"
@@ -151,6 +166,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "mingcute:time-fill",
+        props: { },
         defaultWindowSize: {
             width: "25rem",
             height: "12rem"
@@ -164,6 +180,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "mingcute:pencil-fill",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "30rem"
@@ -177,6 +194,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "mingcute:stopwatch-fill",
+        props: { },
         defaultWindowSize: {
             width: "20rem",
             height: "20rem"
@@ -190,6 +208,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "material-symbols:hourglass-full",
+        props: { },
         defaultWindowSize: {
             width: "20rem",
             height: "15rem"
@@ -203,6 +222,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "mingcute:process-fill",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -216,6 +236,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "mingcute:check-fill",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
@@ -229,9 +250,80 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "material-symbols:gamepad",
+        props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
+        }
+    },
+    wiki: {
+        appId: 'wiki',
+        component: Frame,
+        needsParent: false,
+        name: 'Wiki',
+        iconColor: '#ffffff',  
+        color: '#000',
+        icon: "simple-icons:wikipedia",
+        props: { url: "https://www.wikipedia.org/wiki/" },
+        defaultWindowSize: {
+            width: "50rem",
+            height: "30rem"
+        }
+    },
+    pong: {
+        appId: 'pong',
+        component: Pong,
+        needsParent: false,
+        name: 'Pong',
+        iconColor: '#ffffff',  
+        color: '#cf3f00',
+        icon: "material-symbols:gamepad",
+        props: { },
+        defaultWindowSize: {
+            width: "40rem",
+            height: "35rem"
+        }
+    },
+    ticTacToe: {
+        appId: 'ticTacToe',
+        component: TicTacToe,
+        needsParent: false,
+        name: 'Tic Tac Toe',
+        iconColor: '#ffffff',  
+        color: '#3b82f6',
+        icon: "material-symbols:gamepad",
+        props: { },
+        defaultWindowSize: {
+            width: "33rem",
+            height: "33rem"
+        }
+    },
+    minesweeper: {
+        appId: 'minesweeper',
+        component: Minesweeper,
+        needsParent: false,
+        name: 'Minesweeper',
+        iconColor: '#ffffff',  
+        color: '#cf3f00',
+        icon: "material-symbols:gamepad",
+        props: { },
+        defaultWindowSize: {
+            width: "40rem",
+            height: "40rem"
+        }
+    },
+    flappyBird: {
+        appId: 'flappyBird',
+        component: FlappyBird,
+        needsParent: false,
+        name: 'Flappy Bird',
+        iconColor: '#ffffff',  
+        color: '#3b82f6',
+        icon: "material-symbols:gamepad",
+        props: { },
+        defaultWindowSize: {
+            width: "40rem",
+            height: "40rem"
         }
     }
 }

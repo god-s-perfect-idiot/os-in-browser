@@ -3,8 +3,7 @@
 	import Time from './Time.svelte';
 	import { pm } from '$lib/pm';
 	import { apps } from '$lib/applib';
-
-    let showAppList = false;
+	import Date from './Date.svelte';
 
 	$: runningApps = $pm.map((p) => ({
 		pid: p.pid,
@@ -17,24 +16,14 @@
 </script>
 
 <div
-	class="absolute bottom-0 flex w-full items-center justify-between p-2"
-	style="background-color: #ffffffcc;"
+	class="absolute bottom-2 left-2 flex w-[calc(100%-1rem)] items-center justify-between p-2 rounded-xl border-2 border-white"
+	style="background-color: rgba(217, 217, 217, 0.56);"
 >
-    {#if showAppList}
-        <div class="absolute flex flex-col gap-1 h-[30rem] w-[20rem] bottom-10 z-10 left-0 rounded-tr-md" style="background-color: #ffffffcc;">
-            {#each apps as app}
-                <div class=" flex cursor-pointer flex-row gap-1">
-                    <button class="cursor-pointer text-white h-full p-1 rounded-sm" style="background-color: {app.color}"
-                        ><Icon icon={app.icon} font-size="1rem" /></button
-                    >
-                    <span>{app.name}</span>
-                </div>
-            {/each}
-        </div>
-    {/if}
 	<div class="flex cursor-pointer flex-row gap-4">
-        <button class="cursor-pointer" on:click={() => showAppList = !showAppList}><Icon icon="iconamoon:apps" font-size="1.5rem" /></button>
-		<button class="cursor-pointer"><Icon icon="iconamoon:search" font-size="1.5rem" /></button>
+		<button class="cursor-pointer">
+            <!-- <Icon icon="iconamoon:search" font-size="1.5rem" /> -->
+            <div class="bg-white h-8 w-8 rounded-full" />
+        </button>
 	</div>
 	<div class="flex max-w-[70%] cursor-pointer flex-row gap-1 overflow-x-hidden">
 		{#each runningApps as app}
@@ -45,7 +34,8 @@
 			</div>
 		{/each}
 	</div>
-	<div class="flex pr-1">
-		<span><Time time={Date.now()} /></span>
+	<div class="flex gap-1">
+		<span class="bg-[#f1f1f1] p-2 rounded-lg text-sm font-[700] cursor-pointer"><Date /></span>
+		<span class="bg-[#f1f1f1] p-2 rounded-lg text-sm font-[700] cursor-pointer"><Time time={Date.now()} /></span>
 	</div>
 </div>

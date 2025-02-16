@@ -23,7 +23,7 @@
 
 </script>
 
-<div class="calculator w-full h-full">
+<div class="calculator w-full h-full p-2">
 	<input class="display w-full h-[15%]" type="text" readonly bind:value={display} />
 	<div class="buttons w-full h-[85%]">
 		<button on:click={() => append('7')}>7</button>

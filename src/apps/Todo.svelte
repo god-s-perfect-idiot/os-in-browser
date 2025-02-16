@@ -47,8 +47,8 @@
     }
 </script>
 
-<div class="h-full flex flex-col p-4">
-    <form on:submit={addTodo} class="flex gap-2 mb-4">
+<div class="h-full flex flex-col justify-between p-2">
+    <form on:submit={addTodo} class="flex gap-2 mb-4 h-[3rem]">
         <input
             type="text"
             bind:value={newTodo}
@@ -63,7 +63,7 @@
         </button>
     </form>
 
-    <div class="flex-grow overflow-auto">
+    <div class="flex-grow overflow-auto h-[calc(100%-3rem)] justify-end flex flex-col">
         {#each todos as todo (todo.id)}
             <div class="mb-2 p-3 flex items-center gap-3 border border-gray-200 rounded">
                 <input

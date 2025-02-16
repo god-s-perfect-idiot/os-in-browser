@@ -31,7 +31,7 @@
 	};
 </script>
 
-<div class="flex h-full w-full flex-col gap-2 overflow-y-auto">
+<div class="flex h-full w-full flex-col gap-2 overflow-y-auto p-2">
 	<div class="grid grid-cols-4 gap-1 text-sm font-semibold mb-2">
 		<div>PID</div>
 		<div>Name</div>

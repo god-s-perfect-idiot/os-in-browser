@@ -35,6 +35,8 @@
 		width: 100vw;
 		height: 100vh;
 		background-color: blueviolet;
-		background-image: url('images/bg-1.jpg');
+		background-image: url('images/bg-2.png');
+        background-size: cover;
+        background-position: center;
 	}
 </style>

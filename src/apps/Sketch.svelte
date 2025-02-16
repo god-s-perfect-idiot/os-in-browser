@@ -72,7 +72,7 @@
 </script>
 
 <!-- The outer container fills its parent -->
-<div bind:this={container} class="h-full w-full flex flex-col">
+<div bind:this={container} class="h-full w-full flex flex-col p-2">
   <!-- Palette Bar -->
   <div class="flex items-center space-x-2 p-2 w-full justify-center h-[10%]">
     {#each palette as pal}

@@ -2,7 +2,7 @@
 	import Button from '../ui-library/Button.svelte';
 </script>
 
-<div class="flex h-full w-full flex-col gap-4">
+<div class="flex h-full w-full flex-col gap-4 p-2">
 	<div class="flex flex-grow flex-col gap-1">
 		<textarea
 			class="h-full w-full rounded-md border border-gray-300 p-2"

@@ -41,7 +41,7 @@
   <span>{formattedTime}</span>
   
   <style>
-    span {
+    /* span {
       font-size: 1rem;
-    }
+    } */
   </style>

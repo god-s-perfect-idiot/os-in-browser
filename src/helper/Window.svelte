@@ -8,7 +8,7 @@
 	export let title;
 	export let slot;
 	export let pid;
-    export let defaultWindowSize = { width: '40rem', height: '20rem' };
+	export let defaultWindowSize = { width: '40rem', height: '20rem' };
 
 	let width = defaultWindowSize.width;
 	let height = defaultWindowSize.height;
@@ -18,6 +18,11 @@
 	let resizeDirection = { x: '', y: '' };
 	let windowElement;
 	let focussed = false;
+	let isFullscreen = false;
+
+	// Variables to store original size and position when entering fullscreen.
+	let originalPosition = { x, y };
+	let originalSize = { width, height };
 
 	// Handle window dragging
 	function startDrag(e) {
@@ -39,7 +44,7 @@
 		isDragging = false;
 		document.removeEventListener('mousemove', drag);
 		document.removeEventListener('mouseup', stopDrag);
-        pm.updateMetadata(pid, { position: { x, y } });
+		pm.updateMetadata(pid, { position: { x, y } });
 	}
 
 	// Handle window resizing
@@ -60,7 +65,6 @@
 		} else if (resizeDirection.x === 'left') {
 			const newWidth = rect.right - e.clientX;
 			if (newWidth >= 200) {
-				// Minimum width
 				width = `${newWidth}px`;
 				x = e.clientX;
 			}
@@ -71,7 +75,6 @@
 		} else if (resizeDirection.y === 'top') {
 			const newHeight = rect.bottom - e.clientY;
 			if (newHeight >= 100) {
-				// Minimum height
 				height = `${newHeight}px`;
 				y = e.clientY;
 			}
@@ -89,26 +92,47 @@
 		if (isResizing || isDragging) return;
 		const rect = e.target.getBoundingClientRect();
 		const edge = 8; // Edge size in pixels
-		const x = e.clientX - rect.left;
-		const y = e.clientY - rect.top;
+		const relX = e.clientX - rect.left;
+		const relY = e.clientY - rect.top;
 
-		if (x < edge && y < edge) windowElement.style.cursor = 'nw-resize';
-		else if (x > rect.width - edge && y < edge) windowElement.style.cursor = 'ne-resize';
-		else if (x < edge && y > rect.height - edge) windowElement.style.cursor = 'sw-resize';
-		else if (x > rect.width - edge && y > rect.height - edge)
+		if (relX < edge && relY < edge) windowElement.style.cursor = 'nw-resize';
+		else if (relX > rect.width - edge && relY < edge) windowElement.style.cursor = 'ne-resize';
+		else if (relX < edge && relY > rect.height - edge) windowElement.style.cursor = 'sw-resize';
+		else if (relX > rect.width - edge && relY > rect.height - edge)
 			windowElement.style.cursor = 'se-resize';
-		else if (x < edge) windowElement.style.cursor = 'w-resize';
-		else if (x > rect.width - edge) windowElement.style.cursor = 'e-resize';
-		else if (y < edge) windowElement.style.cursor = 'n-resize';
-		else if (y > rect.height - edge) windowElement.style.cursor = 's-resize';
+		else if (relX < edge) windowElement.style.cursor = 'w-resize';
+		else if (relX > rect.width - edge) windowElement.style.cursor = 'e-resize';
+		else if (relY < edge) windowElement.style.cursor = 'n-resize';
+		else if (relY > rect.height - edge) windowElement.style.cursor = 's-resize';
 		else windowElement.style.cursor = 'default';
+	}
+
+	// Fullscreen toggle
+	function toggleFullscreen() {
+		if (isFullscreen) {
+			// Exit fullscreen: restore original position and size.
+			isFullscreen = false;
+			width = originalSize.width;
+			height = originalSize.height;
+			x = originalPosition.x;
+			y = originalPosition.y;
+		} else {
+			// Store current values before going fullscreen.
+			originalPosition = { x, y };
+			originalSize = { width, height };
+			isFullscreen = true;
+			width = '100vw';
+			height = '100vh';
+			x = 0;
+			y = 0;
+		}
 	}
 
 	onMount(() => {
 		windowElement.addEventListener('mousemove', updateResizeCursor);
 		windowElement.addEventListener('mousedown', () => {
 			focussed = true;
-            console.log(pid)
+			console.log(pid);
 		});
 		windowElement.addEventListener('mouseleave', () => {
 			focussed = false;
@@ -147,10 +171,12 @@
 		<span class="pt-1 pl-1">{title}</span>
 		<div class="controls flex items-center justify-center">
 			<button class="minimize"><Icon icon="material-symbols:minimize" font-size="1.5rem" /></button>
-			<button class="maximize"><Icon icon="mdi:window-maximize" font-size="1.5rem" /></button>
-			<button class="close" on:click={() => pm.remove(pid)}
-				><Icon icon="material-symbols:close" font-size="1.5rem" /></button
-			>
+			<button class="maximize" on:click={toggleFullscreen}>
+				<Icon icon="mdi:window-maximize" font-size="1.5rem" />
+			</button>
+			<button class="close" on:click={() => pm.remove(pid)}>
+				<Icon icon="material-symbols:close" font-size="1.5rem" />
+			</button>
 		</div>
 	</div>
 	<div class="window-content">
@@ -161,7 +187,7 @@
 <style>
 	.window {
 		user-select: none;
-        background-color: #fffffff9;
+		background-color: #fffffff9;
 	}
 	.controls button {
 		padding: 0rem 0.25rem;
@@ -186,6 +212,5 @@
 	.window-content {
 		height: calc(100% - 2.5rem);
 		overflow: auto;
-        padding: 10px;
 	}
 </style>

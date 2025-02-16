@@ -1,4 +1,4 @@
-<div class="flex w-full flex-col gap-4">
+<div class="flex w-full flex-col gap-4 p-2">
 	<div class="flex flex-col gap-1">
 		<span class="font-semibold">1. What is os in browser?</span>
         <span class="text-sm">Os in browser is a web based operating system.</span>

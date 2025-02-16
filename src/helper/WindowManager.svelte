@@ -11,10 +11,11 @@
 		y: p.metadata.position.y,
 		title: p.title,
 		appId: p.metadata.appId,
-		defaultWindowSize: p.metadata.defaultWindowSize
+		defaultWindowSize: p.metadata.defaultWindowSize,
+        props: p.metadata.props
 	}));
 
-	$: console.log($pm); // If you still want to log changes
+	$: console.log("processes", $pm); // If you still want to log changes
 </script>
 
 {#each runningApps as app}
@@ -24,7 +25,7 @@
 		title={app.title}
 		pid={app.pid}
 		defaultWindowSize={app.defaultWindowSize}
-	>
-		<svelte:component this={apps[app.appId].component} />
+	>   
+		<svelte:component this={apps[app.appId].component} {...app.props}/>
 	</Window>
 {/each}

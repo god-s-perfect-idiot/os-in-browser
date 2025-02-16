@@ -25,6 +25,7 @@
                 x: 100,  // Default window position
                 y: 100
             },
+            props: app.props,
             defaultWindowSize: app.defaultWindowSize
         });
     }
@@ -48,6 +49,8 @@
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     }
     .icon-text {
-        text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px;
+        text-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px;
+        color: black;
+        font-weight:700;
     }
 </style>
