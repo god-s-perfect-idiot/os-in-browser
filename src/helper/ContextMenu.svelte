@@ -22,7 +22,7 @@
 <style>
     .context-menu {
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        background-color: #ffffffcc;
+        background-color: #ffffffec;
     }
     .context-menu span {
         cursor: pointer;

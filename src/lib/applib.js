@@ -25,7 +25,7 @@ export const apps = {
         name: 'Help',
         iconColor: '#ffffff',
         color: '#f1bf00',
-        icon: "material-symbols:help",
+        icon: "mdi:help",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -39,7 +39,7 @@ export const apps = {
         name: 'Feedback',
         iconColor: '#ffffff',  
         color: '#cf3f00',
-        icon: "material-symbols:feedback",
+        icon: "mdi:feedback",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -67,7 +67,7 @@ export const apps = {
         name: 'File',
         iconColor: '#ffffff',  
         color: '#cf3f00',
-        icon: "mingcute:file-fill",
+        icon: "mdi:file",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -81,7 +81,7 @@ export const apps = {
         name: 'Folder',
         iconColor: '#ffffff',  
         color: '#3b82f6',
-        icon: "f7:folder-fill",
+        icon: "mdi:folder",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -95,7 +95,7 @@ export const apps = {
         name: 'Files',
         iconColor: '#ffffff',  
         color: '#f1bf00',
-        icon: "material-symbols:files",
+        icon: "mdi:folder-open",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -109,7 +109,7 @@ export const apps = {
         name: 'Settings',
         iconColor: '#ffffff',  
         color: '#1f3abf',
-        icon: "iconoir:ios-settings",
+        icon: "mdi:cog",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -123,7 +123,7 @@ export const apps = {
         name: 'Console',
         iconColor: '#00ff00',  
         color: '#000000',
-        icon: "material-symbols:terminal",
+        icon: "mdi:terminal",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -137,7 +137,7 @@ export const apps = {
         name: 'Calculator',
         iconColor: '#ffffff',  
         color: '#f1bf00',
-        icon: "material-symbols:calculate",
+        icon: "mdi:calculator",
         props: { },
         defaultWindowSize: {
             width: "20rem",
@@ -151,7 +151,7 @@ export const apps = {
         name: 'Sketch',
         iconColor: '#ffffff',  
         color: '#cf3f00',
-        icon: "mingcute:brush-fill",
+        icon: "mdi:brush",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -165,7 +165,7 @@ export const apps = {
         name: 'Clock',
         iconColor: '#ffffff',  
         color: '#3b82f6',
-        icon: "mingcute:time-fill",
+        icon: "mdi:clock",
         props: { },
         defaultWindowSize: {
             width: "25rem",
@@ -179,7 +179,7 @@ export const apps = {
         name: 'Notes',
         iconColor: '#ffffff',  
         color: '#cf3f00',
-        icon: "mingcute:pencil-fill",
+        icon: "mdi:pen",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -193,7 +193,7 @@ export const apps = {
         name: 'Stopwatch',
         iconColor: '#ffffff',  
         color: '#3b82f6',
-        icon: "mingcute:stopwatch-fill",
+        icon: "mdi:stopwatch",
         props: { },
         defaultWindowSize: {
             width: "20rem",
@@ -207,7 +207,7 @@ export const apps = {
         name: 'Pomodoro',
         iconColor: '#ffffff',  
         color: '#cf3f00',
-        icon: "material-symbols:hourglass-full",
+        icon: "mdi:hourglass",
         props: { },
         defaultWindowSize: {
             width: "20rem",
@@ -221,7 +221,7 @@ export const apps = {
         name: 'Processes',
         iconColor: '#ffffff',  
         color: '#3b82f6',
-        icon: "mingcute:process-fill",
+        icon: "mdi:heart-pulse",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -235,7 +235,7 @@ export const apps = {
         name: 'Todo',
         iconColor: '#ffffff',  
         color: '#cf3f00',
-        icon: "mingcute:check-fill",
+        icon: "mdi:check",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -249,7 +249,7 @@ export const apps = {
         name: 'Snake',
         iconColor: '#ffffff',  
         color: '#3b82f6',
-        icon: "material-symbols:gamepad",
+        icon: "mdi:snake",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -263,7 +263,7 @@ export const apps = {
         name: 'Wiki',
         iconColor: '#ffffff',  
         color: '#000',
-        icon: "simple-icons:wikipedia",
+        icon: "mdi:wikipedia",
         props: { url: "https://www.wikipedia.org/wiki/" },
         defaultWindowSize: {
             width: "50rem",
@@ -277,7 +277,7 @@ export const apps = {
         name: 'Pong',
         iconColor: '#ffffff',  
         color: '#cf3f00',
-        icon: "material-symbols:gamepad",
+        icon: "mdi:ping-pong",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -291,7 +291,7 @@ export const apps = {
         name: 'Tic Tac Toe',
         iconColor: '#ffffff',  
         color: '#3b82f6',
-        icon: "material-symbols:gamepad",
+        icon: "mdi:gamepad-circle",
         props: { },
         defaultWindowSize: {
             width: "33rem",
@@ -305,7 +305,7 @@ export const apps = {
         name: 'Minesweeper',
         iconColor: '#ffffff',  
         color: '#cf3f00',
-        icon: "material-symbols:gamepad",
+        icon: "mdi:mine",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -319,7 +319,7 @@ export const apps = {
         name: 'Flappy Bird',
         iconColor: '#ffffff',  
         color: '#3b82f6',
-        icon: "material-symbols:gamepad",
+        icon: "mdi:bird",
         props: { },
         defaultWindowSize: {
             width: "40rem",

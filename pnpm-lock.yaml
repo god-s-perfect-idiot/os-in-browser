@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      m3-svelte:
+        specifier: ^3.4.7
+        version: 3.4.7
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -308,6 +312,12 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@ktibow/iconset-material-symbols@0.0.1738223466':
+    resolution: {integrity: sha512-248Qruj0ceiTVIL3Ny2LO08DsKC2ezT+3Ag1qGKhTct1sXsM/clvLDBn0pQgCOPDmzO0/P2Ad+uPFUX6ozxJOQ==}
+
+  '@material/material-color-utilities@0.3.0':
+    resolution: {integrity: sha512-ztmtTd6xwnuh2/xu+Vb01btgV8SQWYCaK56CkRK8gEkWe5TuDyBcYJ0wgkMRn+2VcE9KUmhvkz+N9GHrqw/C0g==}
 
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
@@ -898,6 +908,9 @@ packages:
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
 
+  m3-svelte@3.4.7:
+    resolution: {integrity: sha512-R8Xwrd+FYs/fnaMWsCbAqHrsptWhsPmsC9fpcnKrdPzb1F/2kbCRe4XYdw5uQPTbm1eZYRQ929Z/Gpst13oSeQ==}
+
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
 
@@ -1371,6 +1384,12 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@ktibow/iconset-material-symbols@0.0.1738223466':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@material/material-color-utilities@0.3.0': {}
 
   '@polka/url@1.0.0-next.28': {}
 
@@ -1902,6 +1921,13 @@ snapshots:
       p-locate: 5.0.0
 
   lodash.merge@4.6.2: {}
+
+  m3-svelte@3.4.7:
+    dependencies:
+      '@iconify/types': 2.0.0
+      '@ktibow/iconset-material-symbols': 0.0.1738223466
+      '@material/material-color-utilities': 0.3.0
+      svelte: 5.20.0
 
   magic-string@0.30.17:
     dependencies:

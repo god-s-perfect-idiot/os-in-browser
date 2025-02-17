@@ -34,5 +34,8 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"m3-svelte": "^3.4.7"
 	}
 }

@@ -145,7 +145,7 @@
 
 <div
 	bind:this={windowElement}
-	class="window absolute rounded-md shadow-md"
+	class="window absolute rounded-2xl shadow-md pb-2"
 	style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {focussed ? 1 : 0}"
 	on:mousedown={(e) => {
 		const rect = windowElement.getBoundingClientRect();
@@ -169,13 +169,13 @@
 		on:mousedown={startDrag}
 	>
 		<span class="pt-1 pl-1">{title}</span>
-		<div class="controls flex items-center justify-center">
-			<button class="minimize"><Icon icon="material-symbols:minimize" font-size="1.5rem" /></button>
-			<button class="maximize" on:click={toggleFullscreen}>
-				<Icon icon="mdi:window-maximize" font-size="1.5rem" />
+		<div class="controls flex items-end justify-center gap-1">
+			<button class="minimize flex h-6 items-end"><Icon icon="material-symbols:minimize" font-size="1.3rem" /></button>
+			<button class="maximize flex h-6 items-end" on:click={toggleFullscreen}>
+				<Icon icon="mdi:square-outline" font-size="1rem" />
 			</button>
-			<button class="close" on:click={() => pm.remove(pid)}>
-				<Icon icon="material-symbols:close" font-size="1.5rem" />
+			<button class="close flex h-6 items-end" on:click={() => pm.remove(pid)}>
+				<Icon icon="material-symbols:close" font-size="1.3rem" />
 			</button>
 		</div>
 	</div>
