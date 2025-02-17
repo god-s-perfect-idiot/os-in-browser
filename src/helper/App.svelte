@@ -51,6 +51,6 @@
     .icon-text {
         /* text-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px; */
         color: black;
-        font-weight:500;
+        font-weight:400;
     }
 </style>

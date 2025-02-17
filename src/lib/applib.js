@@ -23,8 +23,8 @@ export const apps = {
         component: Help,
         needsParent: false,
         name: 'Help',
-        iconColor: '#ffffff',
-        color: '#f1bf00',
+        iconColor: '#cf3f00',
+        color: '#ffffff',
         icon: "mdi:help",
         props: { },
         defaultWindowSize: {
@@ -37,8 +37,8 @@ export const apps = {
         component: Feedback,
         needsParent: false,
         name: 'Feedback',
-        iconColor: '#ffffff',  
-        color: '#cf3f00',
+        iconColor: '#02a20f',  
+        color: '#ffffff',
         icon: "mdi:feedback",
         props: { },
         defaultWindowSize: {
@@ -65,8 +65,8 @@ export const apps = {
         component: null,
         needsParent: false,
         name: 'File',
-        iconColor: '#ffffff',  
-        color: '#cf3f00',
+        iconColor: '#3b82f6',  
+        color: '#ffffff',
         icon: "mdi:file",
         props: { },
         defaultWindowSize: {
@@ -93,8 +93,8 @@ export const apps = {
         component: null,
         needsParent: false,
         name: 'Files',
-        iconColor: '#ffffff',  
-        color: '#f1bf00',
+        iconColor: '#f1cf2c',  
+        color: '#ffffff',
         icon: "mdi:folder-open",
         props: { },
         defaultWindowSize: {
@@ -149,8 +149,8 @@ export const apps = {
         component: Sketch,
         needsParent: false,
         name: 'Sketch',
-        iconColor: '#ffffff',  
-        color: '#cf3f00',
+        iconColor: '#cf3f00',  
+        color: '#ffffff',
         icon: "mdi:brush",
         props: { },
         defaultWindowSize: {
@@ -177,8 +177,8 @@ export const apps = {
         component: Notes,
         needsParent: false,
         name: 'Notes',
-        iconColor: '#ffffff',  
-        color: '#cf3f00',
+        iconColor: '#cf3f00',  
+        color: '#ffffff',
         icon: "mdi:pen",
         props: { },
         defaultWindowSize: {
@@ -205,8 +205,8 @@ export const apps = {
         component: Pomodoro,
         needsParent: false,
         name: 'Pomodoro',
-        iconColor: '#ffffff',  
-        color: '#cf3f00',
+        iconColor: '#cf3f00',  
+        color: '#ffffff',
         icon: "mdi:hourglass",
         props: { },
         defaultWindowSize: {
@@ -219,8 +219,8 @@ export const apps = {
         component: Processes,
         needsParent: false,
         name: 'Processes',
-        iconColor: '#ffffff',  
-        color: '#3b82f6',
+        iconColor: '#02a20f',  
+        color: '#ffffff',
         icon: "mdi:heart-pulse",
         props: { },
         defaultWindowSize: {
@@ -233,23 +233,9 @@ export const apps = {
         component: Todo,
         needsParent: false,
         name: 'Todo',
-        iconColor: '#ffffff',  
-        color: '#cf3f00',
+        iconColor: '#cf3f00',  
+        color: '#ffffff',
         icon: "mdi:check",
-        props: { },
-        defaultWindowSize: {
-            width: "40rem",
-            height: "20rem"
-        }
-    },
-    snake: {
-        appId: 'snake',
-        component: Snake,
-        needsParent: false,
-        name: 'Snake',
-        iconColor: '#ffffff',  
-        color: '#3b82f6',
-        icon: "mdi:snake",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -261,13 +247,27 @@ export const apps = {
         component: Frame,
         needsParent: false,
         name: 'Wiki',
-        iconColor: '#ffffff',  
-        color: '#000',
+        iconColor: '#000',  
+        color: '#ffffff',
         icon: "mdi:wikipedia",
         props: { url: "https://www.wikipedia.org/wiki/" },
         defaultWindowSize: {
             width: "50rem",
             height: "30rem"
+        }
+    },
+    snake: {
+        appId: 'snake',
+        component: Snake,
+        needsParent: false,
+        name: 'Snake',
+        iconColor: '#ffffff',  
+        color: '#cf3f00',
+        icon: "mdi:snake",
+        props: { },
+        defaultWindowSize: {
+            width: "40rem",
+            height: "20rem"
         }
     },
     pong: {
@@ -290,7 +290,7 @@ export const apps = {
         needsParent: false,
         name: 'Tic Tac Toe',
         iconColor: '#ffffff',  
-        color: '#3b82f6',
+        color: '#cf3f00',
         icon: "mdi:gamepad-circle",
         props: { },
         defaultWindowSize: {
@@ -318,7 +318,7 @@ export const apps = {
         needsParent: false,
         name: 'Flappy Bird',
         iconColor: '#ffffff',  
-        color: '#3b82f6',
+        color: '#cf3f00',
         icon: "mdi:bird",
         props: { },
         defaultWindowSize: {
