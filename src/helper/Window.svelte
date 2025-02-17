@@ -169,13 +169,13 @@
 		on:mousedown={startDrag}
 	>
 		<span class="pt-1 pl-1">{title}</span>
-		<div class="controls flex items-end justify-center gap-1">
-			<button class="minimize flex h-6 items-end"><Icon icon="material-symbols:minimize" font-size="1.3rem" /></button>
+		<div class="controls flex items-end justify-center gap-2">
+			<button class="minimize flex h-6 items-end"><Icon icon="material-symbols:minimize" font-size="1rem" /></button>
 			<button class="maximize flex h-6 items-end" on:click={toggleFullscreen}>
-				<Icon icon="mdi:square-outline" font-size="1rem" />
+				<Icon icon="mdi:square-outline" font-size="0.9rem" />
 			</button>
 			<button class="close flex h-6 items-end" on:click={() => pm.remove(pid)}>
-				<Icon icon="material-symbols:close" font-size="1.3rem" />
+				<Icon icon="mdi:close" font-size="1rem" />
 			</button>
 		</div>
 	</div>

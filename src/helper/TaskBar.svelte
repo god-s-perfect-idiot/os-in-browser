@@ -28,12 +28,12 @@
 			</div>
 		</button>
 	</div>
-	<div class="flex max-w-[70%] cursor-pointer flex-row gap-1 overflow-x-hidden">
+	<div class="flex max-w-[70%] cursor-pointer flex-row gap-4 overflow-x-hidden">
 		{#each runningApps as app}
 			<div class="flex cursor-pointer flex-row gap-1">
 				<button
-					class="h-full cursor-pointer rounded-sm p-1 text-white"
-					style="background-color: {app.color}"><Icon icon={app.icon} font-size="1rem" /></button
+					class="h-full cursor-pointer rounded-full p-1 text-white icon"
+					style="background-color: {app.color}"><Icon icon={app.icon} font-size="1.5rem" /></button
 				>
 			</div>
 		{/each}
@@ -43,3 +43,9 @@
 		<span class="cursor-pointer rounded-r-full bg-[#f1f1f1] px-4 py-2"><Time /></span>
 	</div>
 </div>
+
+<style>
+    .icon {
+        /* box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5); */
+    }
+</style>
