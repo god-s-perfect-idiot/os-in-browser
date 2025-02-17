@@ -32,13 +32,13 @@
 </script>
 
 <div 
-    class="flex flex-col items-center gap-2 text-center text-white cursor-pointer w-24 h-24"
+    class="flex flex-col items-center gap-2 text-center text-white cursor-pointer w-20 h-24"
     on:dblclick={handleDoubleClick}
 >
     <div class="icon rounded-full p-2" style="background-color: {app.color};">
         <Icon icon="{app.icon}" font-size="2.2rem" style="color: {app.iconColor};"/>
     </div>
-    <span class="icon-text">{app.name}</span>
+    <span class="icon-text text-sm">{app.name}</span>
 </div>
 
 <style>

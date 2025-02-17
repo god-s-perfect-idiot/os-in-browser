@@ -165,16 +165,16 @@
 	}}
 >
 	<div
-		class="flex cursor-move items-center justify-between border-b border-gray-300 p-1"
+		class="flex cursor-move items-center justify-between p-1"
 		on:mousedown={startDrag}
 	>
-		<span class="pt-1 pl-1">{title}</span>
-		<div class="controls flex items-end justify-center gap-2">
-			<button class="minimize flex h-6 items-end"><Icon icon="material-symbols:minimize" font-size="1rem" /></button>
-			<button class="maximize flex h-6 items-end" on:click={toggleFullscreen}>
+		<span class="pt-1 pl-2 font-[500]">{title}</span>
+		<div class="controls flex items-end justify-center gap-2 pr-1">
+			<button class="minimize flex h-6 items-center"><Icon icon="material-symbols:minimize" font-size="1rem" /></button>
+			<button class="maximize flex h-6 items-center" on:click={toggleFullscreen}>
 				<Icon icon="mdi:square-outline" font-size="0.9rem" />
 			</button>
-			<button class="close flex h-6 items-end" on:click={() => pm.remove(pid)}>
+			<button class="close flex h-6 items-center" on:click={() => pm.remove(pid)}>
 				<Icon icon="mdi:close" font-size="1rem" />
 			</button>
 		</div>

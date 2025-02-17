@@ -3,3 +3,13 @@
 body {
     font-family: 'Roboto', sans-serif;
 }
+
+/* variables */
+:root {
+    --source-color: #D8E0D0;
+    --primary-color: #D8E0D0;
+    --secondary-color: #90918C;
+    --tertiary-color: #8D9292;
+    --error-color: #FF5449;
+    --accent-color: #47672f;
+}

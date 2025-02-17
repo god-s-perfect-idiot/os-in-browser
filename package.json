@@ -36,6 +36,7 @@
 		]
 	},
 	"dependencies": {
+		"@material/web": "^2.2.0",
 		"m3-svelte": "^3.4.7"
 	}
 }
