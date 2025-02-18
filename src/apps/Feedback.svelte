@@ -11,7 +11,7 @@
 			class="h-full w-full rounded-md border border-gray-300 p-2"
 			placeholder="Enter your feedback here"
 		></textarea> -->
-		<TextField text/>
+		<TextField text placeholder="Enter your feedback here" title="Feedback"/>
 	</div>
 	<div class="flex flex-col gap-1">
 		<Button

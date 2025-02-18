@@ -11,7 +11,7 @@
 	<textarea
 		bind:value={text}
 		class="h-full w-full rounded-md p-2"
-		{placeholder}
+		placeholder="{placeholder}"
 		on:focus={() => (focussed = true)}
         on:blur={() => (focussed = false)}
 	></textarea>
