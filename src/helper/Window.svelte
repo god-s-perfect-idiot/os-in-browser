@@ -132,10 +132,7 @@
 		windowElement.addEventListener('mousemove', updateResizeCursor);
 		windowElement.addEventListener('mousedown', () => {
 			focussed = true;
-			console.log(pid);
-		});
-		windowElement.addEventListener('mouseleave', () => {
-			focussed = false;
+			pm.setActive(pid);
 		});
 		return () => {
 			windowElement.removeEventListener('mousemove', updateResizeCursor);

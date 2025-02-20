@@ -13,7 +13,7 @@
 		...p.metadata
 	}));
 
-	$: console.log("processes", $pm); // If you still want to log changes
+	$: console.log("processes", $pm, pm.getActive()); // If you still want to log changes
 </script>
 
 {#each runningApps as app}

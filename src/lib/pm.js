@@ -4,6 +4,7 @@ function createProcessManager() {
 	// Use Map instead of Array for efficient PID lookups
 	const processes = new Map();
 	let nextPid = 1;
+	let activePid = null;
 
 	const { subscribe, set, update } = writable(processes);
 
@@ -21,7 +22,7 @@ function createProcessManager() {
 			$processes.set(newProcess.pid, newProcess);
 			return $processes;
 		});
-
+		activePid = nextPid - 1;
 		return nextPid - 1; // Return the PID that was just used
 	}
 
@@ -42,6 +43,14 @@ function createProcessManager() {
 
 	function getAllAsArray() {
 		return get(asArray);
+	}
+
+	function getActive() {
+		return activePid;
+	}
+
+	function setActive(pid) {
+		activePid = pid;
 	}
 
 	function updateMetadata(pid, metadata) {
@@ -90,7 +99,9 @@ function createProcessManager() {
 		updateMetadata,
 		updateTitle,
 		clear,
-		sorted
+		sorted,
+		getActive,
+		setActive
 	};
 }
 
