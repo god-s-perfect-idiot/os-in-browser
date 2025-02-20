@@ -10,9 +10,7 @@
 		x: p.metadata.position.x,
 		y: p.metadata.position.y,
 		title: p.title,
-		appId: p.metadata.appId,
-		defaultWindowSize: p.metadata.defaultWindowSize,
-        props: p.metadata.props
+		...p.metadata
 	}));
 
 	$: console.log("processes", $pm); // If you still want to log changes
@@ -25,6 +23,7 @@
 		title={app.title}
 		pid={app.pid}
 		defaultWindowSize={app.defaultWindowSize}
+		windowClassOverrides={app.windowClassOverrides}
 	>   
 		<svelte:component this={apps[app.appId].component} {...app.props}/>
 	</Window>

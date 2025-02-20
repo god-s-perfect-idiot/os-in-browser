@@ -6,8 +6,8 @@
 	let focussed = false;
 </script>
 
-<div class={`textbox h-full w-full ${focussed ? 'focused' : ''}`}>
-	<span class="title relative top-[-0.75rem] left-4 bg-white px-2">{title}</span>
+<div class={`textbox flex flex-col h-full w-full ${focussed ? 'focused' : ''}`}>
+	<span class="title relative top-[-0.75rem] left-4 bg-white px-2 w-fit">{title}</span>
 	<textarea
 		bind:value={text}
 		class="h-full w-full rounded-md p-2"
@@ -25,10 +25,10 @@
 		/* border-color: var(--accent-color); */
         border-radius: 0.3rem;
 		border: 2px solid #9c9c9c;
-		resize: none;
 	}
     .textbox textarea {
         border: none;
+		resize: none;
         outline: none;
     }
     .focused {

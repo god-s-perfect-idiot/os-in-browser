@@ -6,7 +6,7 @@
 </script>
 
 <button
-	class={`btn rounded-md cursor-pointer bg-blue-500 px-4 py-2 text-white ${classOverride}`}
+	class={`btn rounded-full cursor-pointer px-4 py-2 text-white ${classOverride}`}
 	on:click={onClick}
 	{disabled}
 >
@@ -14,8 +14,12 @@
 </button>
 
 <style>
+	.btn {
+		background-color: var(--accent-color);
+	}
 	.btn:hover {
-		background-color: #3b82f6;
+		background-color: var(--primary-color);
+		color: black;
 	}
 	.btn:disabled {
 		opacity: 0.5;

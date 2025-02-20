@@ -24,42 +24,45 @@
 </script>
 
 <div class="calculator w-full h-full p-2">
-	<input class="display w-full h-[15%]" type="text" readonly bind:value={display} />
-	<div class="buttons w-full h-[85%]">
+	<input class="display w-full h-[25%]" type="text" readonly bind:value={display} />
+	<div class="buttons w-full h-[75%]">
 		<button on:click={() => append('7')}>7</button>
 		<button on:click={() => append('8')}>8</button>
 		<button on:click={() => append('9')}>9</button>
-		<button on:click={() => append('/')}>÷</button>
+		<button class="muted" on:click={() => append('/')}>÷</button>
 
 		<button on:click={() => append('4')}>4</button>
 		<button on:click={() => append('5')}>5</button>
 		<button on:click={() => append('6')}>6</button>
-		<button on:click={() => append('*')}>×</button>
+		<button class="muted" on:click={() => append('*')}>×</button>
 
 		<button on:click={() => append('1')}>1</button>
 		<button on:click={() => append('2')}>2</button>
 		<button on:click={() => append('3')}>3</button>
-		<button on:click={() => append('-')}>−</button>
+		<button class="muted" on:click={() => append('-')}>−</button>
 
-		<button on:click={clearDisplay}>C</button>
+		<button class="strong" on:click={clearDisplay}>C</button>
 		<button on:click={() => append('0')}>0</button>
 		<button on:click={calculate}>=</button>
-		<button on:click={() => append('+')}>+</button>
+		<button class="muted" on:click={() => append('+')}>+</button>
 	</div>
 </div>
 
 <style>
+	.buttons button {
+		border-radius: 10rem;
+	}
 	.calculator {
 		margin: auto;
-		background: #f9f9f9;
+		background: var(--surface-color);
 	}
 	.display {
 		margin-bottom: 0.5rem;
 		font-size: 1.2rem;
 		padding: 0.2rem;
 		text-align: right;
-		border: 1px solid #ccc;
-		border-radius: 4px;
+		border-radius: 0 0 1rem 1rem;
+		background-color: var(--secondary-color);
 	}
 	.buttons {
 		display: grid;
@@ -70,11 +73,18 @@
 		font-size: 1rem;
 		border: none;
 		border-radius: 4px;
-		background: #e0e0e0;
+		background: var(--surface-high-color);
 		cursor: pointer;
+		font-weight: 500;
+	}
+	button.strong {
+		background: var(--source-color);
+	}
+	button.muted {
+		background: var(--error-container-color);
 	}
 	button:hover {
-		background: #d0d0d0;
+		background: var(--primary-color);
 	}
 	.span-two {
 		grid-column: span 2;

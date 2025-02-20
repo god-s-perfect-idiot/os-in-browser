@@ -10,14 +10,13 @@
     export let appId;
 
     const app = apps[appId];
-    console.log(app)
 
     function handleDoubleClick() {
         console.log('Double clicked icon:', name);
         // Create a new process with the icon's metadata
         const pid = pm.add(app.name, {
-            icon: app.icon,
-            color: app.color,
+            // icon: app.icon,
+            // color: app.color,
             type: 'window',  // You can adjust this based on your needs
             appId,
             isMinimized: false,
@@ -25,8 +24,10 @@
                 x: 100,  // Default window position
                 y: 100
             },
-            props: app.props,
-            defaultWindowSize: app.defaultWindowSize
+            // windowProps: app.windowProps,
+            // props: app.props,
+            // defaultWindowSize: app.defaultWindowSize
+            ...app
         });
     }
 </script>

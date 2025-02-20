@@ -1,6 +1,35 @@
 <script>
-	export let activeTab = 'Customization';
-	let generalTabs = ['Customization', 'Developer Options', 'About', 'Help'];
+	import Icon from "@iconify/svelte";
+
+	export let activeTab = 'Wallpaper and style';
+	// let generalTabs = ['Customization', 'Developer Options', 'About', 'Help'];
+	const generalTabs = [
+		{
+			title: 'Wallpaper and style',
+			description: 'Dark Theme & Wallpaper',
+			icon: 'mdi:palette'
+		},
+		{
+			title: 'Apps',
+			description: 'Customize your apps',
+			icon: 'mdi:apps'
+		},
+		{
+			title: 'Developer Options',
+			description: 'Enable Developer Options',
+			icon: 'mdi:spanner'
+		},
+		{
+			title: 'About',
+			description: 'About the OS',
+			icon: 'mdi:information'
+		},
+		{
+			title: 'Help',
+			description: 'Get Help & FAQ',
+			icon: 'mdi:help'
+		},
+	];
 	let appsTabs = [
 		'Files',
 		'Console',
@@ -16,38 +45,30 @@
 	];
 </script>
 
-<div class="flex h-full w-full flex-row">
-	<div
-		class="left-panel flex h-full w-[30%] flex-col gap-2 overflow-y-auto border-r-2 border-gray-300 pt-2"
-	>
-		<span>General</span>
+<div class="bg-primary flex h-fit w-full flex-row p-4 gap-4">
+	<div class="flex w-[30%] h-full flex-col gap-1">
 		{#each generalTabs as tab}
 			<button
-				on:click={() => (activeTab = tab)}
-				class={`${activeTab === tab ? 'bg-blue-500 text-white' : ''}`}>{tab}</button
+				class={`flex h-20 min-h-20 gap-4 w-full flex-row items-center justify-start rounded-xl pl-4 ${
+					activeTab === tab.title ? 'active' : ''
+				}`}
+				on:click={() => (activeTab = tab.title)}
 			>
-		{/each}
-		<span class="mt-4">Apps</span>
-		{#each appsTabs as tab}
-			<button
-				on:click={() => (activeTab = tab)}
-				class={`${activeTab === tab ? 'bg-blue-500 text-white' : ''}`}>{tab}</button
-			>
+				<Icon icon={tab.icon} font-size="1.5rem" />
+				<div class="flex flex-col items-start">
+					<span class="text-base font-[500]">{tab.title}</span>
+					<span class={`text-sm ${activeTab === tab.title ? 'text-gray-300' : 'text-gray-700'}`}>{tab.description}</span>
+				
+				</div>
+				</button>
 		{/each}
 	</div>
-	<div class="h-full w-[70%]"></div>
+	<div class="w-[70%] bg-surface rounded-2xl"></div>
 </div>
 
 <style>
-	.left-panel > span {
-		font-weight: 600;
-		font-size: 0.8rem;
-		text-transform: uppercase;
-        padding-left: 0.5rem;
-	}
-	.left-panel > button {
-		cursor: pointer;
-		text-align: left;
-        padding-left: 1rem;
+	.active {
+		background-color: var(--accent-color);
+		color: white;
 	}
 </style>

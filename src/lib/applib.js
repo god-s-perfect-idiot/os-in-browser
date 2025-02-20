@@ -26,6 +26,7 @@ export const apps = {
         iconColor: '#cf3f00',
         color: '#ffffff',
         icon: "mdi:help",
+        windowClassOverrides: "!bg-[#f1f1f1]",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -40,6 +41,7 @@ export const apps = {
         iconColor: '#02a20f',  
         color: '#ffffff',
         icon: "mdi:feedback",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -54,6 +56,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "fluent:window-16-regular",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -68,6 +71,7 @@ export const apps = {
         iconColor: '#3b82f6',  
         color: '#ffffff',
         icon: "mdi:file",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -82,6 +86,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "mdi:folder",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -96,6 +101,7 @@ export const apps = {
         iconColor: '#f1cf2c',  
         color: '#ffffff',
         icon: "mdi:folder-open",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -110,10 +116,12 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#1f3abf',
         icon: "mdi:cog",
+        // This is uglyyyyy
+        windowClassOverrides: "!bg-[#D8E0D0]",
         props: { },
         defaultWindowSize: {
-            width: "40rem",
-            height: "20rem"
+            width: "60rem",
+            height: "31rem"
         }
     },
     console: {
@@ -124,10 +132,11 @@ export const apps = {
         iconColor: '#00ff00',  
         color: '#000000',
         icon: "mdi:terminal",
+        windowClassOverrides: "!bg-black text-white",
         props: { },
         defaultWindowSize: {
             width: "40rem",
-            height: "20rem"
+            height: "30rem"
         }
     },
     calculator: {
@@ -138,6 +147,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#f1bf00',
         icon: "mdi:calculator",
+        windowClassOverrides: "!bg-[#f9faef]",
         props: { },
         defaultWindowSize: {
             width: "20rem",
@@ -152,6 +162,7 @@ export const apps = {
         iconColor: '#cf3f00',  
         color: '#ffffff',
         icon: "mdi:brush",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -166,9 +177,10 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "mdi:clock",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
-            width: "25rem",
+            width: "27rem",
             height: "12rem"
         }
     },
@@ -180,6 +192,7 @@ export const apps = {
         iconColor: '#cf3f00',  
         color: '#ffffff',
         icon: "mdi:pen",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -194,6 +207,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "mdi:stopwatch",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "20rem",
@@ -208,6 +222,7 @@ export const apps = {
         iconColor: '#cf3f00',  
         color: '#ffffff',
         icon: "mdi:hourglass",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "20rem",
@@ -222,6 +237,7 @@ export const apps = {
         iconColor: '#02a20f',  
         color: '#ffffff',
         icon: "mdi:heart-pulse",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -236,6 +252,7 @@ export const apps = {
         iconColor: '#cf3f00',  
         color: '#ffffff',
         icon: "mdi:check",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -250,6 +267,7 @@ export const apps = {
         iconColor: '#000',  
         color: '#ffffff',
         icon: "mdi:wikipedia",
+        windowClassOverrides: "",
         props: { url: "https://www.wikipedia.org/wiki/" },
         defaultWindowSize: {
             width: "50rem",
@@ -264,6 +282,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "mdi:snake",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -278,6 +297,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "mdi:ping-pong",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -292,6 +312,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "mdi:gamepad-circle",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "33rem",
@@ -306,6 +327,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "mdi:mine",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -320,6 +342,7 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#cf3f00',
         icon: "mdi:bird",
+        windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
             width: "40rem",

@@ -6,10 +6,34 @@ body {
 
 /* variables */
 :root {
-    --source-color: #D8E0D0;
+    --source-color: #c8eea8;
     --primary-color: #D8E0D0;
-    --secondary-color: #90918C;
-    --tertiary-color: #8D9292;
+    --secondary-color: #dae7ca;
+    --tertiary-color: #bbecea;
     --error-color: #FF5449;
+    --error-container-color: #ffdad6;
     --accent-color: #47672f;
+    --surface-color: #f9faef;
+    --surface-high-color: #edefe4;
+}
+
+
+.bg-accent {
+    background-color: var(--accent-color);
+  }
+
+.bg-primary {
+    background-color: var(--primary-color);
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color);
+}
+
+.bg-tertiary {
+    background-color: var(--tertiary-color);
+}
+
+.bg-surface {
+    background-color: var(--surface-color);
 }

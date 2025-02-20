@@ -6,9 +6,9 @@
 	export let x;
 	export let y;
 	export let title;
-	export let slot;
 	export let pid;
 	export let defaultWindowSize = { width: '40rem', height: '20rem' };
+	export let windowClassOverrides = "";
 
 	let width = defaultWindowSize.width;
 	let height = defaultWindowSize.height;
@@ -141,11 +141,13 @@
 			windowElement.removeEventListener('mousemove', updateResizeCursor);
 		};
 	});
+
+	console.log(windowClassOverrides)
 </script>
 
 <div
 	bind:this={windowElement}
-	class="window absolute rounded-2xl shadow-md pb-2"
+	class={`window absolute rounded-2xl shadow-md pb-2 ${windowClassOverrides}`}
 	style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {focussed ? 1 : 0}"
 	on:mousedown={(e) => {
 		const rect = windowElement.getBoundingClientRect();
