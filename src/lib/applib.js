@@ -162,7 +162,7 @@ export const apps = {
         iconColor: '#cf3f00',  
         color: '#ffffff',
         icon: "mdi:brush",
-        windowClassOverrides: "",
+        windowClassOverrides: "!bg-[#f9faef]",
         props: { },
         defaultWindowSize: {
             width: "40rem",

@@ -58,8 +58,9 @@
 	}
 	.display {
 		margin-bottom: 0.5rem;
-		font-size: 1.2rem;
-		padding: 0.2rem;
+		font-size: 2rem;
+		padding-right: 1rem;
+		font-weight: 400;
 		text-align: right;
 		border-radius: 0 0 1rem 1rem;
 		background-color: var(--secondary-color);
@@ -70,12 +71,12 @@
 		gap: 0.5rem;
 	}
 	button {
-		font-size: 1rem;
+		font-size: 1.2rem;
 		border: none;
 		border-radius: 4px;
 		background: var(--surface-high-color);
 		cursor: pointer;
-		font-weight: 500;
+		font-weight: 00;
 	}
 	button.strong {
 		background: var(--source-color);

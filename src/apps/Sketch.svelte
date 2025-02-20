@@ -72,7 +72,7 @@
 </script>
 
 <!-- The outer container fills its parent -->
-<div bind:this={container} class="h-full w-full flex flex-col p-2">
+<div bind:this={container} class="h-full w-full flex flex-col p-2 main">
   <!-- Palette Bar -->
   <div class="flex items-center space-x-2 p-2 w-full justify-center h-[10%]">
     {#each palette as pal}
@@ -87,10 +87,19 @@
   <!-- Canvas fills the remaining space -->
   <canvas
     bind:this={canvas}
-    class="flex-1 h-[90%] w-full border-gray-400 border-2 rounded-md"
+    class="flex-1 h-[90%] w-full rounded-xl"
     on:mousedown={handleMouseDown}
     on:mousemove={handleMouseMove}
     on:mouseup={handleMouseUp}
     on:mouseleave={handleMouseLeave}
   ></canvas>
 </div>
+
+<style>
+  .main {
+    background-color: var(--surface-color);
+  }
+  canvas {
+    background-color: var(--surface-high-color);
+  }
+</style>
