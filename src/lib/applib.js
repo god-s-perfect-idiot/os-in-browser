@@ -177,11 +177,11 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "mdi:clock",
-        windowClassOverrides: "",
+        windowClassOverrides: "!bg-[#f9faef]",
         props: { },
         defaultWindowSize: {
-            width: "27rem",
-            height: "12rem"
+            width: "35rem",
+            height: "10rem"
         }
     },
     notes: {
@@ -207,11 +207,11 @@ export const apps = {
         iconColor: '#ffffff',  
         color: '#3b82f6',
         icon: "mdi:stopwatch",
-        windowClassOverrides: "",
+        windowClassOverrides: "!bg-[#f9faef]",
         props: { },
         defaultWindowSize: {
             width: "20rem",
-            height: "20rem"
+            height: "25rem"
         }
     },
     pomodoro: {

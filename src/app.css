@@ -37,3 +37,7 @@ body {
 .bg-surface {
     background-color: var(--surface-color);
 }
+
+.bg-source {
+    background-color: var(--source-color);
+}
