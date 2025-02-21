@@ -50,19 +50,19 @@
 	<div class="flex h-[4rem] w-full justify-center gap-2">
 		<button
 			on:click={stop}
-			class="flex w-[20%] h-full items-center justify-center rounded bg-secondary px-4 py-2 text-black"
+			class="flex w-[20%] cursor-pointer h-full items-center justify-center rounded bg-secondary px-4 py-2 text-black"
 		>
 			<Icon icon="mdi:stop" font-size="1.5rem" />
 		</button>
 		<button
 			on:click={start}
-			class="bg-accent flex h-full w-[60%] items-center justify-center rounded px-4 py-2 text-white"
+			class="bg-accent cursor-pointer flex h-full w-[60%] items-center justify-center rounded px-4 py-2 text-white"
 		>
 			<Icon icon="mdi:play" font-size="1.5rem" />
 		</button>
 		<button
 			on:click={reset}
-			class="flex w-[20%] h-full items-center justify-center rounded-full bg-source px-4 py-2 text-black"
+			class="flex w-[20%] cursor-pointer h-full items-center justify-center rounded-full bg-source px-4 py-2 text-black"
 		>
 			<Icon icon="mdi:restart" font-size="1.5rem" />
 		</button>

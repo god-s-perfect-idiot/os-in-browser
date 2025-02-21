@@ -1,4 +1,5 @@
 <script>
+	import Icon from '@iconify/svelte';
 	import { onMount, onDestroy } from 'svelte';
 	let isRunning = false;
 	let sessionType = 'Work'; // "Work" or "Break"
@@ -55,13 +56,27 @@
 
 <div class="flex h-full w-full flex-col items-center justify-center space-y-4 p-2">
 	<div class="flex h-[calc(100%-3rem)] w-full flex-col items-center justify-center">
-		<div class="text-3xl font-bold">{sessionType} Session</div>
-		<div class="font-mono text-6xl">{formatTime(remaining)}</div>
+		<div class="text-3xl font-[500]">{sessionType} Session</div>
+		<div class="font-[400] text-6xl">{formatTime(remaining)}</div>
 	</div>
-	<div class="flex h-[3rem] w-full space-x-2">
-		<button on:click={start} class="w-[33%] rounded bg-green-500 px-4 py-2 text-white">Start</button
+	<div class="flex h-[4rem] w-full justify-center gap-2">
+		<button
+			on:click={stop}
+			class="flex w-[20%] cursor-pointer h-full items-center justify-center rounded bg-secondary px-4 py-2 text-black"
 		>
-		<button on:click={stop} class="w-[33%] rounded bg-yellow-500 px-4 py-2 text-white">Stop</button>
-		<button on:click={reset} class="w-[33%] rounded bg-red-500 px-4 py-2 text-white">Reset</button>
+			<Icon icon="mdi:stop" font-size="1.5rem" />
+		</button>
+		<button
+			on:click={start}
+			class="bg-accent cursor-pointer flex h-full w-[60%] items-center justify-center rounded px-4 py-2 text-white"
+		>
+			<Icon icon="mdi:play" font-size="1.5rem" />
+		</button>
+		<button
+			on:click={reset}
+			class="flex w-[20%] cursor-pointer h-full items-center justify-center rounded-full bg-source px-4 py-2 text-black"
+		>
+			<Icon icon="mdi:restart" font-size="1.5rem" />
+		</button>
 	</div>
 </div>

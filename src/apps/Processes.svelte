@@ -1,6 +1,7 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
 	import { pm } from '$lib/pm';
+	import Button from '../ui-library/Button.svelte';
 
 	// Reactive store for processes
 	$: processes = $pm;
@@ -32,25 +33,26 @@
 </script>
 
 <div class="flex h-full w-full flex-col gap-2 overflow-y-auto p-2">
-	<div class="grid grid-cols-4 gap-1 text-sm font-semibold mb-2">
+	<div class="grid grid-cols-4 gap-1 text-sm font-semibold pb-2 border-b border-gray-200 border-b-2">
 		<div>PID</div>
 		<div>Name</div>
 		<div>Uptime</div>
 		<div></div>
 	</div>
 	{#each processes as process (process.pid)}
-		<div class="grid grid-cols-4 gap-1 text-sm items-center">
+		<div class="grid grid-cols-4 gap-1 text-sm items-center pt-1 pb-3 border-b border-gray-200 border-b-2">
 			<span>{process.pid}</span>
 			<span>{process.title}</span>
 			<!-- Using now in the template makes it reactive to now changes -->
 			<span>{now && getUptime(process.createdAt)}</span>
 			<div class="w-full flex justify-end">
-				<button 
+				<!-- <button 
 					on:click={() => pm.remove(process.pid)} 
 					class="cursor-pointer w-24 bg-red-500 text-white rounded-sm h-8"
 				>
 					Kill
-				</button>
+				</button> -->
+				<Button onClick={() => pm.remove(process.pid)} text="Stop" classOverride="w-24 text-white" />
 			</div>
 		</div>
 	{/each}

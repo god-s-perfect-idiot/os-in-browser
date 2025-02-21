@@ -1,87 +1,97 @@
 <script>
-    import { onMount } from 'svelte';
-    import Icon from '@iconify/svelte';
-    
-    let todos = [];
-    let newTodo = '';
+	import { onMount } from 'svelte';
+	import Icon from '@iconify/svelte';
 
-    // Load todos on mount
-    onMount(() => {
-        const savedTodos = localStorage.getItem('todolist');
-        if (savedTodos) {
-            todos = JSON.parse(savedTodos);
-        }
-    });
+	let todos = [];
+	let newTodo = '';
 
-    // // Save todos whenever they change
-    // $: {
-    //     if (todos) {  // Only save if todos is initialized
-    //         localStorage.setItem('todolist', JSON.stringify(todos));
-    //     }
-    // }
+	// Load todos on mount
+	onMount(() => {
+		const savedTodos = localStorage.getItem('todolist');
+		if (savedTodos) {
+			todos = JSON.parse(savedTodos);
+		}
+        console.log(todos);
+	});
 
-    function addTodo(e) {
-        e.preventDefault();
-        if (!newTodo.trim()) return;
-        
-        todos = [...todos, {
-            id: Date.now(),
-            text: newTodo,
-            completed: false
-        }];
-        
-        newTodo = '';
-        localStorage.setItem('todolist', JSON.stringify(todos));
-    }
+	function addTodo(e) {
+		e.preventDefault();
+		if (!newTodo.trim()) return;
 
-    function toggleTodo(id) {
-        todos = todos.map(todo => 
-            todo.id === id ? { ...todo, completed: !todo.completed } : todo
-        );
-        localStorage.setItem('todolist', JSON.stringify(todos));
-    }
+		todos = [
+			...todos,
+			{
+				id: Date.now(),
+				text: newTodo,
+				completed: false
+			}
+		];
 
-    function deleteTodo(id) {
-        todos = todos.filter(todo => todo.id !== id);
-        localStorage.setItem('todolist', JSON.stringify(todos));
-    }
+		newTodo = '';
+		localStorage.setItem('todolist', JSON.stringify(todos));
+	}
+
+	function toggleTodo(id) {
+		todos = todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo));
+		localStorage.setItem('todolist', JSON.stringify(todos));
+	}
+
+	function deleteTodo(id) {
+		todos = todos.filter((todo) => todo.id !== id);
+		localStorage.setItem('todolist', JSON.stringify(todos));
+	}
 </script>
 
-<div class="h-full flex flex-col justify-between p-2">
-    <form on:submit={addTodo} class="flex gap-2 mb-4 h-[3rem]">
-        <input
-            type="text"
-            bind:value={newTodo}
-            placeholder="Add a new task..."
-            class="flex-grow px-3 py-2 rounded border border-gray-300"
-        />
-        <button 
-            type="submit" 
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-        >
-            <Icon icon="material-symbols:add" />
-        </button>
-    </form>
+<div class="flex flex-col h-full p-2">
+	<form on:submit={addTodo} class="flex gap-2 mb-4 h-12 flex-shrink-0">
+		<input
+			type="text"
+			bind:value={newTodo}
+			placeholder="Add a new task..."
+			class="flex-grow border-b border-b-gray-300 border-b-2 outline-none px-3 py-2 text-box" 
+		/>
+		<button type="submit" class="bg-accent cursor-pointer rounded-full px-6 py-2 text-white">
+			<Icon icon="mdi:add-bold" class="text-lg" />
+		</button>
+	</form>
 
-    <div class="flex-grow overflow-auto h-[calc(100%-3rem)] justify-end flex flex-col">
-        {#each todos as todo (todo.id)}
-            <div class="mb-2 p-3 flex items-center gap-3 border border-gray-200 rounded">
-                <input
-                    type="checkbox"
-                    checked={todo.completed}
-                    on:change={() => toggleTodo(todo.id)}
-                    class="w-4 h-4"
-                />
-                <span class="flex-grow {todo.completed ? 'line-through text-gray-500' : ''}">
-                    {todo.text}
-                </span>
-                <button
-                    on:click={() => deleteTodo(todo.id)}
-                    class="text-red-500 hover:text-red-600 p-1"
-                >
-                    <Icon icon="material-symbols:delete" />
-                </button>
-            </div>
-        {/each}
-    </div>
+	<div class="flex-grow overflow-y-auto flex flex-col">
+		<div class="space-y-2">
+			{#each todos as todo (todo.id)}
+				<div
+					class={`mb-2 flex items-center gap-3 p-3 ${
+						todos.findIndex((t) => t.id === todo.id) === todos.length - 1 ? '' : 'border-b-2 border-gray-400'
+					}`}
+				>
+					<button on:click={() => toggleTodo(todo.id)} class="p-1 text-gray-900 hover:text-gray-700">
+						{#if todo.completed}
+							<Icon icon="mdi:checkbox-marked-circle" class="text-2xl" />
+						{:else}
+							<Icon icon="mdi:checkbox-blank-circle-outline" class="text-2xl" />
+						{/if}
+					</button>
+					<span class="flex-grow {todo.completed ? 'text-gray-700 line-through' : ''}">
+						{todo.text}
+					</span>
+					<button
+						on:click={() => deleteTodo(todo.id)}
+						class="p-1 text-xl text-gray-900 hover:text-gray-700"
+					>
+						<Icon icon="material-symbols:delete-outline-rounded" class="text-xl" />
+					</button>
+				</div>
+			{/each}
+		</div>
+	</div>
 </div>
+
+<style>
+	.cb {
+		border-radius: 2rem;
+		background-color: var(--surface-color);
+	}
+    .text-box:focus {
+        border-bottom-color: var(--accent-color);
+        background-color: var(--surface-high-color);
+    }
+</style>

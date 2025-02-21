@@ -71,12 +71,12 @@
 		gap: 0.5rem;
 	}
 	button {
-		font-size: 1.2rem;
+		font-size: 1.6rem;
 		border: none;
 		border-radius: 4px;
 		background: var(--surface-high-color);
 		cursor: pointer;
-		font-weight: 00;
+		font-weight: 400;
 	}
 	button.strong {
 		background: var(--source-color);

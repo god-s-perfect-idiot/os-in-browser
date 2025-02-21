@@ -222,7 +222,7 @@ export const apps = {
         iconColor: '#cf3f00',  
         color: '#ffffff',
         icon: "mdi:hourglass",
-        windowClassOverrides: "",
+        windowClassOverrides: "!bg-[#f9faef]",
         props: { },
         defaultWindowSize: {
             width: "20rem",
@@ -252,7 +252,7 @@ export const apps = {
         iconColor: '#cf3f00',  
         color: '#ffffff',
         icon: "mdi:check",
-        windowClassOverrides: "",
+        windowClassOverrides: "!bg-[#f9faef]",
         props: { },
         defaultWindowSize: {
             width: "40rem",
@@ -268,7 +268,7 @@ export const apps = {
         color: '#ffffff',
         icon: "mdi:wikipedia",
         windowClassOverrides: "",
-        props: { url: "https://www.wikipedia.org/wiki/" },
+        props: { url: "https://www.wikipedia.org/", title: "Wikipedia" },
         defaultWindowSize: {
             width: "50rem",
             height: "30rem"

@@ -1,8 +1,8 @@
 <script>
 	export let url;
-	console.log(url)
+	export let title
 </script>
 
 <div class="h-full w-full">
-	<iframe src={url} title={"Wikipedia"} class="h-full w-full"></iframe>
+	<iframe src={url} title={title} class="h-full w-full"></iframe>
 </div>
