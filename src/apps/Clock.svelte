@@ -40,7 +40,7 @@
 <div bind:this={container} class="flex h-full w-full items-center justify-center p-2">
 	<!-- Clock text: font size is dynamically set; text color uses #222 (formerly the bg color) -->
 	<div
-		style="font-size: 4rem; color: #222; font-weight: 300"
+		style="font-size: 4rem; color: #222; font-weight: 400"
 		class="flex w-full h-full flex-row gap-2"
 	>
 		<!-- {time.toLocaleTimeString()} -->

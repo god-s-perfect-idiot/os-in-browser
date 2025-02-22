@@ -251,7 +251,7 @@ export const apps = {
         name: 'Todo',
         iconColor: '#cf3f00',  
         color: '#ffffff',
-        icon: "mdi:check",
+        icon: "mdi:check-bold",
         windowClassOverrides: "!bg-[#f9faef]",
         props: { },
         defaultWindowSize: {
@@ -268,7 +268,7 @@ export const apps = {
         color: '#ffffff',
         icon: "mdi:wikipedia",
         windowClassOverrides: "",
-        props: { url: "https://www.wikipedia.org/", title: "Wikipedia" },
+        props: { url: "https://www.wikipedia.org?dis", title: "Wikipedia" },
         defaultWindowSize: {
             width: "50rem",
             height: "30rem"

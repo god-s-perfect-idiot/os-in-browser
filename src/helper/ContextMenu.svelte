@@ -1,10 +1,24 @@
 <script>
+	import { apps } from '$lib/applib';
+	import { pm } from '$lib/pm';
 	import Icon from '@iconify/svelte';
 
 	export let left = 0,
 		top = 0,
 		show = false,
 		close = () => {};
+
+	const launchApp = (app) =>
+		pm.add(app.name, {
+			type: 'window', // You can adjust this based on your needs
+			appId: app.appId,
+			isMinimized: false,
+			position: {
+				x: 100, // Default window position
+				y: 100
+			},
+			...app
+		});
 </script>
 
 {#if show}
@@ -12,7 +26,12 @@
 		class="context-menu absolute z-50 flex w-fit flex-col justify-start px-2 py-2 text-black"
 		style="left: {left}px; top: {top}px"
 	>
-		<button>
+		<button
+			on:click={() => {
+				launchApp(apps.notes);
+				close();
+			}}
+		>
 			<div class="flex items-center justify-start">
 				<Icon icon="mdi:pen" class="mr-2" />
 				Quick Note
@@ -20,7 +39,12 @@
 			<span>Ctrl+N</span>
 		</button>
 		<div class="w-full border-b border-gray-400" />
-		<button>
+		<button
+			on:click={() => {
+				launchApp(apps.processes);
+				close();
+			}}
+		>
 			<div class="flex items-center justify-start">
 				<Icon icon="mdi:monitor" class="mr-2" />
 				Process Manager
@@ -34,7 +58,12 @@
 			</div>
 			<span>Ctrl+T</span>
 		</button>
-		<button>
+		<button
+			on:click={() => {
+				launchApp(apps.settings);
+				close();
+			}}
+		>
 			<div class="flex items-center justify-start">
 				<Icon icon="mdi:cog" class="mr-2" />
 				Settings
@@ -42,14 +71,19 @@
 			<span>Ctrl+,</span>
 		</button>
 		<div class="w-full border-b border-gray-400" />
-		<button>
+		<button on:click={() => window.location.reload()}>
 			<div class="flex items-center justify-start">
 				<Icon icon="mdi:restart" class="mr-2" />
 				Restart
 			</div>
 			<span>Alt+Enter</span>
 		</button>
-		<button>
+		<button
+			on:click={() => {
+				launchApp(apps.help);
+				close();
+			}}
+		>
 			<div class="flex items-center justify-start">
 				<Icon icon="mdi:help" class="mr-2" />
 				Help

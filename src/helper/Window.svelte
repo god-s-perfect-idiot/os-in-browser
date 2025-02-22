@@ -150,7 +150,7 @@
 {#if !isMinimized}
 	<div
 		bind:this={windowElement}
-		class={`window absolute rounded-2xl pb-2 shadow-md ${windowClassOverrides}`}
+		class={`window absolute pb-2 shadow-md ${windowClassOverrides} ${isFullscreen ? '!rounded-none' : '!rounded-2xl'}`}
 		style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {focussed ? 1 : 0}"
 		on:mousedown={(e) => {
 			const rect = windowElement.getBoundingClientRect();
