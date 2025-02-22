@@ -35,6 +35,12 @@
 					<button
 						class="icon h-10 w-10 flex items-center justify-center cursor-pointer rounded-full p-1 text-white"
 						style="background-color: {app.color}"
+						on:click={() => {
+							const isMinimized = $pm.find((p) => p.pid === app.pid).metadata.isMinimized;
+							if (isMinimized) {
+								pm.updateMetadata(app.pid, { isMinimized: false });
+							}
+						}}
 						><Icon icon={app.icon} font-size="1.5rem" style="color: {app.iconColor};" class="icon" /></button
 					>
 				</div>

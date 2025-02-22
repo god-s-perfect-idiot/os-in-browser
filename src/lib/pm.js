@@ -1,17 +1,62 @@
 import { writable, derived, get } from 'svelte/store';
+import { browser } from '$app/environment';
 
 function createProcessManager() {
-	// Use Map instead of Array for efficient PID lookups
-	const processes = new Map();
+	// Initial state - try to load from localStorage first
+	let initialProcesses = new Map();
 	let nextPid = 1;
 	let activePid = null;
 
-	const { subscribe, set, update } = writable(processes);
+	// Only attempt to access localStorage in the browser environment
+	if (browser) {
+		try {
+			const savedState = localStorage.getItem('processManagerState');
+			if (savedState) {
+				const parsed = JSON.parse(savedState);
+				
+				// Restore processes
+				initialProcesses = new Map(
+					parsed.processes.map(process => {
+						// Convert createdAt back to Date object
+						return [process.pid, {
+							...process,
+							createdAt: new Date(process.createdAt)
+						}];
+					})
+				);
+				
+				// Restore nextPid and activePid
+				nextPid = parsed.nextPid;
+				activePid = parsed.activePid;
+			}
+		} catch (error) {
+			console.error('Error loading process manager state:', error);
+		}
+	}
+
+	const { subscribe, set, update } = writable(initialProcesses);
 
 	// Helper to convert Map to Array for array-like operations
 	const asArray = derived({ subscribe }, ($processes) => Array.from($processes.values()));
 
+	// Function to save the current state to localStorage
+	function saveToLocalStorage($processes) {
+		if (browser) {
+			try {
+				const state = {
+					processes: Array.from($processes.values()),
+					nextPid,
+					activePid
+				};
+				localStorage.setItem('processManagerState', JSON.stringify(state));
+			} catch (error) {
+				console.error('Error saving process manager state:', error);
+			}
+		}
+	}
+
 	function add(title, metadata = {}) {
+		let pid;
 		update(($processes) => {
 			const newProcess = {
 				pid: nextPid++,
@@ -19,16 +64,19 @@ function createProcessManager() {
 				metadata,
 				createdAt: new Date()
 			};
-			$processes.set(newProcess.pid, newProcess);
+			pid = newProcess.pid;
+			$processes.set(pid, newProcess);
+			saveToLocalStorage($processes);
 			return $processes;
 		});
-		activePid = nextPid - 1;
-		return nextPid - 1; // Return the PID that was just used
+		activePid = pid;
+		return pid;
 	}
 
 	function remove(pid) {
 		update(($processes) => {
 			$processes.delete(pid);
+			saveToLocalStorage($processes);
 			return $processes;
 		});
 	}
@@ -51,6 +99,8 @@ function createProcessManager() {
 
 	function setActive(pid) {
 		activePid = pid;
+		// Save current state with updated activePid
+		saveToLocalStorage(get({ subscribe }));
 	}
 
 	function updateMetadata(pid, metadata) {
@@ -62,6 +112,7 @@ function createProcessManager() {
 					metadata: { ...process.metadata, ...metadata }
 				});
 			}
+			saveToLocalStorage($processes);
 			return $processes;
 		});
 	}
@@ -75,13 +126,19 @@ function createProcessManager() {
 					title: newTitle
 				});
 			}
+			saveToLocalStorage($processes);
 			return $processes;
 		});
 	}
 
 	function clear() {
-		update(() => new Map());
-		nextPid = 1;
+		update(() => {
+			const emptyMap = new Map();
+			nextPid = 1;
+			activePid = null;
+			saveToLocalStorage(emptyMap);
+			return emptyMap;
+		});
 	}
 
 	// Get processes sorted by creation time

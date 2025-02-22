@@ -24,6 +24,7 @@
 		pid={app.pid}
 		defaultWindowSize={app.defaultWindowSize}
 		windowClassOverrides={app.windowClassOverrides}
+		isMinimized={app.isMinimized}
 	>   
 		<svelte:component this={apps[app.appId].component} {...app.props}/>
 	</Window>

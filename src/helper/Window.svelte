@@ -8,7 +8,8 @@
 	export let title;
 	export let pid;
 	export let defaultWindowSize = { width: '40rem', height: '20rem' };
-	export let windowClassOverrides = "";
+	export let windowClassOverrides = '';
+	export let isMinimized = false;
 
 	let width = defaultWindowSize.width;
 	let height = defaultWindowSize.height;
@@ -139,49 +140,54 @@
 		};
 	});
 
-	console.log(windowClassOverrides)
+	const minimize = () => {
+		pm.updateMetadata(pid, { isMinimized: true });
+	};
+
+	$: console.log(isMinimized);
 </script>
 
-<div
-	bind:this={windowElement}
-	class={`window absolute rounded-2xl shadow-md pb-2 ${windowClassOverrides}`}
-	style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {focussed ? 1 : 0}"
-	on:mousedown={(e) => {
-		const rect = windowElement.getBoundingClientRect();
-		const edge = 8;
-		const relX = e.clientX - rect.left;
-		const relY = e.clientY - rect.top;
-
-		if (relX < edge) {
-			startResize(e, { x: 'left', y: '' });
-		} else if (relX > rect.width - edge) {
-			startResize(e, { x: 'right', y: '' });
-		} else if (relY < edge) {
-			startResize(e, { x: '', y: 'top' });
-		} else if (relY > rect.height - edge) {
-			startResize(e, { x: '', y: 'bottom' });
-		}
-	}}
->
+{#if !isMinimized}
 	<div
-		class="flex cursor-move items-center justify-between p-1"
-		on:mousedown={startDrag}
+		bind:this={windowElement}
+		class={`window absolute rounded-2xl pb-2 shadow-md ${windowClassOverrides}`}
+		style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {focussed ? 1 : 0}"
+		on:mousedown={(e) => {
+			const rect = windowElement.getBoundingClientRect();
+			const edge = 8;
+			const relX = e.clientX - rect.left;
+			const relY = e.clientY - rect.top;
+
+			if (relX < edge) {
+				startResize(e, { x: 'left', y: '' });
+			} else if (relX > rect.width - edge) {
+				startResize(e, { x: 'right', y: '' });
+			} else if (relY < edge) {
+				startResize(e, { x: '', y: 'top' });
+			} else if (relY > rect.height - edge) {
+				startResize(e, { x: '', y: 'bottom' });
+			}
+		}}
 	>
-		<span class="pt-1 pl-2 font-[500]">{title}</span>
-		<div class="controls flex items-end justify-center gap-2 pr-1">
-			<button class="minimize flex h-6 items-center"><Icon icon="material-symbols:minimize" font-size="1rem" /></button>
-			<button class="maximize flex h-6 items-center" on:click={toggleFullscreen}>
-				<Icon icon="mdi:square-outline" font-size="0.9rem" />
-			</button>
-			<button class="close flex h-6 items-center" on:click={() => pm.remove(pid)}>
-				<Icon icon="mdi:close" font-size="1rem" />
-			</button>
+		<div class="flex cursor-move items-center justify-between p-1" on:mousedown={startDrag}>
+			<span class="pt-1 pl-2 font-[500]">{title}</span>
+			<div class="controls flex items-end justify-center gap-2 pr-1">
+				<button class="minimize flex h-6 items-center" on:click={minimize}
+					><Icon icon="material-symbols:minimize" font-size="1rem" /></button
+				>
+				<button class="maximize flex h-6 items-center" on:click={toggleFullscreen}>
+					<Icon icon="mdi:square-outline" font-size="0.9rem" />
+				</button>
+				<button class="close flex h-6 items-center" on:click={() => pm.remove(pid)}>
+					<Icon icon="mdi:close" font-size="1rem" />
+				</button>
+			</div>
+		</div>
+		<div class="window-content">
+			<slot />
 		</div>
 	</div>
-	<div class="window-content">
-		<slot />
-	</div>
-</div>
+{/if}
 
 <style>
 	.window {

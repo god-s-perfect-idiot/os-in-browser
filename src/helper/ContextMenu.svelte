@@ -78,6 +78,7 @@
 		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 		/* background-color: #ffffffec; */
 		background-color: white;
+		border-radius: 0.5rem;
 	}
 	.context-menu button {
 		cursor: pointer;
@@ -88,6 +89,7 @@
 		justify-content: space-between;
 		align-items: center;
 		font-weight: 400;
+		font-size: 0.9rem;
 		color: #333333;
 		padding-left: 0.5rem;
 		padding-right: 0.5rem;
@@ -102,6 +104,11 @@
 	}
 
 	button:hover {
-		background-color: #f5f5f5;
+		background-color: var(--accent-color);
+		color: white !important;
+	}
+
+	button:hover span {
+		color: #f1f1f1 !important;
 	}
 </style>
