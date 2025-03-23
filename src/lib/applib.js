@@ -16,6 +16,7 @@ import Pong from "../apps/Pong.svelte"
 import TicTacToe from "../apps/TicTacToe.svelte"
 import Minesweeper from "../apps/Minesweeper.svelte"
 import FlappyBird from "../apps/FlappyBird.svelte"
+import FilesSvelte from "../apps/Files.svelte"
 
 export const apps = {
     help: {
@@ -95,13 +96,13 @@ export const apps = {
     },
     files: {
         appId: 'files',
-        component: null,
+        component: FilesSvelte,
         needsParent: false,
         name: 'Files',
         iconColor: '#f1cf2c',  
         color: '#ffffff',
         icon: "mdi:folder-open",
-        windowClassOverrides: "",
+        windowClassOverrides: "!bg-[#f9faef]",
         props: { },
         defaultWindowSize: {
             width: "40rem",

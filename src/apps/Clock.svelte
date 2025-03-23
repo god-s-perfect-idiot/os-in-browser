@@ -12,7 +12,7 @@
 	onMount(() => {
 		timer = setInterval(() => {
 			time = new Date();
-			hour = `${((time.getHours() + 11) % 12) + 1 < 10 ? '0' : ''}${((time.getHours() + 11) % 12) + 1}`;
+			hour = `${((time.getHours() + 11) % 12) + 1 <   10 ? '0' : ''}${((time.getHours() + 11) % 12) + 1}`;
 			minute = `${time.getMinutes() < 10 ? '0' : ''}${time.getMinutes()}`;
 			second = `${time.getSeconds() < 10 ? '0' : ''}${time.getSeconds()}`;
 			ampm = hour >= 12 ? 'PM' : 'AM';

@@ -38,7 +38,7 @@
 			</div>
 			<span>Ctrl+N</span>
 		</button>
-		<div class="w-full border-b border-gray-400" />
+		<div class="w-full border-b border-gray-400 pt-1 mb-2" />
 		<button
 			on:click={() => {
 				launchApp(apps.processes);
@@ -70,7 +70,7 @@
 			</div>
 			<span>Ctrl+,</span>
 		</button>
-		<div class="w-full border-b border-gray-400" />
+		<div class="w-full border-b border-gray-400 pt-1 mb-2" />
 		<button on:click={() => window.location.reload()}>
 			<div class="flex items-center justify-start">
 				<Icon icon="mdi:restart" class="mr-2" />
@@ -97,7 +97,7 @@
 			</div>
 			<span>Ctrl+I</span>
 		</button>
-		<div class="w-full border-b border-gray-400" />
+		<div class="w-full border-b border-gray-400 pt-1 mb-2" />
 		<button on:click={() => close()} class="">
 			<div class="flex items-center justify-start">
 				<Icon icon="mdi:close" class="mr-2" />Close
