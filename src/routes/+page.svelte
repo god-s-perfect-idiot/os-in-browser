@@ -35,7 +35,7 @@
 		width: 100vw;
 		height: 100vh;
 		background-color: blueviolet;
-		background-image: url('images/bg-2.png');
+		background-image: url('https://imgur.com/MQbVp3O.png');
         background-size: cover;
         background-position: center;
 	}
