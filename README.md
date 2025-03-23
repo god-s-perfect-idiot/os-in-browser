@@ -36,3 +36,10 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+## Releases
+
+There are two active releases depending on the flavor of the project:
+
+- Main branch: `main` - [release]("https://os-in-browser.netlify.app/")
+- Material 3 branch: `fork-m3` - [release]("https://os-in-browser-m3.netlify.app/")
