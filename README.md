@@ -41,5 +41,5 @@ You can preview the production build with `npm run preview`.
 
 There are two active releases depending on the flavor of the project:
 
-- Main branch: `main` - [release]("https://os-in-browser.netlify.app/")
-- Material 3 branch: `fork-m3` - [release]("https://os-in-browser-m3.netlify.app/")
+- Main branch: `main` - [release](https://os-in-browser.netlify.app/)
+- Material 3 branch: `fork-m3` - [release](https://os-in-browser-m3.netlify.app/)
