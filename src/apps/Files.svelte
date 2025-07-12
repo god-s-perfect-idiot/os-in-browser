@@ -3,6 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
+	import ContextMenu from '../helper/ContextMenu.svelte';
 
 	// Reactive stores
 	$: currentPath = $fileSystem.currentPathStore;
@@ -21,6 +22,124 @@
 	let newFileName = '';
 	let newFolderName = '';
 	let renameName = '';
+
+	// Context menu state
+	let contextMenu = {
+		show: false,
+		left: 0,
+		top: 0,
+		items: []
+	};
+
+	// Context menu items for different contexts
+	const backgroundMenuItems = [
+		{
+			icon: 'mdi:folder-plus',
+			label: 'New Folder',
+			shortcut: 'Ctrl+Shift+N',
+			action: () => {
+				newFolderPopup = true;
+				contextMenu.show = false;
+			}
+		},
+		{
+			icon: 'mdi:file-plus',
+			label: 'New File',
+			shortcut: 'Ctrl+N',
+			action: () => {
+				newFilePopup = true;
+				contextMenu.show = false;
+			}
+		},
+		{ type: 'separator' },
+		{
+			icon: 'mdi:content-paste',
+			label: 'Paste',
+			shortcut: 'Ctrl+V',
+			action: () => {
+				// Implement paste functionality
+				console.log('Paste file');
+				contextMenu.show = false;
+			}
+		},
+		{ type: 'separator' },
+		{
+			icon: 'mdi:close',
+			label: 'Close App',
+			shortcut: 'Ctrl+W',
+			action: () => {
+				// Close the app window
+				window.dispatchEvent(new CustomEvent('closeApp'));
+				contextMenu.show = false;
+			}
+		}
+	];
+
+	const fileMenuItems = (file) => [
+		{
+			icon: 'mdi:content-cut',
+			label: 'Cut',
+			shortcut: 'Ctrl+X',
+			action: () => {
+				console.log('Cut file:', file.name);
+				contextMenu.show = false;
+			}
+		},
+		{
+			icon: 'mdi:content-copy',
+			label: 'Copy',
+			shortcut: 'Ctrl+C',
+			action: () => {
+				console.log('Copy file:', file.name);
+				contextMenu.show = false;
+			}
+		},
+		{ type: 'separator' },
+		{
+			icon: 'mdi:pencil',
+			label: 'Rename',
+			shortcut: 'F2',
+			action: () => {
+				fileToRename = file;
+				renameName = file.name;
+				renamePopup = true;
+				contextMenu.show = false;
+			}
+		},
+		{
+			icon: 'mdi:delete',
+			label: 'Delete',
+			shortcut: 'Del',
+			action: () => {
+				fileToDelete = file;
+				deletePopup = true;
+				contextMenu.show = false;
+			}
+		}
+	];
+
+	// Handle right-click events
+	function handleRightClick(e, context = 'background', file = null) {
+		e.preventDefault();
+		e.stopPropagation();
+		
+		// Use clientX/clientY for viewport-relative positioning
+		contextMenu.left = e.clientX;
+		contextMenu.top = e.clientY;
+		
+		if (context === 'file' && file) {
+			contextMenu.items = fileMenuItems(file);
+		} else {
+			contextMenu.items = backgroundMenuItems;
+		}
+		
+		contextMenu.show = true;
+	}
+
+	// Close context menu when clicking outside
+	function handleClickOutside() {
+		contextMenu.show = false;
+	}
 
 	// Navigation functions
 	function navigateToPath(path) {
@@ -195,7 +314,7 @@
 	}
 </style>
 
-<div class="flex h-full w-full flex-col bg-gray-50">
+<div class="flex h-full w-full flex-col bg-gray-50" on:contextmenu={(e) => handleRightClick(e, 'background')} on:click={handleClickOutside}>
 	<!-- Header -->
 	<div class="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3">
 		<div class="flex items-center gap-4">
@@ -275,13 +394,14 @@
 				</div>
 			</div>
 			
-			<div class="overflow-y-auto h-full">
+			<div class="overflow-y-auto h-full" on:contextmenu={(e) => handleRightClick(e, 'background')}>
 				{#if $files}
 					{#each $files as file}
 						<div 
 							class="grid grid-cols-12 gap-4 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 {selectedFile?.path === file.path ? 'bg-blue-50' : ''}"
 							on:click={() => openFile(file)}
 							on:dblclick={() => openFile(file)}
+							on:contextmenu={(e) => handleRightClick(e, 'file', file)}
 						>
 							<div class="col-span-6 flex items-center gap-3">
 								<Icon 
@@ -481,3 +601,12 @@
 		</div>
 	</div>
 {/if} 
+
+<!-- Context Menu -->
+<ContextMenu 
+	left={contextMenu.left} 
+	top={contextMenu.top} 
+	show={contextMenu.show} 
+	close={() => contextMenu.show = false}
+	menuItems={contextMenu.items}
+/> 

@@ -6,7 +6,8 @@
 	export let left = 0,
 		top = 0,
 		show = false,
-		close = () => {};
+		close = () => {},
+		menuItems = null; // Custom menu items, if null use default
 
 	const launchApp = (app) =>
 		pm.add(app.name, {
@@ -19,91 +20,106 @@
 			},
 			...app
 		});
+
+	// Default desktop context menu items
+	const defaultMenuItems = [
+		{
+			icon: 'mdi:pen',
+			label: 'Quick Note',
+			shortcut: 'Ctrl+N',
+			action: () => {
+				launchApp(apps.notes);
+				close();
+			}
+		},
+		{ type: 'separator' },
+		{
+			icon: 'mdi:monitor',
+			label: 'Process Manager',
+			shortcut: 'Ctrl+M',
+			action: () => {
+				launchApp(apps.processes);
+				close();
+			}
+		},
+		{
+			icon: 'mdi:color-lens',
+			label: 'Customization',
+			shortcut: 'Ctrl+T',
+			action: () => {
+				// Placeholder for customization
+				close();
+			}
+		},
+		{
+			icon: 'mdi:cog',
+			label: 'Settings',
+			shortcut: 'Ctrl+,',
+			action: () => {
+				launchApp(apps.settings);
+				close();
+			}
+		},
+		{ type: 'separator' },
+		{
+			icon: 'mdi:restart',
+			label: 'Restart',
+			shortcut: 'Alt+Enter',
+			action: () => {
+				window.location.reload();
+			}
+		},
+		{
+			icon: 'mdi:help',
+			label: 'Help',
+			shortcut: 'Ctrl+H',
+			action: () => {
+				launchApp(apps.help);
+				close();
+			}
+		},
+		{
+			icon: 'mdi:information',
+			label: 'About',
+			shortcut: 'Ctrl+I',
+			action: () => {
+				// Placeholder for about
+				close();
+			}
+		},
+		{ type: 'separator' },
+		{
+			icon: 'mdi:close',
+			label: 'Close',
+			shortcut: 'Esc',
+			action: () => {
+				close();
+			}
+		}
+	];
+
+	// Use custom menu items if provided, otherwise use default
+	$: items = menuItems || defaultMenuItems;
 </script>
 
 {#if show}
 	<div
-		class="context-menu absolute z-50 flex w-fit flex-col justify-start px-2 py-2 text-black"
+		class="context-menu fixed z-[9999] flex w-fit flex-col justify-start px-2 py-2 text-black"
 		style="left: {left}px; top: {top}px"
 	>
-		<button
-			on:click={() => {
-				launchApp(apps.notes);
-				close();
-			}}
-		>
-			<div class="flex items-center justify-start">
-				<Icon icon="mdi:pen" class="mr-2" />
-				Quick Note
-			</div>
-			<span>Ctrl+N</span>
-		</button>
-		<div class="w-full border-b border-gray-400 pt-1 mb-2" />
-		<button
-			on:click={() => {
-				launchApp(apps.processes);
-				close();
-			}}
-		>
-			<div class="flex items-center justify-start">
-				<Icon icon="mdi:monitor" class="mr-2" />
-				Process Manager
-			</div>
-			<span>Ctrl+M</span>
-		</button>
-		<button>
-			<div class="flex items-center justify-start">
-				<Icon icon="mdi:color-lens" class="mr-2" />
-				Customization
-			</div>
-			<span>Ctrl+T</span>
-		</button>
-		<button
-			on:click={() => {
-				launchApp(apps.settings);
-				close();
-			}}
-		>
-			<div class="flex items-center justify-start">
-				<Icon icon="mdi:cog" class="mr-2" />
-				Settings
-			</div>
-			<span>Ctrl+,</span>
-		</button>
-		<div class="w-full border-b border-gray-400 pt-1 mb-2" />
-		<button on:click={() => window.location.reload()}>
-			<div class="flex items-center justify-start">
-				<Icon icon="mdi:restart" class="mr-2" />
-				Restart
-			</div>
-			<span>Alt+Enter</span>
-		</button>
-		<button
-			on:click={() => {
-				launchApp(apps.help);
-				close();
-			}}
-		>
-			<div class="flex items-center justify-start">
-				<Icon icon="mdi:help" class="mr-2" />
-				Help
-			</div>
-			<span>Ctrl+H</span>
-		</button>
-		<button>
-			<div class="flex items-center justify-start">
-				<Icon icon="mdi:information" class="mr-2" />
-				About
-			</div>
-			<span>Ctrl+I</span>
-		</button>
-		<div class="w-full border-b border-gray-400 pt-1 mb-2" />
-		<button on:click={() => close()} class="">
-			<div class="flex items-center justify-start">
-				<Icon icon="mdi:close" class="mr-2" />Close
-			</div>
-			<span>Esc</span>
-		</button>
+		{#each items as item}
+			{#if item.type === 'separator'}
+				<div class="w-full border-b border-gray-400 pt-1 mb-2" />
+			{:else}
+				<button on:click={item.action}>
+					<div class="flex items-center justify-start">
+						<Icon icon={item.icon} class="mr-2" />
+						{item.label}
+					</div>
+					<span>{item.shortcut}</span>
+				</button>
+			{/if}
+		{/each}
 	</div>
 {/if}
 
