@@ -47,7 +47,7 @@ function createFileSystem() {
   const storedFS = storage.get('fileSystem');
   const initial = storedFS ? JSON.parse(storedFS) : initialFS;
   
-  const { subscribe, set, update } = writable(initial);
+  const { subscribe, update } = writable(initial);
   
   // Current working directory path
   const currentPath = writable('/');
@@ -73,6 +73,10 @@ function createFileSystem() {
   // Store API
   const api = {
     subscribe,
+    currentPath,
+    
+    // Derived store for current path that can be subscribed to
+    currentPathStore: derived(currentPath, ($currentPath) => $currentPath),
     
     // Navigate to a path
     cd: (path) => {
@@ -94,6 +98,8 @@ function createFileSystem() {
         return Object.entries(node.children).map(([name, node]) => ({
           name,
           type: node.type,
+          content: node.content || '',
+          path: node.path,
           created: node.created,
           modified: node.modified
         }));
@@ -186,20 +192,28 @@ function createFileSystem() {
         const node = getNodeAtPath(fs, oldPath);
         if (!node) return fs;
         
+        // Get parent paths
+        const oldParts = oldPath.split('/').filter(Boolean);
+        const oldName = oldParts.pop();
+        const oldParentPath = '/' + oldParts.join('/');
+        
+        const newParts = newPath.split('/').filter(Boolean);
+        const newName = newParts.pop();
+        const newParentPath = '/' + newParts.join('/');
+        
         // Remove from old location
-        api.rm(oldPath);
+        const oldParent = getNodeAtPath(fs, oldParentPath);
+        if (oldParent && oldParent.children[oldName]) {
+          delete oldParent.children[oldName];
+        }
         
         // Add to new location
-        const parts = newPath.split('/').filter(Boolean);
-        const name = parts.pop();
-        const parentPath = '/' + parts.join('/');
+        const newParent = getNodeAtPath(fs, newParentPath);
+        if (!newParent || newParent.type !== NodeType.DIRECTORY) return fs;
         
-        const parent = getNodeAtPath(fs, parentPath);
-        if (!parent || parent.type !== NodeType.DIRECTORY) return fs;
-        
-        node.name = name;
+        node.name = newName;
         node.path = newPath;
-        parent.children[name] = node;
+        newParent.children[newName] = node;
         
         persistFS(fs);
         return fs;
