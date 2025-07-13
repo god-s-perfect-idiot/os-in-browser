@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Brygada 1918', serif;
 }
 
 /* variables */
@@ -13,7 +13,7 @@ body {
     --error-color: #FF5449;
     --error-container-color: #ffdad6;
     --accent-color: #47672f;
-    --surface-color: #f9faef;
+    --surface-color: #f8e7bb;
     --surface-high-color: #edefe4;
 }
 

@@ -176,7 +176,7 @@
 					><Icon icon="material-symbols:minimize" font-size="1rem" /></button
 				>
 				<button class="maximize flex h-6 items-center" on:click={toggleFullscreen}>
-					<Icon icon="mdi:square-outline" font-size="0.9rem" />
+					<Icon icon="mdi:square-outline" font-size="1rem" />
 				</button>
 				<button class="close flex h-6 items-center" on:click={() => pm.remove(pid)}>
 					<Icon icon="mdi:close" font-size="1rem" />
@@ -196,22 +196,36 @@
 	}
 	.controls button {
 		padding: 0rem 0.25rem;
+    border-radius: 2rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 	}
-	.minimize,
+
+  .controls button :global(svg) {
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  
+  .controls button:hover :global(svg) {
+    opacity: 1;
+  }
+  
+  .minimize,
 	.maximize,
 	.close {
 		cursor: pointer;
 	}
-	.close:hover {
-		background-color: red;
+	.close {
+		background-color: #ff3131;
 		color: white;
 	}
-	.maximize:hover {
-		background-color: green;
+	.maximize {
+		background-color: #737373;
 		color: white;
 	}
-	.minimize:hover {
-		background-color: blue;
+	.minimize {
+		background-color: #000;
 		color: white;
 	}
 	.window-content {

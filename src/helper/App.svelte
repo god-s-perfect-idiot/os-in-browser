@@ -39,7 +39,7 @@
     <div class="icon rounded-full p-2" style="background-color: {app.color};">
         <Icon icon="{app.icon}" font-size="2.2rem" style="color: {app.iconColor};"/>
     </div>
-    <span class="icon-text text-sm">{app.name}</span>
+    <span class="icon-text text-base">{app.name}</span>
 </div>
 
 <style>
@@ -47,7 +47,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.5);
     }
     .icon-text {
         /* text-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px; */

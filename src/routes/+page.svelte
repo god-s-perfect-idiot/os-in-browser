@@ -48,7 +48,7 @@
 		width: 100vw;
 		height: 100vh;
 		background-color: var(--surface-color);
-		background-image: url('https://imgur.com/l082obe.jpg');
+		background-image: url('images/bg-6.png');
         background-size: cover;
         background-position: center;
 	}
