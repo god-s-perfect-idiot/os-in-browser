@@ -4,6 +4,8 @@
 	import { pm } from '$lib/pm';
 	import { apps } from '$lib/applib';
 	import Date from './Date.svelte';
+	import { toggleAppDrawer, appDrawerOpen } from '$lib/appDrawerStore';
+	import AppDrawer from './AppDrawer.svelte';
 
 	$: runningApps = $pm.map((p) => ({
 		pid: p.pid,
@@ -16,10 +18,17 @@
 </script>
 
 <div class="absolute bottom-0 left-0 flex w-full justify-center">
-	<div
-		class="flex h-16 w-fit items-center justify-between rounded-t-2xl py-2 px-4 taskbar"
-	>
+	<div class="taskbar flex h-16 w-fit items-center justify-between rounded-t-2xl px-4 py-2">
 		<div class="flex min-h-10 max-w-[70%] cursor-pointer flex-row gap-4 overflow-x-hidden p-1">
+			<!-- App Drawer Button -->
+			<button
+				class="icon flex h-10 w-10 cursor-pointer items-center justify-center rounded-full p-1 text-white transition-transform duration-200 hover:scale-110"
+				on:click={toggleAppDrawer}
+				aria-label="Open app drawer"
+			>
+				<Icon icon="mdi:apps" font-size="2rem" style="color: black;" class="icon" />
+			</button>
+			<div class="mx-2 h-10 w-[2px] rounded-full bg-gray-600"></div>
 			{#if runningApps.length > 0}
 				{#each runningApps as app}
 					<div class="flex h-fit cursor-pointer flex-row gap-1">
@@ -41,11 +50,10 @@
 						>
 					</div>
 				{/each}
-				<div class="h-10 w-[2px] bg-gray-500 rounded-full mx-2"></div>
+				<div class="mx-2 h-10 w-[2px] rounded-full bg-gray-600"></div>
 			{:else}
 				<!-- Empty placeholder to maintain height when no apps are running -->
-				<div class="h-10">
-        </div>
+				<div class="h-10"></div>
 			{/if}
 		</div>
 		<div class="flex gap-1 pr-1 text-lg font-[500]">
@@ -55,9 +63,12 @@
 	</div>
 </div>
 
-<style>
+<!-- App Drawer - rendered with high z-index -->
+<AppDrawer isOpen={$appDrawerOpen} />
 
-  .taskbar {
-    background-color: var(--surface-color);
-  }
+<style>
+	.taskbar {
+		background-color: var(--surface-color);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+	}
 </style>

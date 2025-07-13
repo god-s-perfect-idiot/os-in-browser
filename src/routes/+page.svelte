@@ -1,9 +1,9 @@
 <script>
-	import AppDrawer from '../helper/AppDrawer.svelte';
     import ContextMenu from '../helper/ContextMenu.svelte';
 	import { onMount } from 'svelte';
 	import WindowManager from '../helper/WindowManager.svelte';
 	import Boot from '../helper/Boot.svelte';
+	import { toggleAppDrawer } from '$lib/appDrawerStore';
 
 	// listen for right click
 	$: hasRightClicked = false;
@@ -15,10 +15,21 @@
 		left = e.clientX;
 		top = e.clientY;
 	}
+
+	function handleKeydown(event) {
+		// Ctrl+Space to open app drawer
+		if (event.ctrlKey && event.code === 'Space') {
+			event.preventDefault();
+			toggleAppDrawer();
+		}
+	}
+
 	onMount(() => {
 		document.addEventListener('contextmenu', handleRightClick);
+		document.addEventListener('keydown', handleKeydown);
 		return () => {
 			document.removeEventListener('contextmenu', handleRightClick);
+			document.removeEventListener('keydown', handleKeydown);
 		};
 	});
 	
@@ -39,7 +50,7 @@
 <WindowManager />
 
 <div class="desktop">
-    <AppDrawer />
+    <!-- Desktop is now clean - app drawer is in taskbar -->
 </div>
 {/if}
 
