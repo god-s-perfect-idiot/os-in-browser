@@ -103,7 +103,7 @@
 >
 	<!-- Header -->
 	<div class="flex items-center justify-between p-4 bg-surface-high">
-		<h2 class="text-xl font-semibold text-gray-800">Applications</h2>
+		<h2 class="text-2xl font-semibold text-gray-800">Applications</h2>
 		<button 
 			on:click={closeDrawer}
 			class="p-2 rounded-full hover:bg-gray-100 transition-colors"
