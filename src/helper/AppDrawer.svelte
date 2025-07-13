@@ -36,11 +36,11 @@
 				break;
 			case 'ArrowDown':
 				event.preventDefault();
-				selectedIndex = (selectedIndex + 4) % totalApps;
+				selectedIndex = (selectedIndex + 6) % totalApps;
 				break;
 			case 'ArrowUp':
 				event.preventDefault();
-				selectedIndex = selectedIndex < 4 ? totalApps - (4 - selectedIndex) : selectedIndex - 4;
+				selectedIndex = selectedIndex < 6 ? totalApps - (6 - selectedIndex) : selectedIndex - 6;
 				break;
 			case 'Enter':
 			case ' ':
