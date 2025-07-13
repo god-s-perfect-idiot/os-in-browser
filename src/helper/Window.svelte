@@ -150,7 +150,7 @@
 {#if !isMinimized}
 	<div
 		bind:this={windowElement}
-		class={`window absolute pb-2 shadow-md ${windowClassOverrides} ${isFullscreen ? '!rounded-none' : '!rounded-2xl'}`}
+		class={`window absolute ${windowClassOverrides}`}
 		style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {focussed ? 1 : 0}"
 		on:mousedown={(e) => {
 			const rect = windowElement.getBoundingClientRect();
@@ -169,16 +169,16 @@
 			}
 		}}
 	>
-		<div class="flex cursor-move items-center justify-between p-1" on:mousedown={startDrag}>
-			<span class="pt-1 pl-2 font-[500]">{title}</span>
-			<div class="controls flex items-end justify-center gap-2 pr-1">
-				<button class="minimize flex h-6 items-center" on:click={minimize}
+		<div class="titlebar" on:mousedown={startDrag}>
+			<span class="title">{title}</span>
+			<div class="controls">
+				<button class="minimize" on:click={minimize}
 					><Icon icon="material-symbols:minimize" font-size="1rem" /></button
 				>
-				<button class="maximize flex h-6 items-center" on:click={toggleFullscreen}>
+				<button class="maximize" on:click={toggleFullscreen}>
 					<Icon icon="mdi:square-outline" font-size="0.9rem" />
 				</button>
-				<button class="close flex h-6 items-center" on:click={() => pm.remove(pid)}>
+				<button class="close" on:click={() => pm.remove(pid)}>
 					<Icon icon="mdi:close" font-size="1rem" />
 				</button>
 			</div>
@@ -192,30 +192,83 @@
 <style>
 	.window {
 		user-select: none;
-		background-color: #fffffff9;
+		background-color: #e0e0e0;
+		border: 2px solid #000;
+		box-shadow: 2px 2px 0 #808080;
+		border-radius: 0;
+	}
+	.titlebar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background: linear-gradient(180deg, #0a246a 0%, #3a6ea5 100%);
+		color: #fff;
+		font-family: "MS Sans Serif", Tahoma, Geneva, sans-serif;
+		font-weight: bold;
+		font-size: 15px;
+		padding: 2px 6px 2px 8px;
+		border-top: 2px solid #fff;
+		border-left: 2px solid #fff;
+		border-right: 2px solid #000080;
+		border-bottom: 2px solid #000080;
+		border-radius: 0;
+		user-select: none;
+	}
+	.titlebar .title {
+		padding-left: 2px;
+		font-weight: bold;
+		color: #fff;
+		text-shadow: 1px 1px 0 #0008;
+		font-size: 15px;
+		font-family: "MS Sans Serif", Tahoma, Geneva, sans-serif;
+		flex: 1 1 auto;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.controls {
+		display: flex;
+		align-items: center;
+		gap: 2px;
 	}
 	.controls button {
-		padding: 0rem 0.25rem;
-	}
-	.minimize,
-	.maximize,
-	.close {
+		width: 22px;
+		height: 20px;
+		background: #c0c0c0;
+		border: 2px outset #fff;
+		box-shadow: 1px 1px 0 #808080;
+		color: #000;
+		padding: 0;
+		margin: 0 1px;
+		border-radius: 0;
 		cursor: pointer;
+		transition: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
-	.close:hover {
-		background-color: red;
-		color: white;
+	.controls button:active {
+		border: 2px inset #fff;
+		background: #a0a0a0;
 	}
-	.maximize:hover {
-		background-color: green;
-		color: white;
+	.controls .close {
+		background: #c04040;
+		color: #fff;
+		border: 2px outset #fff;
 	}
-	.minimize:hover {
-		background-color: blue;
-		color: white;
+	.controls .close:active {
+		background: #a02020;
+		border: 2px inset #fff;
 	}
 	.window-content {
-		height: calc(100% - 2.5rem);
+		height: calc(100% - 28px);
+		padding: 4px;
+		background: #fff;
+		border-top: 2px solid #fff;
+		border-left: 2px solid #fff;
+		border-right: 2px solid #808080;
+		border-bottom: 2px solid #808080;
+		border-radius: 0;
 		overflow: auto;
 	}
 </style>

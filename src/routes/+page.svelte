@@ -47,9 +47,10 @@
 	.desktop {
 		width: 100vw;
 		height: 100vh;
-		background-color: var(--surface-color);
-		background-image: url('https://imgur.com/l082obe.jpg');
-        background-size: cover;
-        background-position: center;
+		background-color: #008080;
+		background-image: url('https://raw.githubusercontent.com/grassmunk/Platinum9/master/Wallpapers/Windows%2095%20Clouds.png');
+		background-size: auto;
+		background-repeat: repeat;
+		background-position: left top;
 	}
 </style>
