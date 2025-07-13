@@ -2,12 +2,56 @@
 	import { apps } from '$lib/applib';
 	import { pm } from '$lib/pm';
 	import Icon from '@iconify/svelte';
+	import { onMount } from 'svelte';
 
 	export let left = 0,
 		top = 0,
 		show = false,
 		close = () => {},
 		menuItems = null; // Custom menu items, if null use default
+
+	let menuElement;
+	let adjustedLeft = left;
+	let adjustedTop = top;
+
+	// Calculate adjusted position to prevent overflow
+	function calculatePosition() {
+		if (!menuElement) return;
+		
+		const rect = menuElement.getBoundingClientRect();
+		const viewportWidth = window.innerWidth;
+		const viewportHeight = window.innerHeight;
+		
+		// Reset to original position first
+		adjustedLeft = left;
+		adjustedTop = top;
+		
+		// Check right overflow
+		if (left + rect.width > viewportWidth) {
+			adjustedLeft = left - rect.width;
+		}
+		
+		// Check bottom overflow
+		if (top + rect.height > viewportHeight) {
+			adjustedTop = top - rect.height;
+		}
+		
+		// Check left overflow (if we moved it left)
+		if (adjustedLeft < 0) {
+			adjustedLeft = 10; // Small margin from left edge
+		}
+		
+		// Check top overflow (if we moved it up)
+		if (adjustedTop < 0) {
+			adjustedTop = 10; // Small margin from top edge
+		}
+	}
+
+	// Recalculate position when show changes
+	$: if (show) {
+		// Use setTimeout to ensure the menu is rendered before measuring
+		setTimeout(calculatePosition, 0);
+	}
 
 	const launchApp = (app) =>
 		pm.add(app.name, {
@@ -104,8 +148,9 @@
 
 {#if show}
 	<div
+		bind:this={menuElement}
 		class="context-menu fixed z-[9999] flex w-fit flex-col justify-start px-2 py-2 text-black"
-		style="left: {left}px; top: {top}px"
+		style="left: {adjustedLeft}px; top: {adjustedTop}px"
 	>
 		{#each items as item}
 			{#if item.type === 'separator'}
