@@ -4,16 +4,20 @@
 	import WindowManager from '../helper/WindowManager.svelte';
 	import Boot from '../helper/Boot.svelte';
 	import { toggleAppDrawer } from '$lib/appDrawerStore';
+	import { showContextMenu } from '$lib/contextMenuStore';
 
-	// listen for right click
-	$: hasRightClicked = false;
-	let left = 0;
-	let top = 0;
 	function handleRightClick(e) {
 		e.preventDefault();
-		hasRightClicked = true;
-		left = e.clientX;
-		top = e.clientY;
+		
+		// Check if the clicked element has a specific context menu
+		const target = e.target.closest('[data-context-menu]');
+		if (target) {
+			const menuType = target.getAttribute('data-context-menu');
+			showContextMenu(e.clientX, e.clientY, menuType);
+		} else {
+			// Default context menu
+			showContextMenu(e.clientX, e.clientY, 'default');
+		}
 	}
 
 	function handleKeydown(event) {
@@ -45,7 +49,7 @@
 {#if loading}
 	<Boot />
 {:else}
-<ContextMenu {left} {top} show={hasRightClicked} close={() => (hasRightClicked = false)} />
+<ContextMenu />
     
 <WindowManager />
 
