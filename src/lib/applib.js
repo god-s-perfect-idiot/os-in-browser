@@ -64,36 +64,36 @@ export const apps = {
             height: "20rem"
         }
     },
-    file: {
-        appId: 'file',
-        component: null,
-        needsParent: false,
-        name: 'File',
-        iconColor: '#fff',  
-        color: '#737373',
-        icon: "mdi:file",
-        windowClassOverrides: "",
-        props: { },
-        defaultWindowSize: {
-            width: "40rem",
-            height: "20rem"
-        }
-    },
-    folder: {
-        appId: 'folder',
-        component: null,
-        needsParent: false,
-        name: 'Folder',
-        iconColor: '#ffffff',  
-        color: '#ff3131',
-        icon: "mdi:folder",
-        windowClassOverrides: "",
-        props: { },
-        defaultWindowSize: {
-            width: "40rem",
-            height: "20rem"
-        }
-    },
+    // file: {
+    //     appId: 'file',
+    //     component: null,
+    //     needsParent: false,
+    //     name: 'File',
+    //     iconColor: '#fff',  
+    //     color: '#737373',
+    //     icon: "mdi:file",
+    //     windowClassOverrides: "",
+    //     props: { },
+    //     defaultWindowSize: {
+    //         width: "40rem",
+    //         height: "20rem"
+    //     }
+    // },
+    // folder: {
+    //     appId: 'folder',
+    //     component: null,
+    //     needsParent: false,
+    //     name: 'Folder',
+    //     iconColor: '#ffffff',  
+    //     color: '#ff3131',
+    //     icon: "mdi:folder",
+    //     windowClassOverrides: "",
+    //     props: { },
+    //     defaultWindowSize: {
+    //         width: "40rem",
+    //         height: "20rem"
+    //     }
+    // },
     files: {
         appId: 'files',
         component: FilesSvelte,
@@ -102,29 +102,29 @@ export const apps = {
         iconColor: '#f1cf2c',  
         color: '#000',
         icon: "mdi:folder-open",
-        windowClassOverrides: "!bg-[#f9faef]",
+        windowClassOverrides: "!bg-[#f1f1f1]",
         props: { },
         defaultWindowSize: {
             width: "40rem",
             height: "20rem"
         }
     },
-    settings: {
-        appId: 'settings',
-        component: Settings,
-        needsParent: false,
-        name: 'Settings',
-        iconColor: '#ffffff',  
-        color: '#ff3131',
-        icon: "mdi:cog",
-        // This is uglyyyyy
-        windowClassOverrides: "!bg-[#D8E0D0]",
-        props: { },
-        defaultWindowSize: {
-            width: "60rem",
-            height: "31rem"
-        }
-    },
+    // settings: {
+    //     appId: 'settings',
+    //     component: Settings,
+    //     needsParent: false,
+    //     name: 'Settings',
+    //     iconColor: '#ffffff',  
+    //     color: '#ff3131',
+    //     icon: "mdi:cog",
+    //     // This is uglyyyyy
+    //     windowClassOverrides: "!bg-[#D8E0D0]",
+    //     props: { },
+    //     defaultWindowSize: {
+    //         width: "60rem",
+    //         height: "31rem"
+    //     }
+    // },
     console: {
         appId: 'console',
         component: Console,
