@@ -92,19 +92,27 @@
 	function updateResizeCursor(e) {
 		if (isResizing || isDragging) return;
 		const rect = e.target.getBoundingClientRect();
-		const edge = 8; // Edge size in pixels
+		const edge = 4; // Edge size in pixels - matches resize detection
 		const relX = e.clientX - rect.left;
 		const relY = e.clientY - rect.top;
 
-		if (relX < edge && relY < edge) windowElement.style.cursor = 'nw-resize';
-		else if (relX > rect.width - edge && relY < edge) windowElement.style.cursor = 'ne-resize';
-		else if (relX < edge && relY > rect.height - edge) windowElement.style.cursor = 'sw-resize';
-		else if (relX > rect.width - edge && relY > rect.height - edge)
+		// Check if we're hovering over the title bar element or its children
+		const titleBarElement = windowElement.querySelector('.title-bar');
+		const inTitleBar = titleBarElement && (titleBarElement === e.target || titleBarElement.contains(e.target));
+
+		// Debug logging
+		console.log('Mouse position:', relX, relY, 'In title bar:', inTitleBar, 'Target:', e.target.tagName);
+
+		if (relX <= edge && relY <= edge) windowElement.style.cursor = 'nw-resize';
+		else if (relX >= rect.width - edge && relY <= edge) windowElement.style.cursor = 'ne-resize';
+		else if (relX <= edge && relY >= rect.height - edge) windowElement.style.cursor = 'sw-resize';
+		else if (relX >= rect.width - edge && relY >= rect.height - edge)
 			windowElement.style.cursor = 'se-resize';
-		else if (relX < edge) windowElement.style.cursor = 'w-resize';
-		else if (relX > rect.width - edge) windowElement.style.cursor = 'e-resize';
-		else if (relY < edge) windowElement.style.cursor = 'n-resize';
-		else if (relY > rect.height - edge) windowElement.style.cursor = 's-resize';
+		else if (relX <= edge) windowElement.style.cursor = 'w-resize';
+		else if (relX >= rect.width - edge) windowElement.style.cursor = 'e-resize';
+		else if (relY <= edge) windowElement.style.cursor = 'n-resize';
+		else if (relY >= rect.height - edge) windowElement.style.cursor = 's-resize';
+		else if (inTitleBar) windowElement.style.cursor = 'move';
 		else windowElement.style.cursor = 'default';
 	}
 
@@ -153,23 +161,30 @@
 		class={`window absolute pb-2 shadow-md ${windowClassOverrides} ${isFullscreen ? '!rounded-none' : '!rounded-2xl'}`}
 		style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {focussed ? 1 : 0}"
 		on:mousedown={(e) => {
+			// Only handle resize if we're not already dragging and not clicking on controls
+			if (e.target.closest('.controls')) return;
+			
 			const rect = windowElement.getBoundingClientRect();
-			const edge = 8;
+			const edge = 4; // Reduced edge size for more precise resize detection
 			const relX = e.clientX - rect.left;
 			const relY = e.clientY - rect.top;
 
-			if (relX < edge) {
+			// Only start resize if we're very close to the edge (within 4 pixels)
+			if (relX <= edge) {
 				startResize(e, { x: 'left', y: '' });
-			} else if (relX > rect.width - edge) {
+			} else if (relX >= rect.width - edge) {
 				startResize(e, { x: 'right', y: '' });
-			} else if (relY < edge) {
+			} else if (relY <= edge) {
 				startResize(e, { x: '', y: 'top' });
-			} else if (relY > rect.height - edge) {
+			} else if (relY >= rect.height - edge) {
 				startResize(e, { x: '', y: 'bottom' });
+			} else {
+				// If not on edge, start dragging instead
+				startDrag(e);
 			}
 		}}
 	>
-		<div class="flex cursor-move items-center justify-between p-1" on:mousedown={startDrag}>
+		<div class="title-bar flex items-center justify-between p-1">
 			<span class="pt-1 pl-2 font-[500]">{title}</span>
 			<div class="controls flex items-end justify-center gap-2 pr-1">
 				<button class="minimize flex h-6 items-center" on:click={minimize}
