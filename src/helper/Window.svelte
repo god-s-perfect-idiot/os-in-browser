@@ -10,6 +10,8 @@
 	export let defaultWindowSize = { width: '40rem', height: '20rem' };
 	export let windowClassOverrides = '';
 	export let isMinimized = false;
+	export let isNewlyCreated = false;
+	export let isFullscreen = false;
 
 	let width = defaultWindowSize.width;
 	let height = defaultWindowSize.height;
@@ -20,10 +22,52 @@
 	let windowElement;
 	let focussed = false;
 	let isFullscreen = false;
+	let isAnimating = false;
 
 	// Variables to store original size and position when entering fullscreen.
 	let originalPosition = { x, y };
 	let originalSize = { width, height };
+
+	// Handle animation for newly created windows
+	$: if (isNewlyCreated && !isAnimating && windowElement) {
+		isAnimating = true;
+		windowElement.classList.add('window-open-animation');
+		// Reset animation after it completes
+		setTimeout(() => {
+			if (windowElement) {
+				windowElement.classList.remove('window-open-animation');
+			}
+			isNewlyCreated = false;
+			isAnimating = false;
+		}, 300);
+	}
+
+	// Handle animation for restored windows
+	let wasMinimized = false;
+	$: if (!isMinimized && wasMinimized && windowElement) {
+		// Add restore animation when window becomes visible again
+		windowElement.classList.add('window-restore-animation');
+		
+		// If window was fullscreen before minimizing, restore to fullscreen
+		if (isFullscreen) {
+			x = 0;
+			y = 0;
+			width = '100vw';
+			height = '100vh';
+			// Update process manager with fullscreen position
+			pm.updateMetadata(pid, { 
+				position: { x: 0, y: 0 },
+				isFullscreen: true
+			});
+		}
+		
+		setTimeout(() => {
+			if (windowElement) {
+				windowElement.classList.remove('window-restore-animation');
+			}
+		}, 300);
+	}
+	$: wasMinimized = isMinimized;
 
 	// Handle window dragging
 	function startDrag(e) {
@@ -119,21 +163,37 @@
 	// Fullscreen toggle
 	function toggleFullscreen() {
 		if (isFullscreen) {
-			// Exit fullscreen: restore original position and size.
+			// Exit fullscreen: restore original position and size with animation
 			isFullscreen = false;
-			width = originalSize.width;
-			height = originalSize.height;
-			x = originalPosition.x;
-			y = originalPosition.y;
+			// Animate back to original size and position
+			setTimeout(() => {
+				width = originalSize.width;
+				height = originalSize.height;
+				x = originalPosition.x;
+				y = originalPosition.y;
+				// Update process manager
+				pm.updateMetadata(pid, { 
+					position: { x: originalPosition.x, y: originalPosition.y },
+					isFullscreen: false
+				});
+			}, 50);
 		} else {
 			// Store current values before going fullscreen.
 			originalPosition = { x, y };
 			originalSize = { width, height };
 			isFullscreen = true;
-			width = '100vw';
-			height = '100vh';
-			x = 0;
-			y = 0;
+			// Animate to fullscreen
+			setTimeout(() => {
+				width = '100vw';
+				height = '100vh';
+				x = 0;
+				y = 0;
+				// Update process manager
+				pm.updateMetadata(pid, { 
+					position: { x: 0, y: 0 },
+					isFullscreen: true
+				});
+			}, 50);
 		}
 	}
 
@@ -149,7 +209,13 @@
 	});
 
 	const minimize = () => {
-		pm.updateMetadata(pid, { isMinimized: true });
+		// Add minimize animation class
+		windowElement.classList.add('window-minimize-animation');
+		
+		// After animation completes, actually minimize
+		setTimeout(() => {
+			pm.updateMetadata(pid, { isMinimized: true });
+		}, 200);
 	};
 
 	$: console.log(isMinimized);
@@ -158,8 +224,8 @@
 {#if !isMinimized}
 	<div
 		bind:this={windowElement}
-		class={`window absolute pb-2 shadow-md ${windowClassOverrides} ${isFullscreen ? '!rounded-none' : '!rounded-2xl'}`}
-		style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {focussed ? 1 : 0}"
+		class={`window absolute pb-2 shadow-md ${windowClassOverrides} ${isFullscreen ? '!rounded-none' : '!rounded-2xl'} ${isNewlyCreated ? 'window-open-animation' : ''}`}
+		style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {isFullscreen ? 10001 : (focussed ? 1 : 0)}"
 		on:mousedown={(e) => {
 			// Only handle resize if we're not already dragging and not clicking on controls
 			if (e.target.closest('.controls')) return;
@@ -191,7 +257,11 @@
 					><Icon icon="material-symbols:minimize" font-size="1rem" /></button
 				>
 				<button class="maximize flex h-6 items-center" on:click={toggleFullscreen}>
+					{#if isFullscreen}
+					<Icon icon="gg:minimize" font-size="1rem" />
+					{:else}
 					<Icon icon="mdi:square-outline" font-size="1rem" />
+					{/if}
 				</button>
 				<button class="close flex h-6 items-center" on:click={() => pm.remove(pid)}>
 					<Icon icon="mdi:close" font-size="1rem" />
@@ -208,6 +278,59 @@
 	.window {
 		user-select: none;
 		background-color: #fffffff9;
+		transform-origin: center;
+		transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+					height 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+					left 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+					top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.window-open-animation {
+		animation: windowOpen 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+		transition: none !important;
+	}
+
+	@keyframes windowOpen {
+		0% {
+			opacity: 0;
+			transform: scale(0.8) translateY(20px);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
+	}
+
+	.window-minimize-animation {
+		animation: windowMinimize 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+		transition: none !important;
+	}
+
+	@keyframes windowMinimize {
+		0% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		100% {
+			opacity: 0;
+			transform: scale(0.8) translateY(20px);
+		}
+	}
+
+	.window-restore-animation {
+		animation: windowRestore 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+		transition: none !important;
+	}
+
+	@keyframes windowRestore {
+		0% {
+			opacity: 0;
+			transform: scale(0.8) translateY(20px);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
 	}
 	.controls button {
 		padding: 0rem 0.25rem;
