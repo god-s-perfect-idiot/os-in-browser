@@ -48,23 +48,23 @@ export const menuItems = {
 				hideContextMenu();
 			}
 		},
-		{
-			icon: 'mdi:color-lens',
-			label: 'Customization',
-			shortcut: 'Ctrl+T',
-			action: () => {
-				hideContextMenu();
-			}
-		},
-		{
-			icon: 'mdi:cog',
-			label: 'Settings',
-			shortcut: 'Ctrl+,',
-			action: () => {
-				// Launch settings
-				hideContextMenu();
-			}
-		},
+		// {
+		// 	icon: 'mdi:color-lens',
+		// 	label: 'Customization',
+		// 	shortcut: 'Ctrl+T',
+		// 	action: () => {
+		// 		hideContextMenu();
+		// 	}
+		// },
+		// {
+		// 	icon: 'mdi:cog',
+		// 	label: 'Settings',
+		// 	shortcut: 'Ctrl+,',
+		// 	action: () => {
+		// 		// Launch settings
+		// 		hideContextMenu();
+		// 	}
+		// },
 		{ type: 'separator' },
 		{
 			icon: 'mdi:restart',
@@ -83,14 +83,14 @@ export const menuItems = {
 				hideContextMenu();
 			}
 		},
-		{
-			icon: 'mdi:information',
-			label: 'About',
-			shortcut: 'Ctrl+I',
-			action: () => {
-				hideContextMenu();
-			}
-		},
+		// {
+		// 	icon: 'mdi:information',
+		// 	label: 'About',
+		// 	shortcut: 'Ctrl+I',
+		// 	action: () => {
+		// 		hideContextMenu();
+		// 	}
+		// },
 		{ type: 'separator' },
 		{
 			icon: 'mdi:close',

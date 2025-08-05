@@ -21,7 +21,6 @@
 	let resizeDirection = { x: '', y: '' };
 	let windowElement;
 	let focussed = false;
-	let isFullscreen = false;
 	let isAnimating = false;
 
 	// Variables to store original size and position when entering fullscreen.
