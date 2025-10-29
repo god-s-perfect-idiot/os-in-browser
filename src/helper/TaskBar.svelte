@@ -79,7 +79,7 @@
 			<div class="mx-2 h-10 w-[2px] rounded-full bg-gray-600"></div>
 			{#if runningApps.length > 0}
 				{#each runningApps as app}
-					<div class="flex h-fit cursor-pointer flex-row gap-1">
+					<div class="taskbar-app-item flex h-fit cursor-pointer flex-row gap-1 items-center group">
 						<button
 							class="icon flex h-10 w-10 cursor-pointer items-center justify-center rounded-full p-1 text-white"
 							style="background-color: {app.color}"

@@ -117,15 +117,13 @@
 	<div class="p-6 overflow-y-auto max-h-[calc(70vh-80px)] bg-surface">
 		<div class="grid grid-cols-6 gap-2">
 			{#each availableApps as app, index}
-				<button
-					class="flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-100 group"
-					class:hover:bg-primary={index !== selectedIndex}
-					class:bg-accent={index === selectedIndex}
-					class:text-white={index === selectedIndex}
-					on:click={() => launchApp(app.appId)}
-					aria-label="Launch {app.name}"
-					bind:this={appButtons[index]}
-				>
+			<button
+				class="flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-100 group"
+				class:hover:bg-primary={index !== selectedIndex}
+				on:click={() => launchApp(app.appId)}
+				aria-label="Launch {app.name}"
+				bind:this={appButtons[index]}
+			>
 					<div 
 						class="w-12 h-12 rounded-4xl flex items-center justify-center transition-transform duration-100 group-hover:scale-110"
 						style="background-color: {app.color};"

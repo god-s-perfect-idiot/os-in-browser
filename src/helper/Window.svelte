@@ -223,7 +223,7 @@
 {#if !isMinimized}
 	<div
 		bind:this={windowElement}
-		class={`window absolute pb-2 shadow-md ${windowClassOverrides} ${isFullscreen ? '!rounded-none' : '!rounded-2xl'} ${isNewlyCreated ? 'window-open-animation' : ''}`}
+		class={`window absolute pb-2 shadow-md ${windowClassOverrides} ${isFullscreen ? '!rounded-none' : '!rounded-2xl'} ${isNewlyCreated ? 'window-open-animation' : ''} ${isDragging || isResizing ? 'window-dragging' : ''}`}
 		style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {isFullscreen ? 10001 : (focussed ? 1 : 0)}"
 		on:mousedown={(e) => {
 			// Only handle resize if we're not already dragging and not clicking on controls
@@ -282,6 +282,10 @@
 					height 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
 					left 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
 					top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.window-dragging {
+		transition: none !important;
 	}
 
 	.window-open-animation {
