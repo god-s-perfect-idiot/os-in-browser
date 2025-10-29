@@ -63,7 +63,7 @@
 		width: 100vw;
 		height: 100vh;
 		background-color: var(--surface-color);
-		background-image: url('images/bg-6.png');
+		background-image: url('https://i.postimg.cc/zBd3S8nR/bg-6.png');
         background-size: cover;
         background-position: center;
 	}
