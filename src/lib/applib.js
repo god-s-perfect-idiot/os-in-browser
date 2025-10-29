@@ -275,6 +275,21 @@ export const apps = {
             height: "30rem"
         }
     },
+    ubiquity: {
+        appId: 'ubiquity',
+        component: Frame,
+        needsParent: false,
+        name: 'Ubiquity',
+        iconColor: '#ff00ff',  
+        color: '#ffffff',
+        icon: "mdi:robot",
+        windowClassOverrides: "",
+        props: { url: "https://ubiquity-1.netlify.app/", title: "Ubiquity" },
+        defaultWindowSize: {
+            width: "25rem",
+            height: "45rem"
+        }
+    },
     snake: {
         appId: 'snake',
         component: Snake,
