@@ -24,7 +24,7 @@ export const apps = {
         component: Help,
         needsParent: false,
         name: 'Help',
-        icon: "mdi:help",
+        icon: "memory:help",
         windowClassOverrides: "dot-matrix",
         props: { },
         defaultWindowSize: {
@@ -39,7 +39,7 @@ export const apps = {
         name: 'Feedback',
         iconColor: '#808080',  
         color: '#ffffff',
-        icon: "mdi:feedback",
+        icon: "pixelarticons:radio-tower",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -54,7 +54,7 @@ export const apps = {
         name: 'Frame',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "fluent:window-16-regular",
+        icon: "pixelarticons:article",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -69,7 +69,7 @@ export const apps = {
         name: 'File',
         iconColor: '#808080',  
         color: '#ffffff',
-        icon: "mdi:file",
+        icon: "pixelarticons:article",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -84,7 +84,7 @@ export const apps = {
         name: 'Folder',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:folder",
+        icon: "pixelarticons:folder-x",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -99,7 +99,7 @@ export const apps = {
         name: 'Files',
         iconColor: '#808080',  
         color: '#ffffff',
-        icon: "mdi:folder-open",
+        icon: "pixelarticons:folder",
         windowClassOverrides: "dot-matrix",
         props: { },
         defaultWindowSize: {
@@ -114,7 +114,7 @@ export const apps = {
         name: 'Settings',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:cog",
+        icon: "pixelarticons:device-tv-smart",
         windowClassOverrides: "dot-matrix",
         props: { },
         defaultWindowSize: {
@@ -129,7 +129,7 @@ export const apps = {
         name: 'Console',
         iconColor: '#808080',  
         color: '#000000',
-        icon: "mdi:terminal",
+        icon: "pixelarticons:code",
         windowClassOverrides: "!bg-black text-white",
         props: { },
         defaultWindowSize: {
@@ -144,7 +144,7 @@ export const apps = {
         name: 'Calculator',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:calculator",
+        icon: "pixelarticons:calculator",
         windowClassOverrides: "dot-matrix",
         props: { },
         defaultWindowSize: {
@@ -159,7 +159,7 @@ export const apps = {
         name: 'Sketch',
         iconColor: '#808080',  
         color: '#ffffff',
-        icon: "mdi:brush",
+        icon: "pixelarticons:edit",
         windowClassOverrides: "dot-matrix",
         props: { },
         defaultWindowSize: {
@@ -174,7 +174,7 @@ export const apps = {
         name: 'Clock',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:clock",
+        icon: "pixelarticons:clock",
         windowClassOverrides: "dot-matrix",
         props: { },
         defaultWindowSize: {
@@ -189,7 +189,7 @@ export const apps = {
         name: 'Notes',
         iconColor: '#808080',  
         color: '#ffffff',
-        icon: "mdi:pen",
+        icon: "pixelarticons:edit-box",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -204,7 +204,7 @@ export const apps = {
         name: 'Stopwatch',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:stopwatch",
+        icon: "pixelarticons:briefcase-search-1",
         windowClassOverrides: "dot-matrix",
         props: { },
         defaultWindowSize: {
@@ -219,7 +219,7 @@ export const apps = {
         name: 'Pomodoro',
         iconColor: '#808080',  
         color: '#ffffff',
-        icon: "mdi:hourglass",
+        icon: "pixelarticons:hourglass",
         windowClassOverrides: "dot-matrix",
         props: { },
         defaultWindowSize: {
@@ -234,7 +234,7 @@ export const apps = {
         name: 'Processes',
         iconColor: '#808080',  
         color: '#ffffff',
-        icon: "mdi:heart-pulse",
+        icon: "pixelarticons:heart",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -249,7 +249,7 @@ export const apps = {
         name: 'Todo',
         iconColor: '#808080',  
         color: '#ffffff',
-        icon: "mdi:check-bold",
+        icon: "pixelarticons:checklist",
         windowClassOverrides: "dot-matrix",
         props: { },
         defaultWindowSize: {
@@ -264,7 +264,7 @@ export const apps = {
         name: 'Wiki',
         iconColor: '#808080',  
         color: '#ffffff',
-        icon: "mdi:wikipedia",
+        icon: "pixel:wikipedia",
         windowClassOverrides: "",
         props: { url: "https://www.wikipedia.org?dis", title: "Wikipedia" },
         defaultWindowSize: {
@@ -279,7 +279,7 @@ export const apps = {
         name: 'Snake',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:snake",
+        icon: "dinkie-icons:snake",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -294,7 +294,7 @@ export const apps = {
         name: 'Pong',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:ping-pong",
+        icon: "dinkie-icons:table-tennis-paddle-and-ball",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -309,7 +309,7 @@ export const apps = {
         name: 'Tic Tac Toe',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:gamepad-circle",
+        icon: "pixelarticons:circle",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -324,7 +324,7 @@ export const apps = {
         name: 'Minesweeper',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:mine",
+        icon: "dinkie-icons:bomb-filled",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {
@@ -336,10 +336,10 @@ export const apps = {
         appId: 'flappyBird',
         component: FlappyBird,
         needsParent: false,
-        name: 'Flappy Bird',
+        name: 'Frappy Frog',
         iconColor: '#ffffff',  
         color: '#808080',
-        icon: "mdi:bird",
+        icon: "streamline-pixel:pet-animals-frog-face",
         windowClassOverrides: "",
         props: { },
         defaultWindowSize: {

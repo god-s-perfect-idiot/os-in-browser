@@ -21,35 +21,57 @@
 	let resizeStartSize = { width: 0, height: 0 };
 	let windowElement;
 	let isFullscreen = false;
+	let previewPosition = { x: 0, y: 0 };
+	let originalDragPosition = { x: 0, y: 0 };
+	let isFlickering = false;
+	let previewSize = { width: '40rem', height: '20rem' };
+	let originalResizeSize = { width: '40rem', height: '20rem' };
 
 	// Variables to store original size and position when entering fullscreen.
 	let originalPosition = { x, y };
 	let originalSize = { width, height };
 
-	// Handle window dragging
+	// Handle window dragging with retro preview box
 	function startDrag(e) {
 		if (e.target.closest('.controls')) return; // Don't drag if clicking controls
 		isDragging = true;
+		originalDragPosition = { x, y };
 		dragOffset.x = e.clientX - x;
 		dragOffset.y = e.clientY - y;
+		previewPosition = { x: e.clientX - dragOffset.x, y: e.clientY - dragOffset.y };
 		document.addEventListener('mousemove', drag);
 		document.addEventListener('mouseup', stopDrag);
 	}
 
 	function drag(e) {
 		if (!isDragging) return;
-		x = e.clientX - dragOffset.x;
-		y = e.clientY - dragOffset.y;
+		// Only update preview position, keep actual window in place
+		previewPosition.x = e.clientX - dragOffset.x;
+		previewPosition.y = e.clientY - dragOffset.y;
 	}
 
 	function stopDrag() {
+		if (!isDragging) return;
 		isDragging = false;
 		document.removeEventListener('mousemove', drag);
 		document.removeEventListener('mouseup', stopDrag);
+		
+		const targetX = previewPosition.x;
+		const targetY = previewPosition.y;
+		
+		// Move window to new position first
+		x = targetX;
+		y = targetY;
 		pm.updateMetadata(pid, { position: { x, y } });
+		
+		// Trigger flicker animation
+		isFlickering = true;
+		setTimeout(() => {
+			isFlickering = false;
+		}, 200);
 	}
 
-	// Handle window resizing from bottom-right corner
+	// Handle window resizing from bottom-right corner with retro preview
 	function startResize(e) {
 		isResizing = true;
 		const rect = windowElement.getBoundingClientRect();
@@ -57,6 +79,8 @@
 		resizeStartPos.y = e.clientY;
 		resizeStartSize.width = rect.width;
 		resizeStartSize.height = rect.height;
+		originalResizeSize = { width, height };
+		previewSize = { width, height };
 		document.addEventListener('mousemove', resize);
 		document.addEventListener('mouseup', stopResize);
 		e.preventDefault();
@@ -71,19 +95,30 @@
 		const newWidth = resizeStartSize.width + deltaX;
 		const newHeight = resizeStartSize.height + deltaY;
 
-		// Minimum window size
+		// Update preview size only, keep actual window size unchanged
 		if (newWidth >= 200) {
-			width = `${newWidth}px`;
+			previewSize.width = `${newWidth}px`;
 		}
 		if (newHeight >= 100) {
-			height = `${newHeight}px`;
+			previewSize.height = `${newHeight}px`;
 		}
 	}
 
 	function stopResize() {
+		if (!isResizing) return;
 		isResizing = false;
 		document.removeEventListener('mousemove', resize);
 		document.removeEventListener('mouseup', stopResize);
+		
+		// Apply the resize
+		width = previewSize.width;
+		height = previewSize.height;
+		
+		// Trigger flicker animation
+		isFlickering = true;
+		setTimeout(() => {
+			isFlickering = false;
+		}, 200);
 	}
 
 	// Fullscreen toggle
@@ -113,12 +148,82 @@
 </script>
 
 {#if !isMinimized}
+	<!-- Preview box shown during drag -->
+	{#if isDragging}
+		<div
+			class={`window drag-preview ${windowClassOverrides}`}
+			style="left: {previewPosition.x}px; top: {previewPosition.y}px; width: {width}; height: {height}; z-index: 300;"
+		>
+			<div class="titlebar">
+				<div class="controls">
+					<button class="close">
+						<span class="close-dot"></span>
+					</button>
+					<button class="minimize">
+						<span class="minimize-line"></span>
+					</button>
+				</div>
+				<div class="title-container">
+					<span class="title">{title}</span>
+				</div>
+			</div>
+			<div class="window-content"></div>
+		</div>
+	{/if}
+	
+	<!-- Preview box shown during resize -->
+	{#if isResizing}
+		<div
+			class={`window drag-preview ${windowClassOverrides}`}
+			style="left: {x}px; top: {y}px; width: {previewSize.width}; height: {previewSize.height}; z-index: 300;"
+		>
+			<div class="titlebar">
+				<div class="controls">
+					<button class="close">
+						<span class="close-dot"></span>
+					</button>
+					<button class="minimize">
+						<span class="minimize-line"></span>
+					</button>
+				</div>
+				<div class="title-container">
+					<span class="title">{title}</span>
+				</div>
+			</div>
+			<div class="window-content"></div>
+		</div>
+	{/if}
+	
+	<!-- Preview box shown during resize -->
+	{#if isResizing}
+		<div
+			class={`window drag-preview ${windowClassOverrides}`}
+			style="left: {x}px; top: {y}px; width: {previewSize.width}; height: {previewSize.height}; z-index: 300;"
+		>
+			<div class="titlebar">
+				<div class="controls">
+					<button class="close">
+						<span class="close-dot"></span>
+					</button>
+					<button class="minimize">
+						<span class="minimize-line"></span>
+					</button>
+				</div>
+				<div class="title-container">
+					<span class="title">{title}</span>
+				</div>
+			</div>
+			<div class="window-content"></div>
+		</div>
+	{/if}
+	
+	<!-- Actual window -->
 	<div
 		bind:this={windowElement}
-		class={`window ${windowClassOverrides}`}
+		class={`window ${windowClassOverrides} ${isFlickering ? 'flickering' : ''}`}
 		style="left: {x}px; top: {y}px; width: {width}; height: {height}; z-index: {isActive
 			? 200
-			: 100}"
+			: 100}; {isDragging || isResizing ? 'opacity: 0.9;' : ''}"
 		on:mousedown={() => {
 			// Bring window to front when clicked
 			pm.setActive(pid);
@@ -420,5 +525,22 @@
 		border-width: 0 0 6px 6px;
 		border-color: transparent transparent #000 transparent;
 		opacity: 0.4;
+	}
+	.drag-preview {
+		pointer-events: none;
+		background: transparent;
+		border: 2px solid #000;
+	}
+	.drag-preview .titlebar,
+	.drag-preview .window-content {
+		display: none;
+	}
+	.flickering {
+		animation: flicker 0.2s ease-in-out;
+	}
+	@keyframes flicker {
+		0% { opacity: 1; }
+		12.5% { opacity: 0; }
+		100% { opacity: 1; }
 	}
 </style>
