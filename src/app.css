@@ -1,43 +1,184 @@
 @import 'tailwindcss';
 
-body {
-    font-family: 'Roboto', sans-serif;
+html, body {
+    overscroll-behavior: none;
+    overflow-x: hidden;
 }
 
-/* variables */
+body {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    /* Pixelated cursor - retro 8-bit arrow style */
+    cursor: url("/cursor.png"), auto;
+}
+
+/* Pixelated pointer cursor for clickable elements */
+a, button, [role="button"], .cursor-pointer, [onclick], .titlebar {
+    cursor: url("/cursor.png"), pointer;
+}
+
+/* Retro block caret for all text inputs */
+input, textarea, [contenteditable] {
+    caret-color: #000;
+    caret-shape: block;
+}
+
+/* Single gray color for entire app */
 :root {
-    --source-color: #c8eea8;
-    --primary-color: #D8E0D0;
-    --secondary-color: #dae7ca;
-    --tertiary-color: #bbecea;
-    --error-color: #FF5449;
-    --error-container-color: #ffdad6;
-    --accent-color: #47672f;
-    --surface-color: #f9faef;
-    --surface-high-color: #edefe4;
+    --gray-color: #808080;
+}
+
+/* Dot matrix pattern for gray backgrounds */
+.dot-matrix {
+    background-image: 
+        radial-gradient(circle, #000 1px, transparent 1px),
+        radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    background-color: #fff;
+}
+
+/* variables - all use single gray */
+:root {
+    --source-color: #808080;
+    --primary-color: #808080;
+    --secondary-color: #808080;
+    --tertiary-color: #808080;
+    --error-color: #808080;
+    --error-container-color: #808080;
+    --accent-color: #808080;
+    --surface-color: #808080;
+    --surface-high-color: #808080;
 }
 
 
 .bg-accent {
-    background-color: var(--accent-color);
-  }
+    background-image: 
+        radial-gradient(circle, #000 1px, transparent 1px),
+        radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    background-color: #fff;
+}
 
 .bg-primary {
-    background-color: var(--primary-color);
+    background-image: 
+        radial-gradient(circle, #000 1px, transparent 1px),
+        radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    background-color: #fff;
 }
 
 .bg-secondary {
-    background-color: var(--secondary-color);
+    background-image: 
+        radial-gradient(circle, #000 1px, transparent 1px),
+        radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    background-color: #fff;
 }
 
 .bg-tertiary {
-    background-color: var(--tertiary-color);
+    background-image: 
+        radial-gradient(circle, #000 1px, transparent 1px),
+        radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    background-color: #fff;
 }
 
 .bg-surface {
-    background-color: var(--surface-color);
+    background-image: 
+        radial-gradient(circle, #000 1px, transparent 1px),
+        radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    background-color: #fff;
 }
 
 .bg-source {
-    background-color: var(--source-color);
+    background-image: 
+        radial-gradient(circle, #000 1px, transparent 1px),
+        radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    background-color: #fff;
+}
+
+/* Global scrollbar styling - applies to all scrollbars */
+::-webkit-scrollbar {
+    width: 20px;
+    height: 20px;
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+    background-image: 
+        radial-gradient(circle, #000 1px, transparent 1px),
+        radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    background-color: #fff;
+    border: 2px solid #000;
+}
+
+/* Scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    background: #fff;
+    border: 2px solid #000;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #000;
+}
+
+/* Up arrow button (vertical scrollbar top) */
+::-webkit-scrollbar-button:vertical:start:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M5 2 L2 6 L8 6 Z' fill='%23000'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 10px 10px !important;
+}
+
+/* Down arrow button (vertical scrollbar bottom) */
+::-webkit-scrollbar-button:vertical:end:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M5 8 L2 4 L8 4 Z' fill='%23000'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 10px 10px !important;
+}
+
+/* Left arrow button (horizontal scrollbar left) */
+::-webkit-scrollbar-button:horizontal:start:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 5 L6 2 L6 8 Z' fill='%23000'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 10px 10px !important;
+}
+
+/* Right arrow button (horizontal scrollbar right) */
+::-webkit-scrollbar-button:horizontal:end:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M8 5 L4 2 L4 8 Z' fill='%23000'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 10px 10px !important;
+}
+
+::-webkit-scrollbar-button:hover {
+    background-image: 
+        radial-gradient(circle, #000 1px, transparent 1px),
+        radial-gradient(circle, #000 1px, transparent 1px) !important;
+    background-size: 4px 4px !important;
+    background-position: 0 0, 2px 2px !important;
+    background-color: #fff !important;
+    border-radius: 0px !important;
 }

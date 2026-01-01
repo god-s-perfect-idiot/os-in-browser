@@ -15,7 +15,12 @@
 	}
 
 	.progress2 {
-		background: #cfcfcf;
+		background-image: 
+			radial-gradient(circle, #000 1px, transparent 1px),
+			radial-gradient(circle, #000 1px, transparent 1px);
+		background-size: 4px 4px;
+		background-position: 0 0, 2px 2px;
+		background-color: #fff;
 	}
 
 	.progress-bar2 {

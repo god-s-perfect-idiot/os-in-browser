@@ -69,17 +69,34 @@
 		}
 	}
 
+	// Create dot matrix pattern for canvas
+	function createDotMatrixPattern() {
+		const patternCanvas = document.createElement('canvas');
+		patternCanvas.width = 4;
+		patternCanvas.height = 4;
+		const patternCtx = patternCanvas.getContext('2d');
+		// Draw black dots
+		patternCtx.fillStyle = '#000';
+		patternCtx.fillRect(0, 0, 1, 1);
+		patternCtx.fillRect(2, 2, 1, 1);
+		return ctx.createPattern(patternCanvas, 'repeat');
+	}
+
 	// Draw the game state on the canvas.
 	function draw() {
 		if (!ctx) return;
-		// Clear canvas.
-		ctx.fillStyle = '#f3f4f6';
+		// Clear canvas with white background
+		ctx.fillStyle = '#fff';
 		ctx.fillRect(0, 0, width, height);
-		// Draw apple.
-		ctx.fillStyle = '#ef4444';
+		// Apply dot matrix pattern
+		const pattern = createDotMatrixPattern();
+		ctx.fillStyle = pattern;
+		ctx.fillRect(0, 0, width, height);
+		// Draw apple with dot matrix
+		ctx.fillStyle = pattern;
 		ctx.fillRect(apple.x * cellSize, apple.y * cellSize, cellSize, cellSize);
-		// Draw snake.
-		ctx.fillStyle = '#10b981';
+		// Draw snake with dot matrix
+		ctx.fillStyle = pattern;
 		snake.forEach(segment => {
 			ctx.fillRect(segment.x * cellSize, segment.y * cellSize, cellSize, cellSize);
 		});
@@ -134,9 +151,9 @@
 	<canvas bind:this={canvas} class="h-full w-full"></canvas>
 	{#if gameOver}
 		<!-- Overlay for game over message -->
-		<div class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white">
+		<div class="absolute inset-0 flex flex-col items-center justify-center bg-black text-white">
 			<div class="text-3xl font-bold mb-4">Game Over!</div>
-			<button on:click={initGame} class="px-4 py-2 bg-green-500 rounded">
+			<button on:click={initGame} class="px-4 py-2 dot-matrix rounded">
 				Restart
 			</button>
 		</div>

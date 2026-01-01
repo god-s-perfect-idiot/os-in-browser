@@ -210,25 +210,35 @@
   }
   
   .cell:not(:disabled):hover {
-    background: #f0f0f0;
+    background-image: 
+		radial-gradient(circle, #000 1px, transparent 1px),
+		radial-gradient(circle, #000 1px, transparent 1px);
+	background-size: 4px 4px;
+	background-position: 0 0, 2px 2px;
+	background-color: #fff;
   }
   
   .cell.revealed {
-    background: #e0e0e0;
+    background-image: 
+		radial-gradient(circle, #000 1px, transparent 1px),
+		radial-gradient(circle, #000 1px, transparent 1px);
+	background-size: 4px 4px;
+	background-position: 0 0, 2px 2px;
+	background-color: #fff;
   }
   
   .cell:disabled {
     cursor: not-allowed;
   }
   
-  .number-1 { color: blue; }
-  .number-2 { color: green; }
-  .number-3 { color: red; }
-  .number-4 { color: darkblue; }
-  .number-5 { color: darkred; }
-  .number-6 { color: teal; }
+  .number-1 { color: #808080; }
+  .number-2 { color: #808080; }
+  .number-3 { color: #808080; }
+  .number-4 { color: #808080; }
+  .number-5 { color: #808080; }
+  .number-6 { color: #808080; }
   .number-7 { color: black; }
-  .number-8 { color: gray; }
+  .number-8 { color: #808080; }
   
   .reset-button {
     background: black;

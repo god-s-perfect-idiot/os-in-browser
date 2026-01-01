@@ -171,7 +171,12 @@
     }
     
     .cell:not(:disabled):hover {
-      background: #f0f0f0;
+      background-image: 
+		radial-gradient(circle, #000 1px, transparent 1px),
+		radial-gradient(circle, #000 1px, transparent 1px);
+	background-size: 4px 4px;
+	background-position: 0 0, 2px 2px;
+	background-color: #fff;
     }
     
     .cell:disabled {

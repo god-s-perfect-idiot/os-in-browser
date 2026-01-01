@@ -175,29 +175,29 @@
 	}
 </script>
 
-<div class="h-full w-full overflow-hidden rounded-lg font-mono text-[#02f16c] p-4">
+<div class="h-full w-full overflow-hidden rounded-lg font-mono text-[#808080] p-4">
 	<div class="h-full overflow-y-auto">
 		{#each history as entry}
 			<div class="mb-2">
 				{#if entry.type === 'input'}
-					<span class="text-[#f1f1f1]">&gt; {entry.content}</span>
+					<span class="text-[#808080]">&gt; {entry.content}</span>
 				{:else if entry.type === 'error'}
-					<span class="text-red-500">{entry.content}</span>
+					<span class="text-[#808080]">{entry.content}</span>
 				{:else if entry.type === 'output'}
 					<pre class="whitespace-pre-wrap">{entry.content}</pre>
 				{:else if entry.type === 'system'}
-					<span class="text-gray-400 italic">{entry.content}</span>
+					<span class="text-[#808080] italic">{entry.content}</span>
 				{/if}
 			</div>
 		{/each}
 		<div class="flex items-center">
-			<span class="mr-2 text-[#f1f1f1]">&gt;</span>
+			<span class="mr-2 text-[#808080]">&gt;</span>
 			<input
 				bind:this={inputElement}
 				type="text"
 				bind:value={inputValue}
 				on:keydown={handleKeyDown}
-				class="flex-1 bg-transparent text-[#f1f1f1] outline-none"
+				class="flex-1 bg-transparent text-[#808080] outline-none"
 				spellcheck="false"
 				autocomplete="off"
 			/>

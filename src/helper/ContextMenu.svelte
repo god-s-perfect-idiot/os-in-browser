@@ -16,7 +16,7 @@
 			isMinimized: false,
 			position: {
 				x: 100, // Default window position
-				y: 100
+				y: 150  // Account for menu bar (24px) + padding
 			},
 			...app
 		});
@@ -104,12 +104,12 @@
 
 {#if show}
 	<div
-		class="context-menu fixed z-[9999] flex w-fit flex-col justify-start px-2 py-2 text-black"
+		class="context-menu fixed z-[9999] flex w-fit flex-col justify-start text-black"
 		style="left: {left}px; top: {top}px"
 	>
 		{#each items as item}
 			{#if item.type === 'separator'}
-				<div class="w-full border-b border-gray-400 pt-1 mb-2" />
+				<div class="w-full border-b border-[#000]" />
 			{:else}
 				<button on:click={item.action}>
 					<div class="flex items-center justify-start">
@@ -125,10 +125,9 @@
 
 <style>
 	.context-menu {
-		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-		/* background-color: #ffffffec; */
-		background-color: white;
-		border-radius: 0.5rem;
+		background: #fff;
+		border: 2px solid #000;
+		border-radius: 0;
 	}
 	.context-menu button {
 		cursor: pointer;
@@ -138,27 +137,32 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		font-weight: 400;
-		font-size: 0.9rem;
-		color: #333333;
+		font-weight: bold;
+		font-size: 1rem;
+		color: #000;
 		padding-left: 0.5rem;
 		padding-right: 0.5rem;
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
 		gap: 2rem;
+		background: transparent;
 	}
 	button span {
-		font-size: 0.9rem;
-		color: #666666;
-		font-weight: 500;
+		font-size: 1rem;
+		color: #000;
+		font-weight: bold;
 	}
 
 	button:hover {
-		background-color: var(--accent-color);
-		color: white !important;
+		background: #000;
+		color: #fff !important;
 	}
 
 	button:hover span {
-		color: #f1f1f1 !important;
+		color: #fff !important;
+	}
+	
+	button:hover :global(svg) {
+		color: #fff !important;
 	}
 </style>

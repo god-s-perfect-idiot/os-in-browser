@@ -26,8 +26,17 @@
 	onMount(() => {
 		setTimeout(() => {
 			loading = false;
-		}, 3000);
+		}, 3500);
 	});
+
+	// Deselect apps when clicking on desktop background
+	function handleDesktopClick(event) {
+		// Only deselect if clicking directly on desktop, not on app items
+		if (event.target.classList.contains('desktop') && !event.target.closest('.app-item')) {
+			// Dispatch custom event to deselect all apps
+			document.dispatchEvent(new CustomEvent('deselect-apps'));
+		}
+	}
 </script>
 
 
@@ -38,7 +47,7 @@
     
 <WindowManager />
 
-<div class="desktop">
+<div class="desktop" on:click={handleDesktopClick}>
     <AppDrawer />
 </div>
 {/if}
@@ -47,10 +56,15 @@
 	.desktop {
 		width: 100vw;
 		height: 100vh;
-		background-color: #008080;
-		background-image: url('https://raw.githubusercontent.com/grassmunk/Platinum9/master/Wallpapers/Windows%2095%20Clouds.png');
-		background-size: auto;
-		background-repeat: repeat;
-		background-position: left top;
+		padding-top: 24px;
+		box-sizing: border-box;
+		background-image: 
+			radial-gradient(circle, #000 1px, transparent 1px),
+			radial-gradient(circle, #000 1px, transparent 1px);
+		background-size: 4px 4px;
+		background-position: 0 0, 2px 2px;
+		background-color: #fff;
+		position: relative;
+		z-index: 0;
 	}
 </style>

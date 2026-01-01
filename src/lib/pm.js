@@ -5,7 +5,7 @@ function createProcessManager() {
 	// Initial state - try to load from localStorage first
 	let initialProcesses = new Map();
 	let nextPid = 1;
-	let activePid = null;
+	let initialActivePid = null;
 
 	// Only attempt to access localStorage in the browser environment
 	if (browser) {
@@ -27,7 +27,7 @@ function createProcessManager() {
 				
 				// Restore nextPid and activePid
 				nextPid = parsed.nextPid;
-				activePid = parsed.activePid;
+				initialActivePid = parsed.activePid;
 			}
 		} catch (error) {
 			console.error('Error loading process manager state:', error);
@@ -35,6 +35,10 @@ function createProcessManager() {
 	}
 
 	const { subscribe, set, update } = writable(initialProcesses);
+	
+	// Create a reactive store for activePid
+	const activePidStore = writable(initialActivePid);
+	let activePid = initialActivePid;
 
 	// Helper to convert Map to Array for array-like operations
 	const asArray = derived({ subscribe }, ($processes) => Array.from($processes.values()));
@@ -69,7 +73,8 @@ function createProcessManager() {
 			saveToLocalStorage($processes);
 			return $processes;
 		});
-		activePid = pid;
+			activePid = pid;
+			activePidStore.set(pid);
 		return pid;
 	}
 
@@ -98,9 +103,15 @@ function createProcessManager() {
 	}
 
 	function setActive(pid) {
-		activePid = pid;
-		// Save current state with updated activePid
-		saveToLocalStorage(get({ subscribe }));
+		if (activePid !== pid) {
+			activePid = pid;
+			activePidStore.set(pid);
+			// Trigger a store update to force WindowManager to re-render
+			update(($processes) => {
+				saveToLocalStorage($processes);
+				return $processes;
+			});
+		}
 	}
 
 	function updateMetadata(pid, metadata) {
@@ -136,6 +147,7 @@ function createProcessManager() {
 			const emptyMap = new Map();
 			nextPid = 1;
 			activePid = null;
+			activePidStore.set(null);
 			saveToLocalStorage(emptyMap);
 			return emptyMap;
 		});
@@ -158,7 +170,8 @@ function createProcessManager() {
 		clear,
 		sorted,
 		getActive,
-		setActive
+		setActive,
+		activePidStore
 	};
 }
 

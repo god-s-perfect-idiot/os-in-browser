@@ -255,28 +255,48 @@
 	}
 
 	.overflow-y-auto::-webkit-scrollbar-track {
-		background: #f1f1f1;
+		background-image: 
+			radial-gradient(circle, #000 1px, transparent 1px),
+			radial-gradient(circle, #000 1px, transparent 1px);
+		background-size: 4px 4px;
+		background-position: 0 0, 2px 2px;
+		background-color: #fff;
 	}
 
 	.overflow-y-auto::-webkit-scrollbar-thumb {
-		background: #c1c1c1;
-		border-radius: 4px;
+		background-image: 
+			radial-gradient(circle, #000 1px, transparent 1px),
+			radial-gradient(circle, #000 1px, transparent 1px);
+		background-size: 4px 4px;
+		background-position: 0 0, 2px 2px;
+		background-color: #fff;
+		border-radius: 0;
 	}
 
 	.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-		background: #a8a8a8;
+		background-image: 
+			radial-gradient(circle, #000 1px, transparent 1px),
+			radial-gradient(circle, #000 1px, transparent 1px);
+		background-size: 4px 4px;
+		background-position: 0 0, 2px 2px;
+		background-color: #fff;
 	}
 
 	/* File list hover effects */
 	.grid:hover {
-		background-color: #f8fafc;
+		background-image: 
+			radial-gradient(circle, #000 1px, transparent 1px),
+			radial-gradient(circle, #000 1px, transparent 1px);
+		background-size: 4px 4px;
+		background-position: 0 0, 2px 2px;
+		background-color: #fff;
 	}
 
 	/* Focus styles */
 	input:focus, textarea:focus {
 		outline: none;
 		ring: 2px;
-		ring-color: #3b82f6;
+		ring-color: #808080;
 	}
 
 	/* Button hover effects */
@@ -291,11 +311,11 @@
 
 	/* File type icons */
 	.text-yellow-500 {
-		color: #eab308;
+		color: #808080;
 	}
 
 	.text-gray-500 {
-		color: #6b7280;
+		color: #808080;
 	}
 
 	/* Responsive design */
@@ -314,7 +334,7 @@
 	}
 </style>
 
-<div class="flex h-full w-full flex-col bg-gray-50" on:contextmenu={(e) => handleRightClick(e, 'background')} on:click={handleClickOutside}>
+<div class="flex h-full w-full flex-col dot-matrix" on:contextmenu={(e) => handleRightClick(e, 'background')} on:click={handleClickOutside}>
 	<!-- Header -->
 	<div class="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3">
 		<div class="flex items-center gap-4">
@@ -341,7 +361,7 @@
 		<!-- Breadcrumb -->
 		<div class="flex items-center gap-1 text-sm text-gray-600">
 			<button 
-				class="hover:text-blue-600 transition-colors"
+				class="hover:text-gray-700 transition-colors"
 				on:click={() => navigateToPath('/')}
 			>
 				Home
@@ -350,7 +370,7 @@
 				{#each pathParts as part, index}
 					<Icon icon="material-symbols:chevron-right" class="text-sm" />
 					<button 
-						class="hover:text-blue-600 transition-colors"
+						class="hover:text-gray-700 transition-colors"
 						on:click={() => {
 							const targetPath = '/' + pathParts.slice(0, index + 1).join('/');
 							navigateToPath(targetPath);
@@ -365,14 +385,14 @@
 		<!-- Toolbar -->
 		<div class="flex items-center gap-2">
 			<button 
-				class="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
+				class="flex items-center gap-2 px-3 py-1.5 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors text-sm"
 				on:click={() => newFilePopup = true}
 			>
 				<Icon icon="material-symbols:add" class="text-sm" />
 				New File
 			</button>
 			<button 
-				class="flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm"
+				class="flex items-center gap-2 px-3 py-1.5 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors text-sm"
 				on:click={() => newFolderPopup = true}
 			>
 				<Icon icon="material-symbols:create-new-folder" class="text-sm" />
@@ -398,7 +418,7 @@
 				{#if $files}
 					{#each $files as file}
 						<div 
-							class="grid grid-cols-12 gap-4 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 {selectedFile?.path === file.path ? 'bg-blue-50' : ''}"
+							class="grid grid-cols-12 gap-4 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 {selectedFile?.path === file.path ? 'bg-gray-100' : ''}"
 							on:click={() => openFile(file)}
 							on:dblclick={() => openFile(file)}
 							on:contextmenu={(e) => handleRightClick(e, 'file', file)}
@@ -406,7 +426,7 @@
 							<div class="col-span-6 flex items-center gap-3">
 								<Icon 
 									icon={file.type === 'directory' ? 'material-symbols:folder' : 'material-symbols:description'} 
-									class="text-lg {file.type === 'directory' ? 'text-yellow-500' : 'text-gray-500'}" 
+									class="text-lg {file.type === 'directory' ? 'text-gray-600' : 'text-gray-500'}" 
 								/>
 								<span class="truncate">{file.name}</span>
 							</div>
@@ -450,7 +470,7 @@
 							on:click={() => { fileToDelete = selectedFile; deletePopup = true; }}
 							title="Delete"
 						>
-							<Icon icon="material-symbols:delete" class="text-sm text-red-500" />
+							<Icon icon="material-symbols:delete" class="text-sm text-gray-600" />
 						</button>
 					</div>
 				</div>
@@ -464,7 +484,7 @@
 						></textarea>
 					{:else}
 						<div class="flex items-center justify-center h-full text-gray-500">
-							<Icon icon="material-symbols:folder" class="text-4xl text-yellow-500 mr-3" />
+							<Icon icon="material-symbols:folder" class="text-4xl text-gray-600 mr-3" />
 							<span>This is a folder. Double-click to open it.</span>
 						</div>
 					{/if}
@@ -479,7 +499,7 @@
 	<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
 		<div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
 			<div class="flex items-center gap-3 mb-4">
-				<Icon icon="material-symbols:warning" class="text-2xl text-red-500" />
+				<Icon icon="material-symbols:warning" class="text-2xl text-gray-600" />
 				<h3 class="text-lg font-semibold">Delete File</h3>
 			</div>
 			<p class="text-gray-600 mb-6">
@@ -493,7 +513,7 @@
 					Cancel
 				</button>
 				<button 
-					class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+					class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
 					on:click={deleteFile}
 				>
 					Delete
@@ -513,7 +533,7 @@
 				<input 
 					type="text" 
 					bind:value={newFileName}
-					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
 					placeholder="Enter file name..."
 					on:keydown={(e) => e.key === 'Enter' && createFile()}
 				/>
@@ -526,7 +546,7 @@
 					Cancel
 				</button>
 				<button 
-					class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+					class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
 					on:click={createFile}
 				>
 					Create
@@ -546,7 +566,7 @@
 				<input 
 					type="text" 
 					bind:value={newFolderName}
-					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
 					placeholder="Enter folder name..."
 					on:keydown={(e) => e.key === 'Enter' && createFolder()}
 				/>
@@ -559,7 +579,7 @@
 					Cancel
 				</button>
 				<button 
-					class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+					class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
 					on:click={createFolder}
 				>
 					Create
@@ -579,7 +599,7 @@
 				<input 
 					type="text" 
 					bind:value={renameName}
-					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
 					placeholder="Enter new name..."
 					on:keydown={(e) => e.key === 'Enter' && renameFile()}
 				/>
@@ -592,7 +612,7 @@
 					Cancel
 				</button>
 				<button 
-					class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+					class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
 					on:click={renameFile}
 				>
 					Rename

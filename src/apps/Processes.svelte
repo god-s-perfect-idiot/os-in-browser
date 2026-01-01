@@ -48,7 +48,7 @@
 			<div class="w-full flex justify-end">
 				<!-- <button 
 					on:click={() => pm.remove(process.pid)} 
-					class="cursor-pointer w-24 bg-red-500 text-white rounded-sm h-8"
+					class="cursor-pointer w-24 dot-matrix text-white rounded-sm h-8"
 				>
 					Kill
 				</button> -->

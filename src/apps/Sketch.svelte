@@ -10,7 +10,7 @@
 	let color = '#000000';
 
 	// Predefined palette colors
-	const palette = ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ffff00'];
+	const palette = ['#000000', '#808080', '#808080', '#808080', '#808080'];
 
 	// Resize the canvas to always match the container's dimensions
 	function resizeCanvas() {
@@ -84,7 +84,7 @@
 					style="background-color: {pal}; }"
 				>
           {#if pal === color}
-            <span class="h-4 w-4 rounded-full flex justify-center items-center" style="background-color: #b1b1b192;">
+            <span class="h-4 w-4 rounded-full flex justify-center items-center dot-matrix">
               <Icon icon="material-symbols:check" class="text-white" font-size="0.7rem" /> 
             </span>
           {/if}
