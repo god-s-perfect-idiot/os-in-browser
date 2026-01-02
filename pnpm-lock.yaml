@@ -11,6 +11,9 @@ importers:
       '@material/web':
         specifier: ^2.2.0
         version: 2.2.0
+      '@xterm/xterm':
+        specifier: ^6.0.0
+        version: 6.0.0
       m3-svelte:
         specifier: ^3.4.7
         version: 3.4.7
@@ -547,6 +550,9 @@ packages:
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
+
+  '@xterm/xterm@6.0.0':
+    resolution: {integrity: sha512-TQwDdQGtwwDt+2cgKDLn0IRaSxYu1tSUjgKarSDkUM0ZNiSRXFpjxEsvc/Zgc5kq5omJ+V0a8/kIM2WD3sMOYg==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1600,6 +1606,8 @@ snapshots:
   '@types/json-schema@7.0.15': {}
 
   '@types/trusted-types@2.0.7': {}
+
+  '@xterm/xterm@6.0.0': {}
 
   acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:

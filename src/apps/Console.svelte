@@ -1,207 +1,426 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
+	import { get } from 'svelte/store';
+	import '@xterm/xterm/css/xterm.css';
+	import { fileSystem } from '$lib/fs';
 
-	// Console state
-	let history = [
-		{
-			type: 'system',
-			content: 'JavaScript Console v1.0.0\nType "help" for available commands.'
-		}
-	];
-	let inputValue = '';
+	let terminalContainer;
+	let terminal;
+	let TerminalClass;
+	let currentLine = '';
 	let commandHistory = [];
 	let historyIndex = -1;
-	let consoleEnd;
-	let inputElement;
 
-	// Console context to maintain variables between evaluations
-	const consoleContext = {
-		variables: {},
-		console: {
-			log: (...args) => {
-				const output = args
-					.map((arg) => {
-						if (typeof arg === 'object') {
-							return JSON.stringify(arg, null, 2);
-						}
-						return String(arg);
-					})
-					.join(' ');
-				history = [...history, { type: 'output', content: output }];
-			},
-			error: (...args) => {
-				const output = args.map((arg) => String(arg)).join(' ');
-				history = [...history, { type: 'error', content: output }];
+	// Helper to resolve path (handle relative paths, .., etc.)
+	function resolvePath(path, currentPath) {
+		if (path.startsWith('/')) {
+			return path;
+		}
+		
+		const parts = path.split('/').filter(Boolean);
+		const currentParts = currentPath.split('/').filter(Boolean);
+		
+		for (const part of parts) {
+			if (part === '..') {
+				currentParts.pop();
+			} else if (part !== '.' && part !== '') {
+				currentParts.push(part);
 			}
 		}
-	};
-
-	onMount(() => {
-		inputElement.focus();
-	});
-
-	// Auto-scroll to bottom when history changes
-	$: if (history) {
-		setTimeout(() => {
-			consoleEnd?.scrollIntoView({ behavior: 'smooth' });
-		}, 0);
+		
+		return '/' + currentParts.join('/');
 	}
 
-	// Built-in commands
-	const builtInCommands = {
+	// Helper to get node at path
+	function getNodeAtPath(fs, path) {
+		if (path === '/') return fs;
+		const parts = path.split('/').filter(Boolean);
+		let current = fs;
+		
+		for (const part of parts) {
+			if (!current.children || !current.children[part]) return null;
+			current = current.children[part];
+		}
+		return current;
+	}
+
+	// Shell command handlers
+	const commands = {
 		help: () => `Available commands:
-      - help: Show this help message
-      - clear: Clear the console
-      - vars: Show all defined variables
-      - reset: Reset the console environment
-      
-    You can also:
-      - Execute any JavaScript code
-      - Use console.log() and console.error()
-      - Define variables and functions
-      - Use arrow keys to navigate command history`,
+  help     - Show this help message
+  clear    - Clear the terminal
+  pwd      - Print working directory
+  cd <dir> - Change directory
+  ls [dir] - List directory contents
+  mkdir    - Create directory (mkdir <name>)
+  touch    - Create file (touch <name> [content])
+  echo     - Print text (echo <text>)
+  cat      - Display file contents (cat <file>)
+  rm       - Remove file or directory (rm <path>)
+  mv       - Move/rename file (mv <old> <new>)
+  date     - Show current date and time
+  whoami   - Show current user
+  exit     - Exit the terminal`,
 
 		clear: () => {
-			history = [{ type: 'system', content: 'Console cleared.' }];
+			terminal.clear();
 			return null;
 		},
 
-		vars: () => {
-			const vars = Object.entries(consoleContext.variables)
-				.map(
-					([key, value]) =>
-						`${key}: ${typeof value === 'function' ? '[Function]' : JSON.stringify(value)}`
-				)
-				.join('\n');
-			return vars || 'No variables defined';
+		pwd: () => {
+			return get(fileSystem.currentPath);
 		},
 
-		reset: () => {
-			consoleContext.variables = {};
-			return 'Console environment reset.';
+		cd: (args) => {
+			if (args.length === 0) {
+				fileSystem.cd('/');
+				return '';
+			}
+			
+			const targetPath = args[0];
+			const currentPath = get(fileSystem.currentPath);
+			const resolvedPath = resolvePath(targetPath, currentPath);
+			
+			// Check if path exists
+			const fs = get(fileSystem);
+			const node = getNodeAtPath(fs, resolvedPath);
+			
+			if (!node) {
+				return { error: true, message: `cd: ${targetPath}: No such file or directory` };
+			}
+			
+			if (node.type !== 'directory') {
+				return { error: true, message: `cd: ${targetPath}: Not a directory` };
+			}
+			
+			fileSystem.cd(resolvedPath);
+			return '';
+		},
+
+		ls: (args) => {
+			const currentPath = get(fileSystem.currentPath);
+			const targetPath = args.length > 0 ? resolvePath(args[0], currentPath) : currentPath;
+			
+			const fs = get(fileSystem);
+			const node = getNodeAtPath(fs, targetPath);
+			
+			if (!node) {
+				return { error: true, message: `ls: ${args[0] || ''}: No such file or directory` };
+			}
+			
+			if (node.type !== 'directory') {
+				return node.name;
+			}
+			
+			const children = node.children || {};
+			const entries = Object.keys(children).sort((a, b) => {
+				const aNode = children[a];
+				const bNode = children[b];
+				// Directories first
+				if (aNode.type === 'directory' && bNode.type !== 'directory') return -1;
+				if (aNode.type !== 'directory' && bNode.type === 'directory') return 1;
+				return a.localeCompare(b);
+			});
+			
+			return entries.map(name => {
+				const child = children[name];
+				return child.type === 'directory' ? `${name}/` : name;
+			}).join('  ') || '';
+		},
+
+		mkdir: (args) => {
+			if (args.length === 0) {
+				return { error: true, message: 'mkdir: missing operand' };
+			}
+			
+			try {
+				fileSystem.mkdir(args[0]);
+				return '';
+			} catch (error) {
+				return { error: true, message: `mkdir: ${error.message}` };
+			}
+		},
+
+		touch: (args) => {
+			if (args.length === 0) {
+				return { error: true, message: 'touch: missing file operand' };
+			}
+			
+			const fileName = args[0];
+			const content = args.slice(1).join(' ') || '';
+			
+			try {
+				fileSystem.touch(fileName, content);
+				return '';
+			} catch (error) {
+				return { error: true, message: `touch: ${error.message}` };
+			}
+		},
+
+		echo: (args) => {
+			return args.join(' ');
+		},
+
+		cat: (args) => {
+			if (args.length === 0) {
+				return { error: true, message: 'cat: missing file operand' };
+			}
+			
+			const currentPath = get(fileSystem.currentPath);
+			const filePath = resolvePath(args[0], currentPath);
+			
+			const fs = get(fileSystem);
+			const node = getNodeAtPath(fs, filePath);
+			
+			if (!node) {
+				return { error: true, message: `cat: ${args[0]}: No such file or directory` };
+			}
+			
+			if (node.type !== 'file') {
+				return { error: true, message: `cat: ${args[0]}: Is a directory` };
+			}
+			
+			return node.content || '';
+		},
+
+		rm: (args) => {
+			if (args.length === 0) {
+				return { error: true, message: 'rm: missing operand' };
+			}
+			
+			const currentPath = get(fileSystem.currentPath);
+			const targetPath = resolvePath(args[0], currentPath);
+			
+			try {
+				fileSystem.rm(targetPath);
+				return '';
+			} catch (error) {
+				return { error: true, message: `rm: ${error.message}` };
+			}
+		},
+
+		mv: (args) => {
+			if (args.length < 2) {
+				return { error: true, message: 'mv: missing file operand' };
+			}
+			
+			const currentPath = get(fileSystem.currentPath);
+			const oldPath = resolvePath(args[0], currentPath);
+			const newPath = resolvePath(args[1], currentPath);
+			
+			try {
+				fileSystem.mv(oldPath, newPath);
+				return '';
+			} catch (error) {
+				return { error: true, message: `mv: ${error.message}` };
+			}
+		},
+
+		date: () => {
+			return new Date().toString();
+		},
+
+		whoami: () => {
+			return 'user';
+		},
+
+		exit: () => {
+			return null;
 		}
 	};
 
-	// Evaluate JavaScript code safely
-	function evaluateCode(code) {
-		try {
-			// Create a function with the console context
-			const contextKeys = Object.keys(consoleContext.variables);
-			const contextValues = Object.values(consoleContext.variables);
+	function writeError(message) {
+		// Write error with bold ANSI code for extra thickness
+		terminal.writeln(`\x1b[1m${message}\x1b[0m`);
+	}
 
-			// Include console object in evaluation context
-			const evaluator = new Function(
-				'console',
-				...contextKeys,
-				`try {
-            return eval(${JSON.stringify(code)});
-          } catch (error) {
-            throw error;
-          }`
-			);
+	function executeCommand(line) {
+		if (!line.trim()) return;
 
-			const result = evaluator(consoleContext.console, ...contextValues);
+		const parts = line.trim().split(/\s+/);
+		const command = parts[0].toLowerCase();
+		const args = parts.slice(1);
 
-			// Store any variable assignments
-			if (code.includes('=')) {
-				const varName = code.split('=')[0].trim();
-				if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(varName)) {
-					consoleContext.variables[varName] = result;
+		if (commands[command]) {
+			const result = commands[command](args);
+			if (result !== null && result !== '') {
+				if (typeof result === 'object' && result.error) {
+					writeError(result.message);
+				} else {
+					terminal.writeln(result);
 				}
 			}
-
-			return result;
-		} catch (error) {
-			throw new Error(`${error.name}: ${error.message}`);
+		} else {
+			writeError(`${command}: command not found`);
 		}
 	}
 
-	function handleCommand(command) {
-		// Add command to history
-		history = [...history, { type: 'input', content: command }];
+	onMount(async () => {
+		// Dynamically import xterm.js
+		const xtermModule = await import('@xterm/xterm');
+		TerminalClass = xtermModule.Terminal || xtermModule.default?.Terminal || xtermModule.default;
 
-		try {
-			// Check for built-in commands first
-			const builtInCommand = builtInCommands[command.toLowerCase()];
-			if (builtInCommand) {
-				const result = builtInCommand();
-				if (result !== null) {
-					history = [...history, { type: 'output', content: result }];
-				}
-				return;
+		// Initialize terminal
+		terminal = new TerminalClass({
+			cursorBlink: true,
+			fontFamily: 'Courier New, Courier, monospace',
+			fontSize: 14,
+			fontWeight: 700,
+			scrollback: 1000,
+			theme: {
+				background: '#ffffff',
+				foreground: '#000000',
+				cursor: '#000000',
+				black: '#000000',
+				red: '#000000',
+				green: '#000000',
+				yellow: '#000000',
+				blue: '#000000',
+				magenta: '#000000',
+				cyan: '#000000',
+				white: '#000000',
+				brightBlack: '#000000',
+				brightRed: '#000000',
+				brightGreen: '#000000',
+				brightYellow: '#000000',
+				brightBlue: '#000000',
+				brightMagenta: '#000000',
+				brightCyan: '#000000',
+				brightWhite: '#000000'
 			}
+		});
 
-			// Evaluate JavaScript code
-			const result = evaluateCode(command);
-			if (result !== undefined) {
-				history = [
-					...history,
-					{
-						type: 'output',
-						content: typeof result === 'object' ? JSON.stringify(result, null, 2) : String(result)
+		terminal.open(terminalContainer);
+		terminal.write('$ ');
+
+		// Handle terminal input
+		terminal.onData((data) => {
+			const code = data.charCodeAt(0);
+
+			if (code === 13) {
+				// Enter
+				terminal.write('\r\n');
+				if (currentLine.trim()) {
+					commandHistory.push(currentLine);
+					historyIndex = commandHistory.length;
+				}
+				executeCommand(currentLine);
+				currentLine = '';
+				terminal.write('$ ');
+			} else if (code === 127) {
+				// Backspace
+				if (currentLine.length > 0) {
+					currentLine = currentLine.slice(0, -1);
+					terminal.write('\b \b');
+				}
+			} else if (code === 27) {
+				// Arrow keys
+				const seq = data.slice(1);
+				if (seq === '[A') {
+					// Up arrow
+					if (historyIndex > 0) {
+						historyIndex--;
+						// Clear current line
+						for (let i = 0; i < currentLine.length; i++) {
+							terminal.write('\b \b');
+						}
+						currentLine = commandHistory[historyIndex];
+						terminal.write(currentLine);
 					}
-				];
+				} else if (seq === '[B') {
+					// Down arrow
+					if (historyIndex < commandHistory.length - 1) {
+						historyIndex++;
+						// Clear current line
+						for (let i = 0; i < currentLine.length; i++) {
+							terminal.write('\b \b');
+						}
+						currentLine = commandHistory[historyIndex];
+						terminal.write(currentLine);
+					} else if (historyIndex === commandHistory.length - 1) {
+						historyIndex = commandHistory.length;
+						// Clear current line
+						for (let i = 0; i < currentLine.length; i++) {
+							terminal.write('\b \b');
+						}
+						currentLine = '';
+					}
+				}
+			} else if (code >= 32) {
+				// Printable characters
+				currentLine += data;
+				terminal.write(data);
 			}
-		} catch (error) {
-			history = [...history, { type: 'error', content: error.message }];
-		}
-	}
+		});
 
-	function handleKeyDown(e) {
-		if (e.key === 'Enter' && !e.shiftKey) {
-			e.preventDefault();
-			if (inputValue.trim()) {
-				handleCommand(inputValue.trim());
-				commandHistory = [...commandHistory, inputValue.trim()];
-				historyIndex = -1;
-				inputValue = '';
+		// Handle terminal resize
+		const resizeObserver = new ResizeObserver(() => {
+			if (terminal) {
+				const dimensions = {
+					cols: Math.floor(terminalContainer.clientWidth / 8.4),
+					rows: Math.floor(terminalContainer.clientHeight / 17)
+				};
+				terminal.resize(dimensions.cols, dimensions.rows);
 			}
-		} else if (e.key === 'ArrowUp') {
-			e.preventDefault();
-			if (historyIndex < commandHistory.length - 1) {
-				historyIndex += 1;
-				inputValue = commandHistory[commandHistory.length - 1 - historyIndex];
-			}
-		} else if (e.key === 'ArrowDown') {
-			e.preventDefault();
-			if (historyIndex > 0) {
-				historyIndex -= 1;
-				inputValue = commandHistory[commandHistory.length - 1 - historyIndex];
-			} else if (historyIndex === 0) {
-				historyIndex = -1;
-				inputValue = '';
-			}
+		});
+
+		resizeObserver.observe(terminalContainer);
+	});
+
+	onDestroy(() => {
+		if (terminal) {
+			terminal.dispose();
 		}
-	}
+	});
 </script>
 
-<div class="h-full w-full overflow-hidden rounded-lg font-mono text-[#808080] p-4">
-	<div class="h-full overflow-y-auto">
-		{#each history as entry}
-			<div class="mb-2">
-				{#if entry.type === 'input'}
-					<span class="text-[#808080]">&gt; {entry.content}</span>
-				{:else if entry.type === 'error'}
-					<span class="text-[#808080]">{entry.content}</span>
-				{:else if entry.type === 'output'}
-					<pre class="whitespace-pre-wrap">{entry.content}</pre>
-				{:else if entry.type === 'system'}
-					<span class="text-[#808080] italic">{entry.content}</span>
-				{/if}
-			</div>
-		{/each}
-		<div class="flex items-center">
-			<span class="mr-2 text-[#808080]">&gt;</span>
-			<input
-				bind:this={inputElement}
-				type="text"
-				bind:value={inputValue}
-				on:keydown={handleKeyDown}
-				class="flex-1 bg-transparent text-[#808080] outline-none"
-				spellcheck="false"
-				autocomplete="off"
-			/>
-		</div>
-		<div bind:this={consoleEnd} />
-	</div>
-</div>
+<div bind:this={terminalContainer} class="terminal-container"></div>
+
+<style>
+	.terminal-container {
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+	}
+
+	:global(.xterm) {
+		height: 100%;
+	}
+
+	:global(.xterm-viewport) {
+		background-color: #ffffff !important;
+		overflow: hidden !important;
+	}
+
+	:global(.xterm-screen) {
+		background-color: #ffffff !important;
+	}
+
+	:global(.xterm) {
+		font-weight: 600 !important;
+	}
+
+	:global(.xterm .xterm-rows) {
+		font-weight: 600 !important;
+	}
+
+	:global(.xterm .xterm-rows > div) {
+		font-weight: 600 !important;
+	}
+
+	:global(.xterm .xterm-screen .xterm-rows > div[style*="31"]) {
+		font-weight: 900 !important;
+	}
+
+	:global(.xterm-scrollbar) {
+		display: none !important;
+	}
+
+	:global(.xterm-viewport::-webkit-scrollbar) {
+		display: none !important;
+		width: 0 !important;
+		height: 0 !important;
+	}
+</style>

@@ -26,6 +26,7 @@
 			y={app.y}
 			title={app.title}
 			pid={app.pid}
+			icon={app.icon}
 			defaultWindowSize={app.defaultWindowSize}
 			windowClassOverrides={app.windowClassOverrides}
 			isMinimized={app.isMinimized}

@@ -7,6 +7,7 @@
 	export let y;
 	export let title;
 	export let pid;
+	export let icon = null;
 	export let defaultWindowSize = { width: '40rem', height: '20rem' };
 	export let windowClassOverrides = '';
 	export let isMinimized = false;
@@ -239,6 +240,13 @@
 				</button>
 			</div>
 			<div class="title-container">
+				{#if icon}
+					{#if icon.startsWith('/')}
+						<img src={icon} alt="" class="title-icon" />
+					{:else}
+						<Icon icon={icon} class="title-icon" />
+					{/if}
+				{/if}
 				<span class="title">{title}</span>
 			</div>
 		</div>
@@ -290,10 +298,29 @@
 		flex: 1 1 auto;
 		display: flex;
 		justify-content: center;
-		align-items: stretch;
+		align-items: center;
 		margin: 0 auto;
 		position: relative;
 		padding: 0;
+		gap: 6px;
+	}
+	.title-icon {
+		width: 32px;
+		height: 32px;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.title-icon :global(svg) {
+		width: 16px;
+		height: 16px;
+		color: #000;
+	}
+	.title-icon img {
+		width: 16px;
+		height: 16px;
+		object-fit: contain;
 	}
 	.titlebar .title {
 		font-weight: bold;
