@@ -5,6 +5,14 @@ html, body {
     overflow-x: hidden;
 }
 
+/* Disable text selection (drag-to-highlight) app-wide */
+*, *::before, *::after {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
 body {
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
@@ -181,4 +189,46 @@ input, textarea, [contenteditable] {
     background-position: 0 0, 2px 2px !important;
     background-color: #fff !important;
     border-radius: 0px !important;
+}
+
+/* Settings: font size */
+html[data-font-size="small"] {
+    font-size: 12px;
+}
+html[data-font-size="medium"] {
+    font-size: 14px;
+}
+html[data-font-size="large"] {
+    font-size: 18px;
+}
+
+/* Settings: cursor */
+html[data-cursor="default"] body,
+html[data-cursor="default"] body a,
+html[data-cursor="default"] body button,
+html[data-cursor="default"] body [role="button"],
+html[data-cursor="default"] body .titlebar {
+    cursor: default !important;
+}
+html[data-cursor="default"] body a:hover,
+html[data-cursor="default"] body button:hover,
+html[data-cursor="default"] body [role="button"]:hover {
+    cursor: pointer !important;
+}
+
+/* Settings: high contrast */
+html[data-high-contrast="true"] button,
+html[data-high-contrast="true"] .titlebar,
+html[data-high-contrast="true"] input,
+html[data-high-contrast="true"] select {
+    border-width: 3px !important;
+    border-color: #000 !important;
+}
+
+/* Settings: large click targets - increase min touch area */
+html[data-large-click-targets="true"] button,
+html[data-large-click-targets="true"] [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 12px;
 }

@@ -16,10 +16,10 @@
 		if (path.startsWith('/')) {
 			return path;
 		}
-		
+
 		const parts = path.split('/').filter(Boolean);
 		const currentParts = currentPath.split('/').filter(Boolean);
-		
+
 		for (const part of parts) {
 			if (part === '..') {
 				currentParts.pop();
@@ -27,7 +27,7 @@
 				currentParts.push(part);
 			}
 		}
-		
+
 		return '/' + currentParts.join('/');
 	}
 
@@ -36,7 +36,7 @@
 		if (path === '/') return fs;
 		const parts = path.split('/').filter(Boolean);
 		let current = fs;
-		
+
 		for (const part of parts) {
 			if (!current.children || !current.children[part]) return null;
 			current = current.children[part];
@@ -76,23 +76,23 @@
 				fileSystem.cd('/');
 				return '';
 			}
-			
+
 			const targetPath = args[0];
 			const currentPath = get(fileSystem.currentPath);
 			const resolvedPath = resolvePath(targetPath, currentPath);
-			
+
 			// Check if path exists
 			const fs = get(fileSystem);
 			const node = getNodeAtPath(fs, resolvedPath);
-			
+
 			if (!node) {
 				return { error: true, message: `cd: ${targetPath}: No such file or directory` };
 			}
-			
+
 			if (node.type !== 'directory') {
 				return { error: true, message: `cd: ${targetPath}: Not a directory` };
 			}
-			
+
 			fileSystem.cd(resolvedPath);
 			return '';
 		},
@@ -100,18 +100,18 @@
 		ls: (args) => {
 			const currentPath = get(fileSystem.currentPath);
 			const targetPath = args.length > 0 ? resolvePath(args[0], currentPath) : currentPath;
-			
+
 			const fs = get(fileSystem);
 			const node = getNodeAtPath(fs, targetPath);
-			
+
 			if (!node) {
 				return { error: true, message: `ls: ${args[0] || ''}: No such file or directory` };
 			}
-			
+
 			if (node.type !== 'directory') {
 				return node.name;
 			}
-			
+
 			const children = node.children || {};
 			const entries = Object.keys(children).sort((a, b) => {
 				const aNode = children[a];
@@ -121,18 +121,22 @@
 				if (aNode.type !== 'directory' && bNode.type === 'directory') return 1;
 				return a.localeCompare(b);
 			});
-			
-			return entries.map(name => {
-				const child = children[name];
-				return child.type === 'directory' ? `${name}/` : name;
-			}).join('  ') || '';
+
+			return (
+				entries
+					.map((name) => {
+						const child = children[name];
+						return child.type === 'directory' ? `${name}/` : name;
+					})
+					.join('  ') || ''
+			);
 		},
 
 		mkdir: (args) => {
 			if (args.length === 0) {
 				return { error: true, message: 'mkdir: missing operand' };
 			}
-			
+
 			try {
 				fileSystem.mkdir(args[0]);
 				return '';
@@ -145,10 +149,10 @@
 			if (args.length === 0) {
 				return { error: true, message: 'touch: missing file operand' };
 			}
-			
+
 			const fileName = args[0];
 			const content = args.slice(1).join(' ') || '';
-			
+
 			try {
 				fileSystem.touch(fileName, content);
 				return '';
@@ -165,21 +169,21 @@
 			if (args.length === 0) {
 				return { error: true, message: 'cat: missing file operand' };
 			}
-			
+
 			const currentPath = get(fileSystem.currentPath);
 			const filePath = resolvePath(args[0], currentPath);
-			
+
 			const fs = get(fileSystem);
 			const node = getNodeAtPath(fs, filePath);
-			
+
 			if (!node) {
 				return { error: true, message: `cat: ${args[0]}: No such file or directory` };
 			}
-			
+
 			if (node.type !== 'file') {
 				return { error: true, message: `cat: ${args[0]}: Is a directory` };
 			}
-			
+
 			return node.content || '';
 		},
 
@@ -187,10 +191,10 @@
 			if (args.length === 0) {
 				return { error: true, message: 'rm: missing operand' };
 			}
-			
+
 			const currentPath = get(fileSystem.currentPath);
 			const targetPath = resolvePath(args[0], currentPath);
-			
+
 			try {
 				fileSystem.rm(targetPath);
 				return '';
@@ -203,11 +207,11 @@
 			if (args.length < 2) {
 				return { error: true, message: 'mv: missing file operand' };
 			}
-			
+
 			const currentPath = get(fileSystem.currentPath);
 			const oldPath = resolvePath(args[0], currentPath);
 			const newPath = resolvePath(args[1], currentPath);
-			
+
 			try {
 				fileSystem.mv(oldPath, newPath);
 				return '';
@@ -410,7 +414,7 @@
 		font-weight: 600 !important;
 	}
 
-	:global(.xterm .xterm-screen .xterm-rows > div[style*="31"]) {
+	:global(.xterm .xterm-screen .xterm-rows > div[style*='31']) {
 		font-weight: 900 !important;
 	}
 

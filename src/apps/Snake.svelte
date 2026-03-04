@@ -43,7 +43,7 @@
 		head.y = (head.y + rows) % rows;
 
 		// Check for collision with self.
-		if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+		if (snake.some((segment) => segment.x === head.x && segment.y === head.y)) {
 			gameOver = true;
 			clearInterval(gameInterval);
 			return;
@@ -65,7 +65,7 @@
 		while (!valid) {
 			apple.x = Math.floor(Math.random() * cols);
 			apple.y = Math.floor(Math.random() * rows);
-			valid = !snake.some(segment => segment.x === apple.x && segment.y === apple.y);
+			valid = !snake.some((segment) => segment.x === apple.x && segment.y === apple.y);
 		}
 	}
 
@@ -82,22 +82,23 @@
 		return ctx.createPattern(patternCanvas, 'repeat');
 	}
 
-	// Draw the game state on the canvas.
 	function draw() {
 		if (!ctx) return;
-		// Clear canvas with white background
+
 		ctx.fillStyle = '#fff';
 		ctx.fillRect(0, 0, width, height);
-		// Apply dot matrix pattern
+
 		const pattern = createDotMatrixPattern();
 		ctx.fillStyle = pattern;
 		ctx.fillRect(0, 0, width, height);
-		// Draw apple with dot matrix
-		ctx.fillStyle = pattern;
+
+		// Draw apple
+		ctx.fillStyle = '#e53e3e';
 		ctx.fillRect(apple.x * cellSize, apple.y * cellSize, cellSize, cellSize);
-		// Draw snake with dot matrix
-		ctx.fillStyle = pattern;
-		snake.forEach(segment => {
+
+		// Draw snake
+		snake.forEach((segment, i) => {
+			ctx.fillStyle = i === 0 ? '#1a1a1a' : '#333';
 			ctx.fillRect(segment.x * cellSize, segment.y * cellSize, cellSize, cellSize);
 		});
 	}
@@ -132,7 +133,7 @@
 		ctx = canvas.getContext('2d');
 		initGame();
 		window.addEventListener('keydown', handleKeydown);
-		const resizeObserver = new ResizeObserver(entries => {
+		const resizeObserver = new ResizeObserver((entries) => {
 			for (let entry of entries) {
 				resizeCanvas();
 			}
@@ -147,15 +148,13 @@
 </script>
 
 <!-- Container and canvas fill their parent using Tailwind's h-full w-full classes -->
-<div bind:this={container} class="h-full w-full relative">
+<div bind:this={container} class="relative h-full w-full">
 	<canvas bind:this={canvas} class="h-full w-full"></canvas>
 	{#if gameOver}
 		<!-- Overlay for game over message -->
 		<div class="absolute inset-0 flex flex-col items-center justify-center bg-black text-white">
-			<div class="text-3xl font-bold mb-4">Game Over!</div>
-			<button on:click={initGame} class="px-4 py-2 dot-matrix rounded">
-				Restart
-			</button>
+			<div class="mb-4 text-3xl font-bold">Game Over!</div>
+			<button on:click={initGame} class="dot-matrix rounded px-4 py-2"> Restart </button>
 		</div>
 	{/if}
 </div>

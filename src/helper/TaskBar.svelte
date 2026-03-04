@@ -3,9 +3,15 @@
 	import Time from './Time.svelte';
 	import { pm } from '$lib/pm';
 	import { apps } from '$lib/applib';
+	import { settings } from '$lib/settings';
 	import Date from './Date.svelte';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+
+	$: clockFormat = $settings.clockFormat || '12hour';
+	$: clockShowSeconds = $settings.clockShowSeconds ?? false;
+	$: dateFormat = $settings.dateFormat || 'short';
+	$: showClock = $settings.showClock !== false;
 
 	let showStartMenu = false;
 	let showRunningAppsMenu = false;
@@ -17,7 +23,7 @@
 	let submenuPosition = { top: 0, left: 0 };
 	let isDraggingVolume = false;
 	let volumeBarElement = null;
-	
+
 	// System state
 	let wifiEnabled = browser ? navigator.onLine : true;
 	let volumeLevel = 75;
@@ -26,25 +32,25 @@
 	let isCharging = false;
 	let audioContext = null;
 	let gainNode = null;
-	
+
 	// Subscribe to activePid store
 	let activePidStoreValue = pm.getActive();
-	pm.activePidStore.subscribe(v => activePidStoreValue = v);
+	pm.activePidStore.subscribe((v) => (activePidStoreValue = v));
 	$: activePid = activePidStoreValue;
-	
+
 	// Initialize system status using navigator APIs
 	onMount(() => {
 		// WiFi status from navigator.onLine
 		wifiEnabled = navigator.onLine;
-		window.addEventListener('online', () => wifiEnabled = true);
-		window.addEventListener('offline', () => wifiEnabled = false);
-		
+		window.addEventListener('online', () => (wifiEnabled = true));
+		window.addEventListener('offline', () => (wifiEnabled = false));
+
 		// Battery API
 		if ('getBattery' in navigator) {
 			navigator.getBattery().then((battery) => {
 				batteryLevel = Math.round(battery.level * 100);
 				isCharging = battery.charging;
-				
+
 				battery.addEventListener('chargingchange', () => {
 					isCharging = battery.charging;
 				});
@@ -53,7 +59,7 @@
 				});
 			});
 		}
-		
+
 		// Web Audio API for volume control
 		try {
 			audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -63,7 +69,7 @@
 		} catch (e) {
 			console.warn('Web Audio API not available:', e);
 		}
-		
+
 		return () => {
 			if (audioContext) {
 				audioContext.close();
@@ -90,7 +96,7 @@
 			showBatteryMenu = false;
 		}
 	}
-	
+
 	function launchApp(app) {
 		pm.add(app.name, {
 			type: 'window',
@@ -105,29 +111,29 @@
 		showStartMenu = false;
 		showApplicationsSubmenu = false;
 	}
-	
+
 	function handleRestart() {
 		window.location.reload();
 	}
-	
+
 	$: allApps = Object.values(apps).filter((app) => !app.needsParent);
-	
+
 	function toggleWifi() {
 		// Note: navigator.onLine is read-only, so we can only reflect the actual state
 		// This is a UI toggle that reflects the actual online status
 		wifiEnabled = navigator.onLine;
 	}
-	
+
 	function setVolume(level) {
 		volumeLevel = Math.max(0, Math.min(100, level));
 		isMuted = false;
-		
+
 		// Update Web Audio API gain if available
 		if (gainNode) {
 			gainNode.gain.value = volumeLevel / 100;
 		}
 	}
-	
+
 	function handleVolumeBarClick(event) {
 		event.stopPropagation();
 		const rect = event.currentTarget.getBoundingClientRect();
@@ -135,7 +141,7 @@
 		const percentage = (clickX / rect.width) * 100;
 		setVolume(percentage);
 	}
-	
+
 	function handleVolumeBarMouseDown(event) {
 		isDraggingVolume = true;
 		const rect = event.currentTarget.getBoundingClientRect();
@@ -144,7 +150,7 @@
 		setVolume(percentage);
 		event.preventDefault();
 	}
-	
+
 	function handleVolumeBarMouseMove(event) {
 		if (isDraggingVolume && volumeBarElement) {
 			const rect = volumeBarElement.getBoundingClientRect();
@@ -153,11 +159,11 @@
 			setVolume(percentage);
 		}
 	}
-	
+
 	function handleVolumeBarMouseUp() {
 		isDraggingVolume = false;
 	}
-	
+
 	function handleVolumeBarKeydown(event) {
 		if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
 			event.preventDefault();
@@ -167,23 +173,22 @@
 			setVolume(Math.min(100, volumeLevel + 5));
 		}
 	}
-	
+
 	function toggleMute() {
 		isMuted = !isMuted;
-		
+
 		// Update Web Audio API gain if available
 		if (gainNode) {
 			gainNode.gain.value = isMuted ? 0 : volumeLevel / 100;
 		}
 	}
-	
+
 	function getVolumeIcon() {
 		if (isMuted || volumeLevel === 0) return 'mdi:volume-off';
 		if (volumeLevel < 33) return 'mdi:volume-low';
 		if (volumeLevel < 66) return 'mdi:volume-medium';
 		return 'mdi:volume-high';
 	}
-	
 
 	onMount(() => {
 		document.addEventListener('click', handleClickOutside);
@@ -214,25 +219,31 @@
 <div class="modern-taskbar">
 	<div class="taskbar-section left">
 		<div class="start-menu-container">
-			<button class="start-btn {showStartMenu ? 'active' : ''}" on:click={(e) => {
-				e.stopPropagation();
-				showStartMenu = !showStartMenu;
-			}}>
+			<button
+				class="start-btn {showStartMenu ? 'active' : ''}"
+				on:click={(e) => {
+					e.stopPropagation();
+					showStartMenu = !showStartMenu;
+				}}
+			>
 				<span class="start-svg" innerHTML={startIconSVG}></span>
 				<span class="start-label">Start</span>
 			</button>
 			{#if showStartMenu}
 				<div class="start-menu">
-					<button class="start-menu-item" on:click={() => {
-						launchApp(apps.help);
-					}}>
+					<button
+						class="start-menu-item"
+						on:click={() => {
+							launchApp(apps.help);
+						}}
+					>
 						<Icon icon="mdi:help" />
 						<span>Help</span>
 					</button>
 					<div class="start-menu-item-container">
-						<button 
+						<button
 							bind:this={applicationsButtonElement}
-							class="start-menu-item {showApplicationsSubmenu ? 'active' : ''}" 
+							class="start-menu-item {showApplicationsSubmenu ? 'active' : ''}"
 							on:click={() => {
 								if (applicationsButtonElement) {
 									const rect = applicationsButtonElement.getBoundingClientRect();
@@ -254,15 +265,12 @@
 						</button>
 					</div>
 					{#if showApplicationsSubmenu}
-						<div 
+						<div
 							class="start-submenu"
 							style="top: {submenuPosition.top}px; left: {submenuPosition.left}px;"
 						>
 							{#each allApps as app}
-								<button 
-									class="start-menu-item submenu-item"
-									on:click={() => launchApp(app)}
-								>
+								<button class="start-menu-item submenu-item" on:click={() => launchApp(app)}>
 									<div class="app-icon-small">
 										{#if app.icon?.startsWith('/')}
 											<img src={app.icon} alt={app.name} class="app-icon-image-small" />
@@ -286,9 +294,9 @@
 	</div>
 	<div class="taskbar-section center">
 		<div class="running-apps-container">
-			<button 
-				class="running-apps-btn {showRunningAppsMenu ? 'active' : ''}" 
-				on:click={() => showRunningAppsMenu = !showRunningAppsMenu}
+			<button
+				class="running-apps-btn {showRunningAppsMenu ? 'active' : ''}"
+				on:click={() => (showRunningAppsMenu = !showRunningAppsMenu)}
 			>
 				<Icon icon="mdi:view-list" />
 				<span>Running Apps</span>
@@ -298,48 +306,48 @@
 			</button>
 			{#if showRunningAppsMenu}
 				<div class="running-apps-menu">
-				{#if runningApps.length > 0}
-					{#each runningApps as app}
-						<button 
-							class="running-app-item"
-							on:click={() => {
-								const process = $pm.find((p) => p.pid === app.pid);
-								if (process) {
-									const isMinimized = process.metadata.isMinimized;
-									if (isMinimized) {
-										pm.updateMetadata(app.pid, { isMinimized: false });
+					{#if runningApps.length > 0}
+						{#each runningApps as app}
+							<button
+								class="running-app-item"
+								on:click={() => {
+									const process = $pm.find((p) => p.pid === app.pid);
+									if (process) {
+										const isMinimized = process.metadata.isMinimized;
+										if (isMinimized) {
+											pm.updateMetadata(app.pid, { isMinimized: false });
+										}
+										pm.setActive(app.pid);
 									}
-									pm.setActive(app.pid);
-								}
-								showRunningAppsMenu = false;
-							}}
-							on:contextmenu={(e) => {
-								e.preventDefault();
-								pm.remove(app.pid);
-								if (runningApps.length === 1) {
 									showRunningAppsMenu = false;
-								}
-							}}
-						>
-							<div class="app-icon" style="background-color: #ffffff; border: 2px solid #000;">
-								{#if app.icon?.startsWith('/')}
-									<img src={app.icon} alt={app.title} class="app-icon-image" />
-								{:else}
-									<Icon icon={app.icon} class="app-icon-iconify" />
+								}}
+								on:contextmenu={(e) => {
+									e.preventDefault();
+									pm.remove(app.pid);
+									if (runningApps.length === 1) {
+										showRunningAppsMenu = false;
+									}
+								}}
+							>
+								<div class="app-icon" style="background-color: #ffffff; border: 2px solid #000;">
+									{#if app.icon?.startsWith('/')}
+										<img src={app.icon} alt={app.title} class="app-icon-image" />
+									{:else}
+										<Icon icon={app.icon} class="app-icon-iconify" />
+									{/if}
+								</div>
+								<span class="app-name">{app.title}</span>
+								{#if app.isMinimized}
+									<span class="minimized-dot"></span>
 								{/if}
-							</div>
-							<span class="app-name">{app.title}</span>
-							{#if app.isMinimized}
-								<span class="minimized-dot"></span>
-							{/if}
-						</button>
-					{/each}
-				{:else}
-					<div class="no-apps">
-						<Icon icon="mdi:monitor" />
-						<span>No running applications</span>
-					</div>
-				{/if}
+							</button>
+						{/each}
+					{:else}
+						<div class="no-apps">
+							<Icon icon="mdi:monitor" />
+							<span>No running applications</span>
+						</div>
+					{/if}
 				</div>
 			{/if}
 		</div>
@@ -347,14 +355,18 @@
 	<div class="taskbar-section right">
 		<div class="system-controls">
 			<div class="wifi-container">
-				<button class="control-btn" on:click={() => showWifiMenu = !showWifiMenu}>
+				<button class="control-btn" on:click={() => (showWifiMenu = !showWifiMenu)}>
 					<Icon icon={wifiEnabled ? 'mdi:wifi' : 'mdi:wifi-off'} />
 				</button>
 				{#if showWifiMenu}
 					<div class="control-menu">
 						<div class="control-menu-header">
 							<span>Wi-Fi</span>
-							<button class="toggle-switch {wifiEnabled ? 'on' : ''}" on:click={toggleWifi} aria-label={wifiEnabled ? 'Disable Wi-Fi' : 'Enable Wi-Fi'}>
+							<button
+								class="toggle-switch {wifiEnabled ? 'on' : ''}"
+								on:click={toggleWifi}
+								aria-label={wifiEnabled ? 'Disable Wi-Fi' : 'Enable Wi-Fi'}
+							>
 								<span class="toggle-slider"></span>
 							</button>
 						</div>
@@ -376,15 +388,18 @@
 				{/if}
 			</div>
 			<div class="volume-container">
-				<button class="control-btn" on:click={(e) => {
-					e.stopPropagation();
-					showVolumeMenu = !showVolumeMenu;
-				}}>
+				<button
+					class="control-btn"
+					on:click={(e) => {
+						e.stopPropagation();
+						showVolumeMenu = !showVolumeMenu;
+					}}
+				>
 					<Icon icon={getVolumeIcon()} />
 				</button>
 				{#if showVolumeMenu}
 					<div class="volume-bar-menu">
-						<div 
+						<div
 							bind:this={volumeBarElement}
 							class="volume-bar"
 							on:click={handleVolumeBarClick}
@@ -405,10 +420,18 @@
 				{/if}
 			</div>
 			<div class="battery-container">
-				<button class="battery-btn" on:click={() => showBatteryMenu = !showBatteryMenu} title="Battery: {batteryLevel}%" aria-label="Battery: {batteryLevel}%">
+				<button
+					class="battery-btn"
+					on:click={() => (showBatteryMenu = !showBatteryMenu)}
+					title="Battery: {batteryLevel}%"
+					aria-label="Battery: {batteryLevel}%"
+				>
 					<div class="battery-bar-inline">
 						<div class="battery-outline">
-							<div class="battery-fill-inline {isCharging ? 'charging' : ''}" style="width: {batteryLevel}%"></div>
+							<div
+								class="battery-fill-inline {isCharging ? 'charging' : ''}"
+								style="width: {batteryLevel}%"
+							></div>
 						</div>
 						<div class="battery-terminal"></div>
 					</div>
@@ -439,11 +462,13 @@
 				{/if}
 			</div>
 			<div class="taskbar-divider"></div>
-			<div class="clock">
-				<Date />
-				<span class="clock-separator">|</span>
-				<Time />
-			</div>
+			{#if showClock}
+				<div class="clock">
+					<Date format={dateFormat} />
+					<span class="clock-separator">|</span>
+					<Time format={clockFormat} showSeconds={clockShowSeconds} />
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>
@@ -504,11 +529,13 @@
 		user-select: none;
 		transition: none;
 	}
-	.start-btn:hover, .start-btn.active {
+	.start-btn:hover,
+	.start-btn.active {
 		background: #000;
 		color: #fff;
 	}
-	.start-btn:hover .start-svg, .start-btn.active .start-svg {
+	.start-btn:hover .start-svg,
+	.start-btn.active .start-svg {
 		filter: invert(1);
 	}
 	.start-icon {
@@ -555,25 +582,31 @@
 		text-align: left;
 		position: relative;
 	}
-	.start-menu-item:hover, .start-menu-item.active {
+	.start-menu-item:hover,
+	.start-menu-item.active {
 		background: #000;
 		color: #fff;
 	}
-	.start-menu-item:hover :global(svg), .start-menu-item.active :global(svg) {
+	.start-menu-item:hover :global(svg),
+	.start-menu-item.active :global(svg) {
 		color: #fff;
 	}
-	.start-menu-item:hover .app-icon-small, .start-menu-item.active .app-icon-small {
+	.start-menu-item:hover .app-icon-small,
+	.start-menu-item.active .app-icon-small {
 		background-color: #000 !important;
 		border-color: #fff;
 	}
-	.start-menu-item:hover .app-icon-small :global(svg), .start-menu-item.active .app-icon-small :global(svg) {
+	.start-menu-item:hover .app-icon-small :global(svg),
+	.start-menu-item.active .app-icon-small :global(svg) {
 		filter: invert(1);
 		color: #fff;
 	}
-	.start-menu-item:hover .app-icon-iconify-small, .start-menu-item.active .app-icon-iconify-small {
+	.start-menu-item:hover .app-icon-iconify-small,
+	.start-menu-item.active .app-icon-iconify-small {
 		color: #fff;
 	}
-	.start-menu-item:hover .app-icon-image-small, .start-menu-item.active .app-icon-image-small {
+	.start-menu-item:hover .app-icon-image-small,
+	.start-menu-item.active .app-icon-image-small {
 		filter: invert(1);
 	}
 	.start-menu-item-container {
@@ -639,18 +672,22 @@
 		outline: none;
 		transition: none;
 	}
-	.app-item:hover, .app-item:focus {
+	.app-item:hover,
+	.app-item:focus {
 		background: #000;
 		color: #fff;
 	}
-	.app-item:hover .app-icon, .app-item:focus .app-icon {
+	.app-item:hover .app-icon,
+	.app-item:focus .app-icon {
 		background-color: #000;
 		border: 2px solid #fff;
 	}
-	.app-item:hover .app-icon :global(svg), .app-item:focus .app-icon :global(svg) {
+	.app-item:hover .app-icon :global(svg),
+	.app-item:focus .app-icon :global(svg) {
 		filter: invert(1);
 	}
-	.app-item:hover .app-icon-image, .app-item:focus .app-icon-image {
+	.app-item:hover .app-icon-image,
+	.app-item:focus .app-icon-image {
 		filter: invert(1);
 	}
 	.app-icon {
@@ -693,11 +730,13 @@
 		align-items: center;
 		gap: 4px;
 	}
-	.running-apps-btn:hover, .running-apps-btn.active {
+	.running-apps-btn:hover,
+	.running-apps-btn.active {
 		background: #000;
 		color: #fff;
 	}
-	.running-apps-btn:hover :global(svg), .running-apps-btn.active :global(svg) {
+	.running-apps-btn:hover :global(svg),
+	.running-apps-btn.active :global(svg) {
 		color: #fff;
 	}
 	.app-count {
@@ -738,25 +777,31 @@
 		text-align: left;
 		position: relative;
 	}
-	.running-app-item:hover, .running-app-item:focus {
+	.running-app-item:hover,
+	.running-app-item:focus {
 		background: #000;
 		color: #fff;
 	}
-	.running-app-item:hover .app-name, .running-app-item:focus .app-name {
+	.running-app-item:hover .app-name,
+	.running-app-item:focus .app-name {
 		background: transparent;
 		color: #fff;
 	}
-	.running-app-item:hover .app-icon, .running-app-item:focus .app-icon {
+	.running-app-item:hover .app-icon,
+	.running-app-item:focus .app-icon {
 		background-color: #000;
 		border: 2px solid #fff;
 	}
-	.running-app-item:hover .app-icon :global(svg), .running-app-item:focus .app-icon :global(svg) {
+	.running-app-item:hover .app-icon :global(svg),
+	.running-app-item:focus .app-icon :global(svg) {
 		filter: invert(1);
 	}
-	.running-app-item:hover .app-icon-image, .running-app-item:focus .app-icon-image {
+	.running-app-item:hover .app-icon-image,
+	.running-app-item:focus .app-icon-image {
 		filter: invert(1);
 	}
-	.running-app-item:hover .minimized-dot, .running-app-item:focus .minimized-dot {
+	.running-app-item:hover .minimized-dot,
+	.running-app-item:focus .minimized-dot {
 		background: #fff;
 	}
 	.minimized-dot {
@@ -987,13 +1032,7 @@
 		transition: width 0.3s;
 	}
 	.battery-fill-inline.charging {
-		background: repeating-linear-gradient(
-			45deg,
-			#000,
-			#000 2px,
-			#fff 2px,
-			#fff 4px
-		);
+		background: repeating-linear-gradient(45deg, #000, #000 2px, #fff 2px, #fff 4px);
 	}
 	.battery-terminal {
 		width: 2px;
@@ -1037,11 +1076,13 @@
 	.taskbar-divider {
 		width: 1px;
 		height: 16px;
-		background-image: 
+		background-image:
 			radial-gradient(circle, #000 1px, transparent 1px),
 			radial-gradient(circle, #000 1px, transparent 1px);
 		background-size: 4px 4px;
-		background-position: 0 0, 2px 2px;
+		background-position:
+			0 0,
+			2px 2px;
 		background-color: #fff;
 		margin: 0 4px;
 		align-self: center;
