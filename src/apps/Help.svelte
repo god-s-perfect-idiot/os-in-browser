@@ -1,19 +1,19 @@
 <div class="flex w-full flex-col gap-4 p-4">
 	<div class="flex flex-col gap-1">
-		<span class="font-[500] text-lg">What is os in browser?</span>
-        <span class="text-sm">Os in browser is a web based operating system.</span>
+		<span class="font-[500] text-lg">Did I make an OS simulation with three different UI approaches just to present my resume?</span>
+        <span class="text-sm">Yes. I did. Mostly because I was bored. But also because 90% of the code on the internet is AI slop and I wanted to make a statement. But also, because I wanted to.</span>
 	</div>
     <div class="flex flex-col gap-1">
         <span class="font-[500] text-lg">Is os in browser open source?</span>
-        <span class="text-sm">Yes, os in browser is open source. You can find the source code on <a href="https://github.com/god-s-perfect-idiot/os-in-browser" class="text-[#000] underline">Github</a>.</span>
+        <span class="text-sm">Yes, os in browser is open source. You can find the source code on <a href="https://github.com/god-s-perfect-idiot/os-in-browser" class="text-blue-500">Github</a>.</span>
     </div> 
     <div class="flex flex-col gap-1">
         <span class="font-[500] text-lg">How can I contribute to os in browser?</span>
-        <span class="text-sm">You can contribute to os in browser by creating a pull request on <a href="https://github.com/god-s-perfect-idiot/os-in-browser" class="text-[#000] underline">Github</a>. The project is pretty self explanatory. So, if you have any questions or suggestions, please feel free to open an issue on <a href="https://github.com/god-s-perfect-idiot/os-in-browser" class="text-[#000] underline">Github</a>.</span>
+        <span class="text-sm">You can contribute to os in browser by creating a pull request on <a href="https://github.com/god-s-perfect-idiot/os-in-browser" class="text-blue-500">Github</a>. The project is pretty self explanatory. So, if you have any questions or suggestions, please feel free to open an issue on <a href="https://github.com/god-s-perfect-idiot/os-in-browser" class="text-blue-500">Github</a>.</span>
     </div>
     <div class="flex flex-col gap-1">
         <span class="font-[500] text-lg">How can I report a bug?</span>
-        <span class="text-sm">You can report a bug by creating an issue on <a href="https://github.com/god-s-perfect-idiot/os-in-browser" class="text-[#000] underline">Github</a>. Alternatively, you can use the feedback application.</span>
+        <span class="text-sm">You can report a bug by creating an issue on <a href="https://github.com/god-s-perfect-idiot/os-in-browser" class="text-blue-500">Github</a>. Alternatively, you can use the feedback application.</span>
     </div>
     <div class="flex flex-col gap-1">
         <span class="font-[500] text-lg">Is my data collected?</span>

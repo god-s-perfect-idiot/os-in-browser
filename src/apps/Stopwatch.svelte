@@ -43,7 +43,7 @@
 </script>
 
 <div class="flex h-full w-full flex-col items-center justify-between p-2 gap-4">
-	<div class="mb-4 flex h-[calc(100%-4rem)] items-center justify-center gap-1 rounded-full border-2 border-gray-600 w-full m-6">
+	<div class="mb-4 flex h-[calc(100%-4rem)] items-center justify-center gap-1 w-full m-6">
 		<span class="text-5xl">{getTime(elapsed)}</span>
 		<span class="text-4xl">{getMS(elapsed)}</span>
 	</div>

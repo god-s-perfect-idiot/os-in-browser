@@ -5,23 +5,36 @@
 	import WindowManager from '../helper/WindowManager.svelte';
 	import Boot from '../helper/Boot.svelte';
 	import { settings } from '$lib/settings';
+	import { toggleAppDrawer } from '$lib/appDrawerStore';
+	import { showContextMenu } from '$lib/contextMenuStore';
 
 	$: s = $settings;
 
-	// listen for right click
-	$: hasRightClicked = false;
-	let left = 0;
-	let top = 0;
 	function handleRightClick(e) {
 		e.preventDefault();
-		hasRightClicked = true;
-		left = e.clientX;
-		top = e.clientY;
+
+		const target = e.target.closest('[data-context-menu]');
+		if (target) {
+			const menuType = target.getAttribute('data-context-menu');
+			showContextMenu(e.clientX, e.clientY, menuType);
+		} else {
+			showContextMenu(e.clientX, e.clientY, 'default');
+		}
 	}
+
+	function handleKeydown(event) {
+		if (event.ctrlKey && event.code === 'Space') {
+			event.preventDefault();
+			toggleAppDrawer();
+		}
+	}
+
 	onMount(() => {
 		document.addEventListener('contextmenu', handleRightClick);
+		document.addEventListener('keydown', handleKeydown);
 		return () => {
 			document.removeEventListener('contextmenu', handleRightClick);
+			document.removeEventListener('keydown', handleKeydown);
 		};
 	});
 
@@ -32,14 +45,12 @@
 		}, 3500);
 	});
 
-	// Deselect apps when clicking on desktop background
 	function handleDesktopClick(event) {
 		if (event.target.classList.contains('desktop') && !event.target.closest('.app-item')) {
 			document.dispatchEvent(new CustomEvent('deselect-apps'));
 		}
 	}
 
-	// Desktop background from settings
 	$: desktopStyle = (() => {
 		const w = s.wallpaper || 'dot-matrix';
 		const bg = s.desktopBgColor || '#ffffff';
@@ -59,7 +70,7 @@
 {#if loading}
 	<Boot />
 {:else}
-	<ContextMenu {left} {top} show={hasRightClicked} close={() => (hasRightClicked = false)} />
+	<ContextMenu />
 
 	<WindowManager />
 

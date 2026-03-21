@@ -8,7 +8,7 @@
     const GAME_WIDTH = 600;
     const PADDLE_SPEED = 8;
     const BALL_SPEED = 7;
-    const AI_REACTION_SPEED = 0.8;
+    const AI_REACTION_SPEED = 0.1;
     
     let playerScore = 0;
     let aiScore = 0;
@@ -117,19 +117,19 @@
       <!-- Player paddle -->
       <div
         class="paddle player-paddle"
-        style="top: {playerPaddle}px; width: {PADDLE_WIDTH}px; height: {PADDLE_HEIGHT}px;"
+        style="top: {playerPaddle}px; width: {PADDLE_WIDTH}px; height: {PADDLE_HEIGHT}px; border-radius: 1rem;"
       ></div>
       
       <!-- AI paddle -->
       <div
         class="paddle ai-paddle"
-        style="top: {aiPaddle}px; width: {PADDLE_WIDTH}px; height: {PADDLE_HEIGHT}px;"
+        style="top: {aiPaddle}px; width: {PADDLE_WIDTH}px; height: {PADDLE_HEIGHT}px; border-radius: 1rem;"
       ></div>
       
       <!-- Ball -->
       <div
         class="ball"
-        style="left: {ball.x}px; top: {ball.y}px; width: {BALL_SIZE}px; height: {BALL_SIZE}px;"
+        style="left: {ball.x}px; top: {ball.y}px; width: {BALL_SIZE}px; height: {BALL_SIZE}px; border-radius: 2rem;"
       ></div>
     </div>
   </div>
@@ -143,12 +143,12 @@
     }
     
     .scoreboard {
+      border-radius: 0.25rem;
       background-color: black;
       color: white;
       padding: 1rem;
       font-size: 1.5rem;
       font-weight: bold;
-      font-family: monospace;
     }
     
     .game-board {
@@ -156,7 +156,6 @@
       /* width: {GAME_WIDTH}px;
       height: {GAME_HEIGHT}px; */
       background-color: white;
-      border: 2px solid black;
     }
     
     .paddle {

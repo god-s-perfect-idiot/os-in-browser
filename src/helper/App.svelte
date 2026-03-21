@@ -64,7 +64,7 @@
             <Icon icon="{app.icon}" font-size="2.2rem" class="icon-iconify" style="color: {isSelected ? '#fff' : '#000'};"/>
         {/if}
     </div>
-    <span class="icon-text text-sm">{app.name}</span>
+    <span class="icon-text text-base">{app.name}</span>
 </div>
 
 <style>
@@ -76,25 +76,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px solid #000;
-        border-radius: 0;
-        background-color: #ffffff;
-    }
-    .icon-iconify :global(svg) {
-        color: inherit !important;
-    }
-    .icon-iconify :global(path),
-    .icon-iconify :global(circle),
-    .icon-iconify :global(rect),
-    .icon-iconify :global(polygon),
-    .icon-iconify :global(polyline),
-    .icon-iconify :global(line),
-    .icon-iconify :global(ellipse) {
-        fill: currentColor !important;
-        stroke: currentColor !important;
-    }
-    .icon:active {
-        opacity: 0.7;
+        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.5);
     }
     .icon-text {
         color: #000;
